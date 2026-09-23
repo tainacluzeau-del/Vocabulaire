@@ -393,6 +393,10 @@
                 <button onclick="autoDeselectMasteredWords()" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
                     <i class="fa-solid fa-filter"></i> Décocher automatiquement les mots > 80% de réussite
                 </button>
+                 <!-- 📥 BOUTON DE TÉLÉCHARGEMENT PDF -->
+                  <button onclick="downloadProgress()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-export"></i> Télécharger mon Bilan (PDF)
+                </button>
                 <button onclick="resetPracticeStats()" class="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
                     <i class="fa-solid fa-trash-can"></i> Réinitialiser les statistiques
                 </button>
@@ -1246,6 +1250,114 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             renderHome();
             renderLeaderboardTable();
         });
+         // -----------------------------------------------------------
+        // 📌 INSÉREZ LA FONCTION DE TÉLÉCHARGEMENT ICI (TOUT EN BAS) :
+        // -----------------------------------------------------------
+        function downloadProgress() {
+            const stats = JSON.parse(localStorage.getItem(KEY_STATS) || "{}");
+            
+            const masteredWords = Object.keys(stats).filter(word => {
+                const item = stats[word];
+                return item === "Acquis" || item.status === "Acquis" || item.score >= 3;
+            });
+
+            const totalAcquired = masteredWords.length;
+            const dateToday = new Date().toLocaleDateString('fr-FR');
+            const studentDisplayName = STUDENT_ID.split('_')[0].toUpperCase();
+
+            const categoriesMap = {};
+
+            masteredWords.forEach(word => {
+                const wordData = (typeof ALL_WORDS !== 'undefined') 
+                    ? ALL_WORDS.find(item => item.word === word || item.mot === word)
+                    : null;
+                
+                const category = (wordData && wordData.category) ? wordData.category : "Vocabulaire Général";
+
+                if (!categoriesMap[category]) {
+                    categoriesMap[category] = [];
+                }
+                categoriesMap[category].push(word);
+            });
+
+            const printWindow = window.open('', '_blank');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Bilan par Catégorie - ${studentDisplayName}</title>
+                    <style>
+                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; color: #1E293B; line-height: 1.4; }
+                        .header { border-bottom: 2px solid #00B4D8; padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+                        h1 { color: #0077B6; margin: 0; font-size: 20px; }
+                        .subtitle { font-size: 13px; color: #64748B; margin-top: 2px; }
+                        
+                        .stats-badge { background: #F0FDF4; border: 1px solid #BBF7D0; padding: 8px 16px; border-radius: 10px; text-align: right; }
+                        .stat-value { font-size: 22px; font-weight: bold; color: #16A34A; }
+                        .stat-label { font-size: 11px; color: #15803D; font-weight: 600; text-transform: uppercase; }
+
+                        .categories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+                        
+                        .category-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; break-inside: avoid; }
+                        .category-title { font-size: 13px; font-weight: bold; color: #0077B6; border-bottom: 1px dashed #CBD5E1; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+                        .category-count { background: #E0F2FE; color: #0369A1; font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+                        
+                        .words-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+                        .word-item { background: #FFFFFF; border: 1px solid #CBD5E1; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 500; color: #334155; }
+                        .word-item::before { content: "✓ "; color: #16A34A; font-weight: bold; }
+
+                        .empty-msg { text-align: center; color: #94A3B8; padding: 30px; font-size: 13px; grid-column: span 2; }
+                        .footer { margin-top: 30px; font-size: 10px; text-align: center; color: #94A3B8; border-top: 1px solid #E2E8F0; padding-top: 8px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <h1>Bilan de Vocabulaire par Thématique</h1>
+                            <div class="subtitle">Élève : <strong>${studentDisplayName}</strong> • Date : ${dateToday}</div>
+                        </div>
+                        <div class="stats-badge">
+                            <div class="stat-value">🏆 ${totalAcquired}</div>
+                            <div class="stat-label">Mots Acquis</div>
+                        </div>
+                    </div>
+
+                    <div class="categories-grid">
+                        ${Object.keys(categoriesMap).length > 0 ? Object.keys(categoriesMap).map(cat => `
+                            <div class="category-card">
+                                <div class="category-title">
+                                    <span>📁 ${cat}</span>
+                                    <span class="category-count">${categoriesMap[cat].length} mot(s)</span>
+                                </div>
+                                <ul class="words-list">
+                                    ${categoriesMap[cat].map(word => `<li class="word-item">${word}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('') : `
+                            <div class="empty-msg">
+                                Aucun mot validé pour le moment. Continuez votre apprentissage !
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="footer">
+                        Cahier de Vocabulaire FLE • Document de suivi pédagogique
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            window.onafterprint = function() { window.close(); };
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+        }
     </script>
 </body>
 </html>
