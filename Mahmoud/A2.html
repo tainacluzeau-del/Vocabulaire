@@ -1,0 +1,1400 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="referrer" content="no-referrer">
+    <title>Vocabulaire A1 - Chapter Vocabulary Revision App</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            turquoise: '#00B4D8',
+                            darkTurquoise: '#0077B6',
+                            coral: '#FF6B6B',
+                            lightCoral: '#FF8E72',
+                            softBg: '#F8F9FA',
+                            cardBg: '#FFFFFF',
+                            textDark: '#1E293B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --primary: #00B4D8;
+            --primary-dark: #0077B6;
+            --accent: #FF6B6B;
+            --accent-light: #FF8E72;
+            --bg-color: #F8F9FA;
+            --card-bg: #FFFFFF;
+            --text-color: #1E293B;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            min-height: 100vh;
+        }
+
+        /* Object Fit Contain Guarantee */
+        .img-contain {
+            object-fit: contain !important;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Custom Scrollbar for navigation */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Flipcard 3D effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* Matching cards transitions */
+        .match-card {
+            transition: all 0.25s ease-in-out;
+        }
+        .match-card.selected {
+            border-color: #FF6B6B !important;
+            background-color: #FFF5F5 !important;
+            transform: scale(1.03);
+        }
+        .match-card.matched {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8);
+        }
+
+        @keyframes pulseSuccess {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        .animate-success {
+            animation: pulseSuccess 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header -->
+    <header class="bg-gradient-to-r from-[#0077B6] via-[#00B4D8] to-[#FF6B6B] text-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-6 text-center">
+            <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight flex items-center justify-center gap-3">
+                <span>🇫🇷</span> Vocabulaire A1
+            </h1>
+            <p class="text-white/90 text-sm md:text-base mt-2 font-medium">Chapter Vocabulary Revision App</p>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm overflow-x-auto no-scrollbar">
+        <div class="max-w-7xl mx-auto flex whitespace-nowrap px-2">
+            <button onclick="switchTab('accueil')" id="nav-accueil" class="nav-btn active flex items-center gap-2 py-4 px-4 font-bold text-sm text-[#0077B6] border-b-4 border-[#0077B6] transition">
+                <i class="fa-solid fa-house"></i> Accueil
+            </button>
+            <button onclick="switchTab('flashcards')" id="nav-flashcards" class="nav-btn flex items-center gap-2 py-4 px-4 font-bold text-sm text-gray-500 hover:text-[#0077B6] border-b-4 border-transparent hover:border-gray-300 transition">
+                <i class="fa-solid fa-clone"></i> Flashcards
+            </button>
+            <button onclick="switchTab('dictee')" id="nav-dictee" class="nav-btn flex items-center gap-2 py-4 px-4 font-bold text-sm text-gray-500 hover:text-[#0077B6] border-b-4 border-transparent hover:border-gray-300 transition">
+                <i class="fa-solid fa-headphones"></i> Dictée
+            </button>
+            <button onclick="switchTab('ecriture')" id="nav-ecriture" class="nav-btn flex items-center gap-2 py-4 px-4 font-bold text-sm text-gray-500 hover:text-[#0077B6] border-b-4 border-transparent hover:border-gray-300 transition">
+                <i class="fa-solid fa-pen-to-square"></i> Écriture
+            </button>
+            <button onclick="switchTab('traduction')" id="nav-traduction" class="nav-btn flex items-center gap-2 py-4 px-4 font-bold text-sm text-gray-500 hover:text-[#0077B6] border-b-4 border-transparent hover:border-gray-300 transition">
+                <i class="fa-solid fa-language"></i> Traduction FR
+            </button>
+            <button onclick="switchTab('appariement')" id="nav-appariement" class="nav-btn flex items-center gap-2 py-4 px-4 font-bold text-sm text-gray-500 hover:text-[#0077B6] border-b-4 border-transparent hover:border-gray-300 transition">
+                <i class="fa-solid fa-puzzle-piece"></i> Appariement
+            </button>
+            <button onclick="switchTab('evaluation')" id="nav-evaluation" class="nav-btn flex items-center gap-2 py-4 px-4 font-bold text-sm text-gray-500 hover:text-[#0077B6] border-b-4 border-transparent hover:border-gray-300 transition">
+                <i class="fa-solid fa-graduation-cap"></i> Évaluation
+            </button>
+            <button onclick="switchTab('stats')" id="nav-stats" class="nav-btn flex items-center gap-2 py-4 px-4 font-bold text-sm text-gray-500 hover:text-[#0077B6] border-b-4 border-transparent hover:border-gray-300 transition">
+                <i class="fa-solid fa-chart-pie"></i> Statistiques
+            </button>
+           
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6">
+
+        <!-- 1. ACCUEIL (HOME) -->
+        <section id="tab-accueil" class="tab-page block space-y-6">
+            <!-- Controls Bar -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="relative w-full md:w-96">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="home-search" oninput="renderHome()" placeholder="Rechercher un mot..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00B4D8]">
+                </div>
+
+                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
+                    <span id="active-count" class="text-sm font-semibold text-[#0077B6] bg-cyan-50 px-3 py-1.5 rounded-full border border-cyan-200">
+                        0 / 0 mots sélectionnés
+                    </span>
+                    <div class="flex gap-2">
+                        <button onclick="selectAllWords(true)" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-3 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-check-double"></i> Tout cocher
+                        </button>
+                        <button onclick="selectAllWords(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-square-minus"></i> Tout décocher
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Words Grid -->
+            <div id="home-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        </section>
+
+        <!-- 2. FLASHCARDS -->
+        <section id="tab-flashcards" class="tab-page hidden space-y-6">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-wrap justify-center items-center gap-3">
+                <button id="fc-btn-mode1" onclick="setFlashcardMode(1)" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-[#00B4D8] text-white shadow">
+                    Mode 1 : Illustration ➔ Français
+                </button>
+                <button id="fc-btn-mode2" onclick="setFlashcardMode(2)" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                    Mode 2 : Traduction ➔ Français
+                </button>
+            </div>
+
+            <div class="flex justify-center">
+                <div class="w-full max-w-md h-80 perspective-1000 cursor-pointer" onclick="flipFlashcard()">
+                    <div id="flashcard-inner" class="relative w-full h-full transform-style-3d transition-transform duration-500 shadow-xl rounded-2xl border-2 border-cyan-100 bg-white">
+                        <!-- Front Face -->
+                        <div id="fc-front" class="absolute w-full h-full backface-hidden rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-white">
+                            <!-- Content injected via JS -->
+                        </div>
+                        <!-- Back Face -->
+                        <div id="fc-back" class="absolute w-full h-full backface-hidden rotate-y-180 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-gradient-to-br from-cyan-50 to-blue-50 border-2 border-[#00B4D8]">
+                            <!-- Content injected via JS -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center gap-4">
+                <button onclick="prevFlashcard()" class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold rounded-lg shadow-sm transition flex items-center gap-2">
+                    <i class="fa-solid fa-arrow-left"></i> Précédent
+                </button>
+
+                <span id="fc-counter" class="text-sm font-bold text-gray-500">1 / 10</span>
+
+                <button onclick="nextFlashcard()" class="px-4 py-2 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-lg shadow-sm transition flex items-center gap-2">
+                    Suivant <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- 3. DICTÉE -->
+        <section id="tab-dictee" class="tab-page hidden max-w-xl mx-auto space-y-6">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center space-y-6">
+                <h2 class="text-2xl font-bold text-[#0077B6] flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-headphones"></i> Dictée de mots
+                </h2>
+                <p class="text-gray-600 text-sm">Écoutez le mot prononcé en français, puis saisissez son orthographe exacte.</p>
+
+                <div class="py-4">
+                    <button onclick="playDicteeAudio()" class="w-24 h-24 bg-gradient-to-tr from-[#0077B6] to-[#00B4D8] hover:from-[#00B4D8] hover:to-[#0077B6] text-white rounded-full shadow-lg flex items-center justify-center mx-auto transform active:scale-95 transition">
+                        <i class="fa-solid fa-volume-high text-3xl"></i>
+                    </button>
+                    <p class="text-xs text-gray-400 mt-2 font-medium">Cliquez pour réécouter</p>
+                </div>
+
+                <form onsubmit="handleDicteeSubmit(event)" class="space-y-4">
+                    <input type="text" id="dictee-input" placeholder="Écrivez le mot en français..." autocomplete="off" class="w-full text-center text-lg py-3 px-4 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    
+                    <button type="submit" class="w-full py-3 bg-[#FF6B6B] hover:bg-[#FF8E72] text-white font-bold rounded-xl shadow transition">
+                        Valider la réponse
+                    </button>
+                </form>
+
+                <div id="dictee-feedback" class="hidden p-4 rounded-xl text-sm font-bold"></div>
+            </div>
+        </section>
+
+        <!-- 4. ÉCRITURE -->
+        <section id="tab-ecriture" class="tab-page hidden max-w-xl mx-auto space-y-6">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex justify-center gap-3">
+                <button id="ecriture-btn-mode1" onclick="setEcritureMode('trad')" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-[#00B4D8] text-white shadow">
+                    À partir de la traduction
+                </button>
+                <button id="ecriture-btn-mode2" onclick="setEcritureMode('img')" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                    À partir de l'image
+                </button>
+            </div>
+
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center space-y-6">
+                <div id="ecriture-prompt" class="min-h-[120px] flex items-center justify-center">
+                    <!-- Dynamic prompt injected here -->
+                </div>
+
+                <form onsubmit="handleEcritureSubmit(event)" class="space-y-4">
+                    <input type="text" id="ecriture-input" placeholder="Écrivez le mot en français..." autocomplete="off" class="w-full text-center text-lg py-3 px-4 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    
+                    <button type="submit" class="w-full py-3 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-xl shadow transition">
+                        Valider la réponse
+                    </button>
+                </form>
+
+                <div id="ecriture-feedback" class="hidden p-4 rounded-xl text-sm font-bold"></div>
+            </div>
+        </section>
+
+        <!-- 5. TRADUCTION -->
+        <section id="tab-traduction" class="tab-page hidden max-w-xl mx-auto space-y-6">
+            <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center space-y-6">
+                <h2 class="text-2xl font-bold text-[#0077B6] flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-language"></i> Traduction
+                </h2>
+                
+                <div class="bg-cyan-50 p-6 rounded-2xl border border-cyan-100">
+                    <span class="text-xs font-bold text-[#0077B6] uppercase tracking-wider block mb-1">Mot en Français</span>
+                    <p id="trad-prompt-word" class="text-3xl font-extrabold text-gray-800"></p>
+                    <button type="button" onclick="speakCurrentTradWord()" class="mt-2 text-[#00B4D8] hover:text-[#0077B6]">
+                        <i class="fa-solid fa-volume-high text-lg"></i>
+                    </button>
+                </div>
+
+                <form onsubmit="handleTraductionSubmit(event)" class="space-y-4">
+                    <input type="text" id="trad-input" placeholder="Saisissez la traduction en français/anglais..." autocomplete="off" class="w-full text-center text-lg py-3 px-4 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    
+                    <button type="submit" class="w-full py-3 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-xl shadow transition">
+                        Valider
+                    </button>
+                </form>
+
+                <div id="trad-feedback" class="hidden p-4 rounded-xl text-sm font-bold"></div>
+            </div>
+        </section>
+
+        <!-- 6. APPARIEMENT -->
+        <section id="tab-appariement" class="tab-page hidden space-y-6">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-wrap justify-center items-center gap-3">
+                <button id="match-btn-mode1" onclick="setMatchMode('img')" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-[#00B4D8] text-white shadow">
+                    Mot Français ➔ Image
+                </button>
+                <button id="match-btn-mode2" onclick="setMatchMode('trad')" class="px-4 py-2 rounded-lg text-sm font-bold transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                    Mot Français ➔ Traduction
+                </button>
+            </div>
+
+            <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4"></div>
+        </section>
+
+        <!-- 7. ÉVALUATION -->
+        <section id="tab-evaluation" class="tab-page hidden max-w-2xl mx-auto space-y-6">
+            <!-- Start Screen -->
+            <div id="eval-start-card" class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center space-y-6">
+                <div class="w-16 h-16 bg-coral/10 text-[#FF6B6B] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-gray-800">Évaluation d'entraînement</h2>
+                <p class="text-gray-600 text-sm">Session de 10 questions aléatoires avec feedback immédiat. Aucun retour en arrière possible.</p>
+
+                <form onsubmit="startEvaluation(event)" class="space-y-4 max-w-md mx-auto text-left">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 mb-1">Identifiant élève (ex: 6BDURTOT) :</label>
+                        <input type="text" id="eval-pseudo" required placeholder="Exemple: 6BDURTOT" class="w-full py-2.5 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00B4D8] focus:outline-none font-semibold">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-[#FF6B6B] hover:bg-[#FF8E72] text-white font-bold rounded-xl shadow transition">
+                        Démarrer l'évaluation
+                    </button>
+                </form>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="eval-quiz-card" class="hidden bg-white p-8 rounded-2xl shadow-md border border-gray-100 space-y-6">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                    <span id="eval-[#0077B6]" class="text-xs font-bold uppercase tracking-wider text-[#0077B6]">Question 1 / 10</span>
+                    <span id="eval-timer" class="text-xs font-mono font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-md border border-amber-200">00:00</span>
+                </div>
+
+                <div id="eval-question-body" class="space-y-4">
+                    <!-- Injected dynamically -->
+                </div>
+
+                <div id="eval-feedback" class="hidden p-4 rounded-xl text-sm font-bold text-center"></div>
+
+                <button id="eval-next-btn" onclick="nextEvalQuestion()" class="hidden w-full py-3 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-xl shadow transition">
+                    Question suivante <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+
+            <!-- Leaderboard Table -->
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 space-y-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-amber-400"></i> Classement des élèves
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50 text-gray-500 font-bold uppercase text-xs">
+                                <th class="py-3 px-4">Rang</th>
+                                <th class="py-3 px-4">Élève</th>
+                                <th class="py-3 px-4">Réussite</th>
+                                <th class="py-3 px-4">Temps</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eval-leaderboard-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. STATISTIQUES -->
+        <section id="tab-stats" class="tab-page hidden space-y-6">
+            <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs md:text-sm flex items-center gap-3">
+                <i class="fa-solid fa-circle-info text-amber-500 text-xl"></i>
+                <span><strong>Information :</strong> Cet onglet enregistre uniquement les statistiques d'entraînement (Flashcards, Dictée, Écriture, Traduction, Appariement).</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Mots maîtrisés</span>
+                    <p id="stat-[#00B4D8]" class="text-3xl font-extrabold text-[#00B4D8] mt-1">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Total essais</span>
+                    <p id="stat-total-attempts" class="text-3xl font-extrabold text-gray-800 mt-1">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Taux de réussite global</span>
+                    <p id="stat-accuracy" class="text-3xl font-extrabold text-[#FF6B6B] mt-1">0%</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-wrap justify-between items-center gap-3">
+                <button onclick="autoDeselectMasteredWords()" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-filter"></i> Décocher automatiquement les mots > 80% de réussite
+                </button>
+                <!-- 📥 BOUTON DE TÉLÉCHARGEMENT PDF -->
+                  <button onclick="downloadProgress()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-export"></i> Télécharger mon Bilan (PDF)
+                </button>
+
+                <button onclick="resetPracticeStats()" class="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-trash-can"></i> Réinitialiser les statistiques
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase text-xs">
+                                <th class="py-3 px-4">Mot (Français)</th>
+                                <th class="py-3 px-4">Traduction</th>
+                                <th class="py-3 px-4">Modalité Écrit</th>
+                                <th class="py-3 px-4">Modalité Dictée</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stats-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+      const STUDENT_ID = "mahmoud_a"; 
+
+const KEY_SELECTED = "vocab_a2_selected_" + STUDENT_ID;
+const KEY_STATS = "vocab_a2_stats_" + STUDENT_ID;
+const KEY_LEADERBOARD = "vocab_a2_leaderboard_" + STUDENT_ID;
+      
+      // Dataset A2 - 200 mots et expressions de niveau A2
+const VOCAB_DATA = [
+    // 1. Salutations, Politesse & Relations (1-15)
+    { id: 1, fr: "s'il vous plaît", tr: "please (formal)", cat: "Politesse & Échanges", icon: "🙏" },
+    { id: 2, fr: "enchanté(e)", tr: "nice to meet you", cat: "Politesse & Échanges", icon: "🤝" },
+    { id: 3, fr: "avec plaisir", tr: "with pleasure / my pleasure", cat: "Politesse & Échanges", icon: "😊" },
+    { id: 4, fr: "désolé(e)", tr: "sorry", cat: "Politesse & Échanges", icon: "😔" },
+    { id: 5, fr: "s'excuser", tr: "to apologize", cat: "Politesse & Échanges", icon: "🙇" },
+    { id: 6, fr: "félicitations", tr: "congratulations", cat: "Politesse & Échanges", icon: "🎉" },
+    { id: 7, fr: "bienvenue", tr: "welcome", cat: "Politesse & Échanges", icon: "🚪" },
+    { id: 8, fr: "remercier", tr: "to thank", cat: "Politesse & Échanges", icon: "🎁" },
+    { id: 9, fr: "se présenter", tr: "to introduce oneself", cat: "Politesse & Échanges", icon: "🏷️" },
+    { id: 10, fr: "tutoyer", tr: "to use 'tu'", cat: "Politesse & Échanges", icon: "🗣️" },
+    { id: 11, fr: "vouvoyer", tr: "to use 'vous'", cat: "Politesse & Échanges", icon: "👥" },
+    { id: 12, fr: "un ami / une amie", tr: "a friend", cat: "Politesse & Échanges", icon: "👫" },
+    { id: 13, fr: "un voisin / une voisine", tr: "a neighbor", cat: "Politesse & Échanges", icon: "🏡" },
+    { id: 14, fr: "un collègue", tr: "a colleague", cat: "Politesse & Échanges", icon: "💼" },
+    { id: 15, fr: "une connaissance", tr: "an acquaintance", cat: "Politesse & Échanges", icon: "🙋‍♂️" },
+
+    // 2. Identité, Famille & Relations Humaines (16-30)
+    { id: 16, fr: "le célibataire", tr: "single (person)", cat: "Identité & Famille", icon: "👤" },
+    { id: 17, fr: "marié(e)", tr: "married", cat: "Identité & Famille", icon: "💍" },
+    { id: 18, fr: "divorcé(e)", tr: "divorced", cat: "Identité & Famille", icon: "📄" },
+    { id: 19, fr: "les parents", tr: "parents", cat: "Identité & Famille", icon: "👨‍👩‍👦" },
+    { id: 20, fr: "les grands-parents", tr: "grandparents", cat: "Identité & Famille", icon: "👵👨‍🦳" },
+    { id: 21, fr: "un oncle", tr: "an uncle", cat: "Identité & Famille", icon: "👨" },
+    { id: 22, fr: "une tante", tr: "an aunt", cat: "Identité & Famille", icon: "👩" },
+    { id: 23, fr: "un cousin / une cousine", tr: "a cousin", cat: "Identité & Famille", icon: "🧒" },
+    { id: 24, fr: "un neveu", tr: "a nephew", cat: "Identité & Famille", icon: "👦" },
+    { id: 25, fr: "une nièce", tr: "a niece", cat: "Identité & Famille", icon: "👧" },
+    { id: 26, fr: "un beau-père", tr: "a stepfather / father-in-law", cat: "Identité & Famille", icon: "🧔" },
+    { id: 27, fr: "une belle-mère", tr: "a stepmother / mother-in-law", cat: "Identité & Famille", icon: "👩‍🦰" },
+    { id: 28, fr: "l'enfance", tr: "childhood", cat: "Identité & Famille", icon: "🧸" },
+    { id: 29, fr: "grandir", tr: "to grow up", cat: "Identité & Famille", icon: "📈" },
+    { id: 30, fr: "vieillir", tr: "to get old", cat: "Identité & Famille", icon: "⏳" },
+
+    // 3. Description Physique, Caractère & Émotions (31-45)
+    { id: 31, fr: "grand(e)", tr: "tall / big", cat: "Description & Émotions", icon: "📏" },
+    { id: 32, fr: "petit(e)", tr: "small / short", cat: "Description & Émotions", icon: "📐" },
+    { id: 33, fr: "mince", tr: "thin / slim", cat: "Description & Émotions", icon: "🧍" },
+    { id: 34, fr: "sympathique", tr: "nice / friendly", cat: "Description & Émotions", icon: "🙂" },
+    { id: 35, fr: "drôle", tr: "funny", cat: "Description & Émotions", icon: "😄" },
+    { id: 36, fr: "timide", tr: "shy", cat: "Description & Émotions", icon: "😳" },
+    { id: 37, fr: "généreux / généreuse", tr: "generous", cat: "Description & Émotions", icon: "🤲" },
+    { id: 38, fr: "paresseux / paresseuse", tr: "lazy", cat: "Description & Émotions", icon: "🦥" },
+    { id: 39, fr: "travailleur / travailleuse", tr: "hardworking", cat: "Description & Émotions", icon: "🐝" },
+    { id: 40, fr: "heureux / heureuse", tr: "happy", cat: "Description & Émotions", icon: "😃" },
+    { id: 41, fr: "triste", tr: "sad", cat: "Description & Émotions", icon: "😢" },
+    { id: 42, fr: "en colère", tr: "angry", cat: "Description & Émotions", icon: "😡" },
+    { id: 43, fr: "fatigué(e)", tr: "tired", cat: "Description & Émotions", icon: "🥱" },
+    { id: 44, fr: "stressé(e)", tr: "stressed", cat: "Description & Émotions", icon: "😰" },
+    { id: 45, fr: "inquiet / inquiète", tr: "worried", cat: "Description & Émotions", icon: "😟" },
+
+    // 4. Le Logement & Les Tâches Ménagères (46-65)
+    { id: 46, fr: "un appartement", tr: "an apartment", cat: "Logement", icon: "🏢" },
+    { id: 47, fr: "une maison", tr: "a house", cat: "Logement", icon: "🏡" },
+    { id: 48, fr: "louer", tr: "to rent", cat: "Logement", icon: "🔑" },
+    { id: 49, fr: "le loyer", tr: "the rent", cat: "Logement", icon: "💶" },
+    { id: 50, fr: "déménager", tr: "to move out/in", cat: "Logement", icon: "📦" },
+    { id: 51, fr: "le salon", tr: "the living room", cat: "Logement", icon: "🛋️" },
+    { id: 52, fr: "la chambre", tr: "the bedroom", cat: "Logement", icon: "🛏️" },
+    { id: 53, fr: "la cuisine", tr: "the kitchen", cat: "Logement", icon: "🍳" },
+    { id: 54, fr: "la salle de bains", tr: "the bathroom", cat: "Logement", icon: "🛁" },
+    { id: 55, fr: "le balcon", tr: "the balcony", cat: "Logement", icon: "🪴" },
+    { id: 56, fr: "le jardin", tr: "the garden", cat: "Logement", icon: "🌻" },
+    { id: 57, fr: "un meuble", tr: "a piece of furniture", cat: "Logement", icon: "🪑" },
+    { id: 58, fr: "un armoire", tr: "a wardrobe / closet", cat: "Logement", icon: "🚪" },
+    { id: 59, fr: "le canapé", tr: "the sofa", cat: "Logement", icon: "🛋️" },
+    { id: 60, fr: "faire le ménage", tr: "to do housecleaning", cat: "Logement", icon: "🧹" },
+    { id: 61, fr: "passer l'aspirateur", tr: "to vacuum", cat: "Logement", icon: "🧹" },
+    { id: 62, fr: "faire la vaisselle", tr: "to do the dishes", cat: "Logement", icon: "🧽" },
+    { id: 63, fr: "laver le linge", tr: "to do the laundry", cat: "Logement", icon: "🧺" },
+    { id: 64, fr: "repasser", tr: "to iron", cat: "Logement", icon: "👔" },
+    { id: 65, fr: "ranger", tr: "to tidy up", cat: "Logement", icon: "🗄️" },
+
+    // 5. Alimentation, Cuisine & Restaurant (66-85)
+    { id: 66, fr: "le petit-déjeuner", tr: "breakfast", cat: "Alimentation", icon: "☕" },
+    { id: 67, fr: "le déjeuner", tr: "lunch", cat: "Alimentation", icon: "🥗" },
+    { id: 68, fr: "le dîner", tr: "dinner", cat: "Alimentation", icon: "🍽️" },
+    { id: 69, fr: "commandez", tr: "to order", cat: "Alimentation", icon: "📝" },
+    { id: 70, fr: "le serveur / la serveuse", tr: "waiter / waitress", cat: "Alimentation", icon: "👨‍🍳" },
+    { id: 71, fr: "l'addition (f)", tr: "the bill", cat: "Alimentation", icon: "🧾" },
+    { id: 72, fr: "un pourboire", tr: "a tip", cat: "Alimentation", icon: "🪙" },
+    { id: 73, fr: "les légumes (m)", tr: "vegetables", cat: "Alimentation", icon: "🥕" },
+    { id: 74, fr: "les fruits (m)", tr: "fruits", cat: "Alimentation", icon: "🍎" },
+    { id: 75, fr: "la viande", tr: "meat", cat: "Alimentation", icon: "🥩" },
+    { id: 76, fr: "le poisson", tr: "fish", cat: "Alimentation", icon: "🐟" },
+    { id: 77, fr: "le pain", tr: "bread", cat: "Alimentation", icon: "🥖" },
+    { id: 78, fr: "le fromage", tr: "cheese", cat: "Alimentation", icon: "🧀" },
+    { id: 79, fr: "une recette", tr: "a recipe", cat: "Alimentation", icon: "📖" },
+    { id: 80, fr: "cuisiner", tr: "to cook", cat: "Alimentation", icon: "🍳" },
+    { id: 81, fr: "bouillir", tr: "to boil", cat: "Alimentation", icon: "🫕" },
+    { id: 82, fr: "délicieux / délicieuse", tr: "delicious", cat: "Alimentation", icon: "😋" },
+    { id: 83, fr: "sucré(e)", tr: "sweet", cat: "Alimentation", icon: "🍬" },
+    { id: 84, fr: "salé(e)", tr: "salty", cat: "Alimentation", icon: "🧂" },
+    { id: 85, fr: "avoir faim / soif", tr: "to be hungry / thirsty", cat: "Alimentation", icon: "🍔" },
+
+    // 6. La Ville, Les Transports & Les Orientations (86-105)
+    { id: 86, fr: "la gare", tr: "train station", cat: "Ville & Transports", icon: "🚉" },
+    { id: 87, fr: "l'aéroport (m)", tr: "airport", cat: "Ville & Transports", icon: "✈️" },
+    { id: 88, fr: "un arrêt de bus", tr: "bus stop", cat: "Ville & Transports", icon: "🏣" },
+    { id: 89, fr: "le guichet", tr: "ticket counter", cat: "Ville & Transports", icon: "🎟️" },
+    { id: 90, fr: "un billet", tr: "a ticket (train/bus)", cat: "Ville & Transports", icon: "🎫" },
+    { id: 91, fr: "composter", tr: "to validate (ticket)", cat: "Ville & Transports", icon: "🎫" },
+    { id: 92, fr: "traverser la rue", tr: "to cross the street", cat: "Ville & Transports", icon: "🚶" },
+    { id: 93, fr: "tourner à gauche", tr: "to turn left", cat: "Ville & Transports", icon: "⬅️" },
+    { id: 94, fr: "tourner à droite", tr: "to turn right", cat: "Ville & Transports", icon: "➡️" },
+    { id: 95, fr: "tout droit", tr: "straight ahead", cat: "Ville & Transports", icon: "⬆️" },
+    { id: 96, fr: "un carrefour", tr: "an intersection / crossroads", cat: "Ville & Transports", icon: "🚦" },
+    { id: 97, fr: "un feu rouge", tr: "a traffic light", cat: "Ville & Transports", icon: "🚦" },
+    { id: 98, fr: "un pont", tr: "a bridge", cat: "Ville & Transports", icon: "🌉" },
+    { id: 99, fr: "la mairie", tr: "city hall", cat: "Ville & Transports", icon: "🏛️" },
+    { id: 100, fr: "la poste", tr: "post office", cat: "Ville & Transports", icon: "🏣" },
+    { id: 101, fr: "la banque", tr: "bank", cat: "Ville & Transports", icon: "🏦" },
+    { id: 102, fr: "la pharmacie", tr: "pharmacy", cat: "Ville & Transports", icon: "⚕️" },
+    { id: 103, fr: "le commissariat", tr: "police station", cat: "Ville & Transports", icon: "🚓" },
+    { id: 104, fr: "se perdre", tr: "to get lost", cat: "Ville & Transports", icon: "🗺️" },
+    { id: 105, fr: "rattraper", tr: "to catch (train/bus)", cat: "Ville & Transports", icon: "🏃" },
+
+    // 7. Achats, Commerce & Argent (106-120)
+    { id: 106, fr: "magasiner / faire des courses", tr: "to go shopping", cat: "Achats & Commerce", icon: "🛍️" },
+    { id: 107, fr: "le supermarché", tr: "supermarket", cat: "Achats & Commerce", icon: "🛒" },
+    { id: 108, fr: "le boulanger / la boulangère", tr: "baker", cat: "Achats & Commerce", icon: "🥖" },
+    { id: 109, fr: "le prix", tr: "price", cat: "Achats & Commerce", icon: "🏷️" },
+    { id: 110, fr: "payer en espèces", tr: "to pay in cash", cat: "Achats & Commerce", icon: "💵" },
+    { id: 111, fr: "payer par carte", tr: "to pay by card", cat: "Achats & Commerce", icon: "💳" },
+    { id: 112, fr: "la caisse", tr: "cash register / checkout", cat: "Achats & Commerce", icon: "🪙" },
+    { id: 113, fr: "un reçu / ticket de caisse", tr: "receipt", cat: "Achats & Commerce", icon: "🧾" },
+    { id: 114, fr: "les soldes (f)", tr: "sales", cat: "Achats & Commerce", icon: "🏷️" },
+    { id: 115, fr: "une réduction", tr: "a discount", cat: "Achats & Commerce", icon: "📉" },
+    { id: 116, fr: "cher / chère", tr: "expensive", cat: "Achats & Commerce", icon: "💎" },
+    { id: 117, fr: "bon marché", tr: "cheap / inexpensive", cat: "Achats & Commerce", icon: "🏷️" },
+    { id: 118, fr: "essayer (un vêtement)", tr: "to try on (clothes)", cat: "Achats & Commerce", icon: "👗" },
+    { id: 119, fr: "la taille", tr: "size (clothing)", cat: "Achats & Commerce", icon: "📏" },
+    { id: 120, fr: "la pointure", tr: "shoe size", cat: "Achats & Commerce", icon: "👟" },
+
+    // 8. Travail, Études & Métiers (121-140)
+    { id: 121, fr: "un emploi / un travail", tr: "a job / work", cat: "Travail & Études", icon: "💼" },
+    { id: 122, fr: "chercher un travail", tr: "to look for a job", cat: "Travail & Études", icon: "🔍" },
+    { id: 123, fr: "un entretien d'embauche", tr: "a job interview", cat: "Travail & Études", icon: "👔" },
+    { id: 124, fr: "un curriculum vitae (CV)", tr: "a resume / CV", cat: "Travail & Études", icon: "📄" },
+    { id: 125, fr: "un contrat", tr: "a contract", cat: "Travail & Études", icon: "🖋️" },
+    { id: 126, fr: "le salaire", tr: "salary", cat: "Travail & Études", icon: "💰" },
+    { id: 127, fr: "le bureau", tr: "office / desk", cat: "Travail & Études", icon: "🖥️" },
+    { id: 128, fr: "une réunion", tr: "a meeting", cat: "Travail & Études", icon: "📊" },
+    { id: 129, fr: "un projet", tr: "a project", cat: "Travail & Études", icon: "📁" },
+    { id: 130, fr: "démissionner", tr: "to resign", cat: "Travail & Études", icon: "🚪" },
+    { id: 131, fr: "un médecin", tr: "a doctor", cat: "Travail & Études", icon: "🩺" },
+    { id: 132, fr: "un enseignant / une enseignante", tr: "a teacher", cat: "Travail & Études", icon: "👩‍🏫" },
+    { id: 133, fr: "un ingénieur", tr: "an engineer", cat: "Travail & Études", icon: "⚙️" },
+    { id: 134, fr: "un étudant / une étudiante", tr: "a student", cat: "Travail & Études", icon: "🎓" },
+    { id: 135, fr: "apprendre", tr: "to learn", cat: "Travail & Études", icon: "📚" },
+    { id: 136, fr: "enseigner", tr: "to teach", cat: "Travail & Études", icon: "🏫" },
+    { id: 137, fr: "réussir un examen", tr: "to pass an exam", cat: "Travail & Études", icon: "✅" },
+    { id: 138, fr: "échouer", tr: "to fail", cat: "Travail & Études", icon: "❌" },
+    { id: 139, fr: "un diplôme", tr: "a diploma / degree", cat: "Travail & Études", icon: "📜" },
+    { id: 140, fr: "une formation", tr: "training / course", cat: "Travail & Études", icon: "💻" },
+
+    // 9. Loisirs, Sports & Médias (141-160)
+    { id: 141, fr: "les vacances (f)", tr: "vacation / holidays", cat: "Loisirs & Sports", icon: "🏖️" },
+    { id: 142, fr: "voyager", tr: "to travel", cat: "Loisirs & Sports", icon: "🧳" },
+    { id: 143, fr: "faire du sport", tr: "to play sports", cat: "Loisirs & Sports", icon: "⚽" },
+    { id: 144, fr: "faire de la randonnée", tr: "to go hiking", cat: "Loisirs & Sports", icon: "🥾" },
+    { id: 145, fr: "la natation", tr: "swimming", cat: "Loisirs & Sports", icon: "🏊" },
+    { id: 146, fr: "lire un livre", tr: "to read a book", cat: "Loisirs & Sports", icon: "📖" },
+    { id: 147, fr: "écouter de la musique", tr: "to listen to music", cat: "Loisirs & Sports", icon: "🎧" },
+    { id: 148, fr: "regarder un film", tr: "to watch a movie", cat: "Loisirs & Sports", icon: "🎬" },
+    { id: 149, fr: "aller au cinéma", tr: "to go to the movies", cat: "Loisirs & Sports", icon: "🍿" },
+    { id: 150, fr: "un musée", tr: "a museum", cat: "Loisirs & Sports", icon: "🏛️" },
+    { id: 151, fr: "une exposition", tr: "an exhibition", cat: "Loisirs & Sports", icon: "🖼️" },
+    { id: 152, fr: "un spectacle", tr: "a show / performance", cat: "Loisirs & Sports", icon: "🎭" },
+    { id: 153, fr: "s'amuser", tr: "to have fun", cat: "Loisirs & Sports", icon: "🥳" },
+    { id: 154, fr: "se reposer", tr: "to rest", cat: "Loisirs & Sports", icon: "🛋️" },
+    { id: 155, fr: "se promener", tr: "to take a walk", cat: "Loisirs & Sports", icon: "🚶" },
+    { id: 156, fr: "un journal", tr: "a newspaper", cat: "Loisirs & Sports", icon: "📰" },
+    { id: 157, fr: "les informations (f)", tr: "the news", cat: "Loisirs & Sports", icon: "📺" },
+    { id: 158, fr: "un réseau social", tr: "a social network", cat: "Loisirs & Sports", icon: "📱" },
+    { id: 159, fr: "envoyer un message", tr: "to send a message", cat: "Loisirs & Sports", icon: "💬" },
+    { id: 160, fr: "prendre une photo", tr: "to take a picture", cat: "Loisirs & Sports", icon: "📷" },
+
+    // 10. Santé, Corps & Hygiène (161-180)
+    { id: 161, fr: "avoir mal à la tête", tr: "to have a headache", cat: "Santé & Corps", icon: "🤕" },
+    { id: 162, fr: "avoir mal au ventre", tr: "to have a stomach ache", cat: "Santé & Corps", icon: "🤢" },
+    { id: 163, fr: "la fièvre", tr: "fever", cat: "Santé & Corps", icon: "🌡️" },
+    { id: 164, fr: "tousser", tr: "to cough", cat: "Santé & Corps", icon: "😷" },
+    { id: 165, fr: "un enrouement / un rhume", tr: "a cold", cat: "Santé & Corps", icon: "🤧" },
+    { id: 166, fr: "un médicament", tr: "medicine", cat: "Santé & Corps", icon: "💊" },
+    { id: 167, fr: "une ordonnance", tr: "a prescription", cat: "Santé & Corps", icon: "📝" },
+    { id: 168, fr: "un rendez-vous", tr: "an appointment", cat: "Santé & Corps", icon: "📅" },
+    { id: 169, fr: "l'hôpital (m)", tr: "hospital", cat: "Santé & Corps", icon: "🏥" },
+    { id: 170, fr: "les urgences (f)", tr: "emergency room", cat: "Santé & Corps", icon: "🚑" },
+    { id: 171, fr: "se blesser", tr: "to injure oneself", cat: "Santé & Corps", icon: "🩹" },
+    { id: 172, fr: "guérir", tr: "to heal / recover", cat: "Santé & Corps", icon: "🩺" },
+    { id: 173, fr: "se laver", tr: "to wash oneself", cat: "Santé & Corps", icon: "🧼" },
+    { id: 174, fr: "se brosser les dents", tr: "to brush teeth", cat: "Santé & Corps", icon: "🪥" },
+    { id: 175, fr: "s'habiller", tr: "to get dressed", cat: "Santé & Corps", icon: "👕" },
+    { id: 176, fr: "le cœur", tr: "heart", cat: "Santé & Corps", icon: "❤️" },
+    { id: 177, fr: "le dos", tr: "back", cat: "Santé & Corps", icon: "🧍" },
+    { id: 178, fr: "la jambe", tr: "leg", cat: "Santé & Corps", icon: "🦵" },
+    { id: 179, fr: "le bras", tr: "arm", cat: "Santé & Corps", icon: "💪" },
+    { id: 180, fr: "en bonne santé", tr: "in good health", cat: "Santé & Corps", icon: "🏃" },
+
+    // 11. Temps, Climat & Environnement (181-200)
+    { id: 181, fr: "hier", tr: "yesterday", cat: "Temps & Météo", icon: "⏮️" },
+    { id: 182, fr: "demain", tr: "tomorrow", cat: "Temps & Météo", icon: "⏭️" },
+    { id: 183, fr: "la semaine prochaine", tr: "next week", cat: "Temps & Météo", icon: "📅" },
+    { id: 184, fr: "le mois dernier", tr: "last month", cat: "Temps & Météo", icon: "🗓️" },
+    { id: 185, fr: "autrefois", tr: "in the past / formerly", cat: "Temps & Météo", icon: "📜" },
+    { id: 186, fr: "à l'avenir", tr: "in the future", cat: "Temps & Météo", icon: "🔮" },
+    { id: 187, fr: "il fait beau", tr: "it's nice weather", cat: "Temps & Météo", icon: "☀️" },
+    { id: 188, fr: "il pleut", tr: "it's raining", cat: "Temps & Météo", icon: "🌧️" },
+    { id: 189, fr: "il neige", tr: "it's snowing", cat: "Temps & Météo", icon: "❄️" },
+    { id: 190, fr: "il fait froid", tr: "it's cold", cat: "Temps & Météo", icon: "🥶" },
+    { id: 191, fr: "il fait chaud", tr: "it's hot", cat: "Temps & Météo", icon: "🥵" },
+    { id: 192, fr: "le soleil", tr: "sun", cat: "Temps & Météo", icon: "☀️" },
+    { id: 193, fr: "un nuage", tr: "a cloud", cat: "Temps & Météo", icon: "☁️" },
+    { id: 194, fr: "le vent", tr: "wind", cat: "Temps & Météo", icon: "💨" },
+    { id: 195, fr: "une tempête", tr: "a storm", cat: "Temps & Météo", icon: "⛈️" },
+    { id: 196, fr: "la nature", tr: "nature", cat: "Temps & Météo", icon: "🌿" },
+    { id: 197, fr: "la montagne", tr: "mountain", cat: "Temps & Météo", icon: "⛰️" },
+    { id: 198, fr: "la mer", tr: "sea", cat: "Temps & Météo", icon: "🌊" },
+    { id: 199, fr: "la forêt", tr: "forest", cat: "Temps & Météo", icon: "🌲" },
+    { id: 200, fr: "l'environnement (m)", tr: "environment", cat: "Temps & Météo", icon: "🌍" }
+];
+
+        let appState = {
+            selectedIds: JSON.parse(localStorage.getItem(KEY_SELECTED)) || VOCAB_DATA.map(v => v.id),
+            stats: JSON.parse(localStorage.getItem(KEY_STATS)) || {},
+            leaderboard: JSON.parse(localStorage.getItem(KEY_LEADERBOARD)) || [],
+            // Practice state
+            fcIndex: 0,
+            fcMode: 1, // 1: Img -> FR, 2: Trad -> FR
+            fcFlipped: false,
+            dicteeCurrent: null,
+            ecritureCurrent: null,
+            ecritureMode: 'trad',
+            tradCurrent: null,
+            matchMode: 'img',
+            matchPool: [],
+            matchActive: [],
+            matchSelectedCard: null,
+            // Eval State
+            evalPseudo: '',
+            evalQuestions: [],
+            evalIndex: 0,
+            evalScore: 0,
+            evalTimeSeconds: 0,
+            evalTimer: null
+        };
+
+        // Standard Nextcloud URL cleaner
+        function cleanNextcloudUrl(url) {
+            if (!url) return '';
+            let cleaned = url.trim();
+            if (cleaned.includes('nuage.apps.education.fr') && !cleaned.endsWith('/download')) {
+                cleaned += '/download';
+            }
+            return cleaned;
+        }
+
+        // Speech Synthesis Audio Pronunciation
+        function speakWord(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function getActiveWords() {
+            return VOCAB_DATA.filter(v => appState.selectedIds.includes(v.id));
+        }
+
+        // Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-page').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-[#0077B6]', 'border-[#0077B6]');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+
+            const targetPage = document.getElementById(`tab-${tabId}`);
+            const targetNav = document.getElementById(`nav-${tabId}`);
+            
+            if (targetPage && targetNav) {
+                targetPage.classList.remove('hidden');
+                targetNav.classList.add('active', 'text-[#0077B6]', 'border-[#0077B6]');
+                targetNav.classList.remove('text-gray-500', 'border-transparent');
+            }
+
+            const activeWords = getActiveWords();
+            if (activeWords.length === 0 && tabId !== 'accueil' && tabId !== 'stats') {
+                alert("Veuillez sélectionner au moins un mot sur la page d'accueil !");
+                switchTab('accueil');
+                return;
+            }
+
+            // Init tab specific workflows
+            if (tabId === 'flashcards') initFlashcards();
+            if (tabId === 'dictee') initDictee();
+            if (tabId === 'ecriture') initEcriture();
+            if (tabId === 'traduction') initTraduction();
+            if (tabId === 'appariement') initMatchGame();
+            if (tabId === 'stats') renderStatsTab();
+        }
+
+        function renderHome() {
+            const grid = document.getElementById('home-grid');
+            const query = document.getElementById('home-search').value.toLowerCase().trim();
+            grid.innerHTML = '';
+
+            const filtered = VOCAB_DATA.filter(v => v.fr.toLowerCase().includes(query) || v.tr.toLowerCase().includes(query));
+
+            filtered.forEach(item => {
+                const isSelected = appState.selectedIds.includes(item.id);
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-xl p-4 shadow-sm border-2 transition-all flex flex-col justify-between ${isSelected ? 'border-cyan-300' : 'border-gray-100 opacity-60 grayscale'}`;
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="h-28 bg-cyan-50/50 rounded-lg flex items-center justify-center text-5xl mb-3 overflow-hidden p-2">
+                            <span class="transform hover:scale-110 transition">${item.icon}</span>
+                        </div>
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <h3 class="font-extrabold text-lg text-gray-800 leading-snug">${item.fr}</h3>
+                                <p class="text-xs font-semibold text-gray-500 mt-0.5">${item.tr}</p>
+                            </div>
+                            <button onclick="speakWord('${item.fr.replace(/'/g, "\\'")}')" class="text-[#00B4D8] hover:text-[#0077B6] p-1">
+                                <i class="fa-solid fa-volume-high text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between border-t border-gray-100 pt-3 mt-3">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-[#0077B6] bg-cyan-50 px-2 py-0.5 rounded">${item.cat}</span>
+                        <label class="flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-gray-600">
+                            <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelectWord(${item.id})" class="w-4 h-4 rounded text-[#00B4D8] focus:ring-[#00B4D8]">
+                            Réviser
+                        </label>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('active-count').textContent = `${appState.selectedIds.length} / ${VOCAB_DATA.length} mots sélectionnés`;
+        }
+
+        function toggleSelectWord(id) {
+            if (appState.selectedIds.includes(id)) {
+                appState.selectedIds = appState.selectedIds.filter(i => i !== id);
+            } else {
+                appState.selectedIds.push(id);
+            }
+            localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
+            renderHome();
+        }
+
+        function selectAllWords(status) {
+            appState.selectedIds = status ? VOCAB_DATA.map(v => v.id) : [];
+            localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
+            renderHome();
+        }
+
+        function setFlashcardMode(mode) {
+            appState.fcMode = mode;
+            document.getElementById('fc-btn-mode1').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 1 ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            document.getElementById('fc-btn-mode2').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 2 ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            initFlashcards();
+        }
+
+        function initFlashcards() {
+            appState.fcIndex = 0;
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            const active = getActiveWords();
+            if (active.length === 0) return;
+
+            const item = active[appState.fcIndex];
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('rotate-y-180');
+            appState.fcFlipped = false;
+
+            const front = document.getElementById('fc-front');
+            const back = document.getElementById('fc-back');
+
+            if (appState.fcMode === 1) {
+                front.innerHTML = `
+                    <div class="text-7xl mb-4">${item.icon}</div>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Cliquez pour retourner</span>
+                `;
+            } else {
+                front.innerHTML = `
+                    <div class="text-2xl font-bold text-gray-800 mb-2">${item.tr}</div>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Cliquez pour retourner</span>
+                `;
+            }
+
+            back.innerHTML = `
+                <div class="text-3xl font-extrabold text-[#0077B6] mb-2">${item.fr}</div>
+                <p class="text-sm font-medium text-gray-600 mb-4">${item.tr}</p>
+                <button onclick="event.stopPropagation(); speakWord('${item.fr.replace(/'/g, "\\'")}')" class="w-12 h-12 bg-[#00B4D8] text-white rounded-full flex items-center justify-center hover:bg-[#0077B6] transition shadow">
+                    <i class="fa-solid fa-volume-high text-lg"></i>
+                </button>
+            `;
+
+            document.getElementById('fc-counter').textContent = `${appState.fcIndex + 1} / ${active.length}`;
+        }
+
+        function flipFlashcard() {
+            const inner = document.getElementById('flashcard-inner');
+            appState.fcFlipped = !appState.fcFlipped;
+            if (appState.fcFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextFlashcard() {
+            const active = getActiveWords();
+            appState.fcIndex = (appState.fcIndex + 1) % active.length;
+            renderFlashcard();
+        }
+
+        function prevFlashcard() {
+            const active = getActiveWords();
+            appState.fcIndex = (appState.fcIndex - 1 + active.length) % active.length;
+            renderFlashcard();
+        }
+
+        function recordPracticeStat(wordId, mode, success) {
+            if (!appState.stats[wordId]) {
+                appState.stats[wordId] = { ecrit: { ok: 0, err: 0 }, dictee: { ok: 0, err: 0 } };
+            }
+            if (success) {
+                appState.stats[wordId][mode].ok++;
+            } else {
+                appState.stats[wordId][mode].err++;
+            }
+            localStorage.setItem(KEY_STATS, JSON.stringify(appState.stats));
+        }
+
+        function normalizeStr(str) {
+            return str.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+        }
+
+        function initDictee() {
+            const active = getActiveWords();
+            appState.dicteeCurrent = active[Math.floor(Math.random() * active.length)];
+            document.getElementById('dictee-input').value = '';
+            document.getElementById('dictee-feedback').classList.add('hidden');
+            playDicteeAudio();
+        }
+
+        function playDicteeAudio() {
+            if (appState.dicteeCurrent) speakWord(appState.dicteeCurrent.fr);
+        }
+
+        function handleDicteeSubmit(e) {
+            e.preventDefault();
+            const val = document.getElementById('dictee-input').value;
+            const fb = document.getElementById('dictee-feedback');
+            fb.classList.remove('hidden');
+
+            if (normalizeStr(val) === normalizeStr(appState.dicteeCurrent.fr)) {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
+                fb.textContent = "Bravo ! Orthographe exacte.";
+                recordPracticeStat(appState.dicteeCurrent.id, 'dictee', true);
+                setTimeout(initDictee, 1500);
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
+                fb.textContent = `Incorrect ! La réponse exacte était : "${appState.dicteeCurrent.fr}"`;
+                recordPracticeStat(appState.dicteeCurrent.id, 'dictee', false);
+            }
+        }
+
+        function setEcritureMode(mode) {
+            appState.ecritureMode = mode;
+            document.getElementById('ecriture-btn-mode1').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'trad' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            document.getElementById('ecriture-btn-mode2').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'img' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            initEcriture();
+        }
+
+        function initEcriture() {
+            const active = getActiveWords();
+            appState.ecritureCurrent = active[Math.floor(Math.random() * active.length)];
+            document.getElementById('ecriture-input').value = '';
+            document.getElementById('ecriture-feedback').classList.add('hidden');
+
+            const prompt = document.getElementById('ecriture-prompt');
+            if (appState.ecritureMode === 'trad') {
+                prompt.innerHTML = `<h3 class="text-2xl font-bold text-gray-800">${appState.ecritureCurrent.tr}</h3>`;
+            } else {
+                prompt.innerHTML = `<div class="text-7xl">${appState.ecritureCurrent.icon}</div>`;
+            }
+        }
+
+        function handleEcritureSubmit(e) {
+            e.preventDefault();
+            const val = document.getElementById('ecriture-input').value;
+            const fb = document.getElementById('ecriture-feedback');
+            fb.classList.remove('hidden');
+
+            if (normalizeStr(val) === normalizeStr(appState.ecritureCurrent.fr)) {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
+                fb.textContent = "Parfait ! Réponse correcte.";
+                recordPracticeStat(appState.ecritureCurrent.id, 'ecrit', true);
+                setTimeout(initEcriture, 1500);
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
+                fb.textContent = `Incorrect ! La réponse était : "${appState.ecritureCurrent.fr}"`;
+                recordPracticeStat(appState.ecritureCurrent.id, 'ecrit', false);
+            }
+        }
+
+        function initTraduction() {
+            const active = getActiveWords();
+            appState.tradCurrent = active[Math.floor(Math.random() * active.length)];
+            document.getElementById('trad-prompt-word').textContent = appState.tradCurrent.fr;
+            document.getElementById('trad-input').value = '';
+            document.getElementById('trad-feedback').classList.add('hidden');
+        }
+
+        function speakCurrentTradWord() {
+            if (appState.tradCurrent) speakWord(appState.tradCurrent.fr);
+        }
+
+        function handleTraductionSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('trad-input').value.toLowerCase().trim();
+            const fb = document.getElementById('trad-feedback');
+            fb.classList.remove('hidden');
+
+            const allowed = appState.tradCurrent.tr.toLowerCase().split('/').map(s => s.trim());
+            const isCorrect = allowed.some(tr => input.includes(tr) || tr.includes(input)) && input.length > 0;
+
+            if (isCorrect) {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
+                fb.textContent = "Très bien ! Traduction validée.";
+                recordPracticeStat(appState.tradCurrent.id, 'ecrit', true);
+                setTimeout(initTraduction, 1500);
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
+                fb.textContent = `Traduction attendue : "${appState.tradCurrent.tr}"`;
+                recordPracticeStat(appState.tradCurrent.id, 'ecrit', false);
+            }
+        }
+
+        function setMatchMode(mode) {
+            appState.matchMode = mode;
+            document.getElementById('match-btn-mode1').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'img' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            document.getElementById('match-btn-mode2').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'trad' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            initMatchGame();
+        }
+
+        function initMatchGame() {
+            appState.matchPool = [...getActiveWords()].sort(() => Math.random() - 0.5);
+            appState.matchActive = [];
+            appState.matchSelectedCard = null;
+            loadNextMatchSet();
+        }
+
+        function loadNextMatchSet() {
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+
+            while (appState.matchActive.length < 5 && appState.matchPool.length > 0) {
+                appState.matchActive.push(appState.matchPool.pop());
+            }
+
+            if (appState.matchActive.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-gray-100">
+                        <h2 class="text-2xl font-bold text-[#0077B6] mb-2">Bravo ! Tous les mots sont révisés !</h2>
+                        <button onclick="initMatchGame()" class="px-6 py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow hover:bg-[#0077B6] transition">Recommencer</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let cards = [];
+            appState.matchActive.forEach(item => {
+                cards.push({ id: item.id, type: 'fr', content: item.fr });
+                if (appState.matchMode === 'img') {
+                    cards.push({ id: item.id, type: 'target', content: `<div class="text-4xl">${item.icon}</div>` });
+                } else {
+                    cards.push({ id: item.id, type: 'target', content: `<span class="text-sm font-bold">${item.tr}</span>` });
+                }
+            });
+
+            cards.sort(() => Math.random() - 0.5);
+
+            cards.forEach(c => {
+                const card = document.createElement('div');
+                card.className = "match-card bg-white border-2 border-gray-200 rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center font-bold cursor-pointer shadow-sm hover:border-cyan-300";
+                card.dataset.id = c.id;
+                card.dataset.type = c.type;
+                card.innerHTML = c.content;
+                card.onclick = () => handleMatchCardClick(card);
+                grid.appendChild(card);
+            });
+        }
+
+        function handleMatchCardClick(card) {
+            if (card.classList.contains('matched')) return;
+
+            if (!appState.matchSelectedCard) {
+                appState.matchSelectedCard = card;
+                card.classList.add('selected');
+            } else if (appState.matchSelectedCard === card) {
+                card.classList.remove('selected');
+                appState.matchSelectedCard = null;
+            } else {
+                const prev = appState.matchSelectedCard;
+                if (prev.dataset.id === card.dataset.id && prev.dataset.type !== card.dataset.type) {
+                    // Match Success
+                    prev.classList.remove('selected');
+                    prev.classList.add('matched');
+                    card.classList.add('matched');
+                    recordPracticeStat(parseInt(card.dataset.id), 'ecrit', true);
+
+                    appState.matchActive = appState.matchActive.filter(p => p.id !== parseInt(card.dataset.id));
+                    appState.matchSelectedCard = null;
+
+                    setTimeout(loadNextMatchSet, 400);
+                } else {
+                    // Match Failed
+                    prev.classList.remove('selected');
+                    recordPracticeStat(parseInt(card.dataset.id), 'ecrit', false);
+                    appState.matchSelectedCard = null;
+                }
+            }
+        }
+
+        function startEvaluation(e) {
+            e.preventDefault();
+            const pseudo = document.getElementById('eval-pseudo').value.trim();
+            if (!pseudo) return;
+
+            appState.evalPseudo = pseudo;
+            appState.evalScore = 0;
+            appState.evalIndex = 0;
+            appState.evalTimeSeconds = 0;
+
+            const active = [...getActiveWords()].sort(() => Math.random() - 0.5);
+            appState.evalQuestions = active.slice(0, 10);
+
+            document.getElementById('eval-start-card').classList.add('hidden');
+            document.getElementById('eval-quiz-card').classList.remove('hidden');
+
+            appState.evalTimer = setInterval(() => {
+                appState.evalTimeSeconds++;
+                const mins = String(Math.floor(appState.evalTimeSeconds / 60)).padStart(2, '0');
+                const secs = String(appState.evalTimeSeconds % 60).padStart(2, '0');
+                document.getElementById('eval-timer').textContent = `${mins}:${secs}`;
+            }, 1000);
+
+            renderEvalQuestion();
+        }
+
+        function renderEvalQuestion() {
+            const q = appState.evalQuestions[appState.evalIndex];
+            const body = document.getElementById('eval-question-body');
+            const fb = document.getElementById('eval-feedback');
+            const nextBtn = document.getElementById('eval-next-btn');
+
+            fb.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            document.getElementById('eval-[#0077B6]').textContent = `Question ${appState.evalIndex + 1} / 10`;
+
+            const type = appState.evalIndex % 3; // 0: QCM, 1: Dictation, 2: Free Writing
+
+            if (type === 0) {
+                const options = [q, ...VOCAB_DATA.filter(v => v.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
+                body.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-800">Traduisez : <span class="text-[#0077B6]">"${q.fr}"</span></h3>
+                    <div class="grid grid-cols-1 gap-2">
+                        ${options.map(o => `
+                            <button onclick="checkEvalAnswer(${o.id === q.id})" class="p-3 bg-gray-50 hover:bg-cyan-50 border border-gray-200 hover:border-cyan-300 rounded-xl font-semibold text-left transition">
+                                ${o.tr}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (type === 1) {
+                body.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-800">Dictée audio : Écoutez et tapez le mot</h3>
+                    <button onclick="speakWord('${q.fr.replace(/'/g, "\\'")}')" class="w-16 h-16 bg-[#00B4D8] text-white rounded-full flex items-center justify-center mx-auto text-xl shadow">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <input type="text" id="eval-input-text" placeholder="Orthographe en français..." class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    <button onclick="checkEvalTextAnswer('${q.fr}')" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
+                `;
+                speakWord(q.fr);
+            } else {
+                body.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-800">Écrivez en Français : <span class="text-[#0077B6]">"${q.tr}"</span></h3>
+                    <input type="text" id="eval-input-text" placeholder="Votre réponse en français..." class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    <button onclick="checkEvalTextAnswer('${q.fr}')" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
+                `;
+            }
+        }
+
+        function checkEvalAnswer(isCorrect) {
+            const fb = document.getElementById('eval-feedback');
+            fb.classList.remove('hidden');
+
+            if (isCorrect) {
+                appState.evalScore++;
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center animate-success";
+                fb.textContent = "Correct !";
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200 text-center";
+                fb.textContent = "Incorrect !";
+            }
+
+            document.getElementById('eval-next-btn').classList.remove('hidden');
+        }
+
+        function checkEvalTextAnswer(targetFr) {
+            const val = document.getElementById('eval-input-text').value;
+            checkEvalAnswer(normalizeStr(val) === normalizeStr(targetFr));
+        }
+
+        function nextEvalQuestion() {
+            appState.evalIndex++;
+            if (appState.evalIndex < appState.evalQuestions.length) {
+                renderEvalQuestion();
+            } else {
+                finishEvaluation();
+            }
+        }
+
+        function finishEvaluation() {
+            clearInterval(appState.evalTimer);
+            document.getElementById('eval-quiz-card').classList.add('hidden');
+            document.getElementById('eval-start-card').classList.remove('hidden');
+
+            const mins = String(Math.floor(appState.evalTimeSeconds / 60)).padStart(2, '0');
+            const secs = String(appState.evalTimeSeconds % 60).padStart(2, '0');
+            const timeStr = `${mins}:${secs}`;
+            const pct = Math.round((appState.evalScore / 10) * 100);
+
+            appState.leaderboard.push({
+                pseudo: appState.evalPseudo,
+                scorePct: pct,
+                scoreRaw: `${appState.evalScore}/10`,
+                time: timeStr,
+                seconds: appState.evalTimeSeconds
+            });
+
+            appState.leaderboard.sort((a, b) => b.scorePct - a.scorePct || a.seconds - b.seconds);
+            localStorage.setItem(KEY_LEADERBOARD, JSON.stringify(appState.leaderboard));
+
+            alert(`Évaluation terminée !\nScore : ${pct}%\nTemps : ${timeStr}`);
+            renderLeaderboardTable();
+        }
+
+        function renderLeaderboardTable() {
+            const body = document.getElementById('eval-leaderboard-body');
+            body.innerHTML = '';
+
+            appState.leaderboard.slice(0, 10).forEach((entry, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-100 hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-bold ${idx === 0 ? 'text-amber-500' : 'text-gray-500'}">#${idx + 1}</td>
+                    <td class="py-3 px-4 font-semibold text-gray-800">${entry.pseudo}</td>
+                    <td class="py-3 px-4 font-bold text-emerald-600">${entry.scorePct}% (${entry.scoreRaw})</td>
+                    <td class="py-3 px-4 text-gray-500 font-mono text-xs">${entry.time}</td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function renderStatsTab() {
+            let totalAttempts = 0;
+            let totalSuccess = 0;
+            let masteredCount = 0;
+
+            const tableBody = document.getElementById('stats-table-body');
+            tableBody.innerHTML = '';
+
+            VOCAB_DATA.forEach(v => {
+                const st = appState.stats[v.id] || { ecrit: { ok: 0, err: 0 }, dictee: { ok: 0, err: 0 } };
+                const wordAttempts = st.ecrit.ok + st.ecrit.err + st.dictee.ok + st.dictee.err;
+                const wordSuccess = st.ecrit.ok + st.dictee.ok;
+
+                totalAttempts += wordAttempts;
+                totalSuccess += wordSuccess;
+
+                if (wordAttempts >= 3 && (wordSuccess / wordAttempts) >= 0.8) {
+                    masteredCount++;
+                }
+
+                const renderBadge = (obj) => {
+                    const tot = obj.ok + obj.err;
+                    if (tot === 0) return `<span class="text-gray-400">-</span>`;
+                    const pct = Math.round((obj.ok / tot) * 100);
+                    return `<span class="px-2.5 py-1 rounded-full text-xs font-bold ${pct >= 80 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${pct}% (${obj.ok}/${tot})</span>`;
+                };
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-100 hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-bold text-gray-800">${v.fr}</td>
+                    <td class="py-3 px-4 text-gray-600">${v.tr}</td>
+                    <td class="py-3 px-4">${renderBadge(st.ecrit)}</td>
+                    <td class="py-3 px-4">${renderBadge(st.dictee)}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            document.getElementById('stat-[#00B4D8]').textContent = masteredCount;
+            document.getElementById('stat-total-attempts').textContent = totalAttempts;
+            document.getElementById('stat-accuracy').textContent = totalAttempts > 0 ? `${Math.round((totalSuccess / totalAttempts) * 100)}%` : '0%';
+        }
+
+        function autoDeselectMasteredWords() {
+            VOCAB_DATA.forEach(v => {
+                const st = appState.stats[v.id];
+                if (st) {
+                    const tot = st.ecrit.ok + st.ecrit.err + st.dictee.ok + st.dictee.err;
+                    const ok = st.ecrit.ok + st.dictee.ok;
+                    if (tot >= 3 && (ok / tot) >= 0.8) {
+                        appState.selectedIds = appState.selectedIds.filter(id => id !== v.id);
+                    }
+                }
+            });
+            localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
+            alert("Les mots réussis à plus de 80% ont été décochés sur la page d'accueil !");
+            renderHome();
+        }
+
+        function resetPracticeStats() {
+            if (confirm("Réinitialiser toutes les statistiques d'entraînement ?")) {
+                appState.stats = {};
+                localStorage.removeItem(KEY_STATS);
+                renderStatsTab();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHome();
+            renderLeaderboardTable();
+        });
+        <!-- Tout le reste de votre code HTML (cartes, structures, etc.) -->
+
+
+        // -----------------------------------------------------------
+        // 📌 INSÉREZ LA FONCTION DE TÉLÉCHARGEMENT ICI (TOUT EN BAS) :
+        // -----------------------------------------------------------
+        function downloadProgress() {
+            const stats = JSON.parse(localStorage.getItem(KEY_STATS) || "{}");
+            
+            const masteredWords = Object.keys(stats).filter(word => {
+                const item = stats[word];
+                return item === "Acquis" || item.status === "Acquis" || item.score >= 3;
+            });
+
+            const totalAcquired = masteredWords.length;
+            const dateToday = new Date().toLocaleDateString('fr-FR');
+            const studentDisplayName = STUDENT_ID.split('_')[0].toUpperCase();
+
+            const categoriesMap = {};
+
+            masteredWords.forEach(word => {
+                const wordData = (typeof ALL_WORDS !== 'undefined') 
+                    ? ALL_WORDS.find(item => item.word === word || item.mot === word)
+                    : null;
+                
+                const category = (wordData && wordData.category) ? wordData.category : "Vocabulaire Général";
+
+                if (!categoriesMap[category]) {
+                    categoriesMap[category] = [];
+                }
+                categoriesMap[category].push(word);
+            });
+
+            const printWindow = window.open('', '_blank');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Bilan par Catégorie - ${studentDisplayName}</title>
+                    <style>
+                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; color: #1E293B; line-height: 1.4; }
+                        .header { border-bottom: 2px solid #00B4D8; padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+                        h1 { color: #0077B6; margin: 0; font-size: 20px; }
+                        .subtitle { font-size: 13px; color: #64748B; margin-top: 2px; }
+                        
+                        .stats-badge { background: #F0FDF4; border: 1px solid #BBF7D0; padding: 8px 16px; border-radius: 10px; text-align: right; }
+                        .stat-value { font-size: 22px; font-weight: bold; color: #16A34A; }
+                        .stat-label { font-size: 11px; color: #15803D; font-weight: 600; text-transform: uppercase; }
+
+                        .categories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+                        
+                        .category-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; break-inside: avoid; }
+                        .category-title { font-size: 13px; font-weight: bold; color: #0077B6; border-bottom: 1px dashed #CBD5E1; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+                        .category-count { background: #E0F2FE; color: #0369A1; font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+                        
+                        .words-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+                        .word-item { background: #FFFFFF; border: 1px solid #CBD5E1; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 500; color: #334155; }
+                        .word-item::before { content: "✓ "; color: #16A34A; font-weight: bold; }
+
+                        .empty-msg { text-align: center; color: #94A3B8; padding: 30px; font-size: 13px; grid-column: span 2; }
+                        .footer { margin-top: 30px; font-size: 10px; text-align: center; color: #94A3B8; border-top: 1px solid #E2E8F0; padding-top: 8px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <h1>Bilan de Vocabulaire par Thématique</h1>
+                            <div class="subtitle">Élève : <strong>${studentDisplayName}</strong> • Date : ${dateToday}</div>
+                        </div>
+                        <div class="stats-badge">
+                            <div class="stat-value">🏆 ${totalAcquired}</div>
+                            <div class="stat-label">Mots Acquis</div>
+                        </div>
+                    </div>
+
+                    <div class="categories-grid">
+                        ${Object.keys(categoriesMap).length > 0 ? Object.keys(categoriesMap).map(cat => `
+                            <div class="category-card">
+                                <div class="category-title">
+                                    <span>📁 ${cat}</span>
+                                    <span class="category-count">${categoriesMap[cat].length} mot(s)</span>
+                                </div>
+                                <ul class="words-list">
+                                    ${categoriesMap[cat].map(word => `<li class="word-item">${word}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('') : `
+                            <div class="empty-msg">
+                                Aucun mot validé pour le moment. Continuez votre apprentissage !
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="footer">
+                        Cahier de Vocabulaire FLE • Document de suivi pédagogique
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            window.onafterprint = function() { window.close(); };
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+        }
+    </script>
+</body>
+</html>
+    </script>
+</body>
+</html>
