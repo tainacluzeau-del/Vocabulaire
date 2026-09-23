@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Espace Vocabulaire FLE - Vos Espaces Élèves</title>
-    <!-- Tailwind CSS CDN -->
+    <!-- Tailwind CSS CDN pour le design -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -37,11 +37,11 @@
                 </div>
                 <div>
                     <h1 class="text-2xl font-extrabold text-brand-textDark">Apprendre le Français</h1>
-                    <p class="text-sm text-slate-500">Accès aux espaces de travail individuels (Niveau A1)</p>
+                    <p class="text-sm text-slate-500">Accès aux espaces de travail individuels</p>
                 </div>
             </div>
             
-            <!-- Recherche rapide -->
+            <!-- Barre de recherche en temps réel -->
             <div class="w-full md:w-72">
                 <input 
                     type="text" 
@@ -62,47 +62,56 @@
             <p class="text-sm text-slate-600">Cliquez sur votre prénom pour ouvrir votre cahier de vocabulaire et suivre vos progrès.</p>
         </div>
 
-        <!-- Grille des Élèves -->
+        <!-- Grille des Cartes Élèves -->
         <div id="studentsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
             
-            <!-- Exemple Élève 1 -->
-            <a href="eleve-thomas.html" class="student-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-turquoise transition-all group flex items-center gap-4">
+            <!-- Carte 1 : Basmala -->
+            <a href="Basmala/A1.html" class="student-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-turquoise transition-all group flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-cyan-100 text-brand-darkTurquoise font-bold flex items-center justify-center text-lg group-hover:scale-105 transition-transform">
-                    T
+                    B
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-800 student-name group-hover:text-brand-darkTurquoise transition-colors">Thomas D.</h3>
-                    <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded-md mt-1">Espace A1</span>
+                    <h3 class="font-bold text-slate-800 student-name group-hover:text-brand-darkTurquoise transition-colors">Basmala</h3>
+                    <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded-md mt-1">Niveau A1</span>
                 </div>
             </a>
 
-            <!-- Exemple Élève 2 -->
-            <a href="eleve-sarah.html" class="student-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-turquoise transition-all group flex items-center gap-4">
+            <!-- Carte 2 : Mahmoud -->
+            <a href="Mahmoud/A1.html" class="student-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-turquoise transition-all group flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-rose-100 text-brand-coral font-bold flex items-center justify-center text-lg group-hover:scale-105 transition-transform">
-                    S
+                    M
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-800 student-name group-hover:text-brand-darkTurquoise transition-colors">Sarah M.</h3>
-                    <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded-md mt-1">Espace A1</span>
+                    <h3 class="font-bold text-slate-800 student-name group-hover:text-brand-darkTurquoise transition-colors">Mahmoud</h3>
+                    <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded-md mt-1">Niveau A1</span>
                 </div>
             </a>
 
-            <!-- Exemple Élève 3 -->
-            <a href="eleve-lucas.html" class="student-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-turquoise transition-all group flex items-center gap-4">
+            <!-- 
+            ===================================================================
+            📌 COMMENT AJOUTER UN NOUVEL ÉLÈVE :
+            ===================================================================
+            1. Copiez-collez le bloc <a>...</a> ci-dessous juste à la suite.
+            2. Remplacez "NomDuDossier/A1.html" par le bon chemin (ex: Thomas/A1.html).
+            3. Changez l'initiale dans le rond (ex: T).
+            4. Changez le prénom affiché (ex: Thomas).
+            ===================================================================
+            
+            <a href="NOM_DU_DOSSIER/A1.html" class="student-card bg-white p-5 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md hover:border-brand-turquoise transition-all group flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-600 font-bold flex items-center justify-center text-lg group-hover:scale-105 transition-transform">
-                    L
+                    X
                 </div>
                 <div>
-                    <h3 class="font-bold text-slate-800 student-name group-hover:text-brand-darkTurquoise transition-colors">Lucas B.</h3>
-                    <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded-md mt-1">Espace A1</span>
+                    <h3 class="font-bold text-slate-800 student-name group-hover:text-brand-darkTurquoise transition-colors">Prénom</h3>
+                    <span class="inline-block px-2 py-0.5 text-xs bg-slate-100 text-slate-600 rounded-md mt-1">Niveau A1</span>
                 </div>
             </a>
-
-            <!-- Ajouter d'autres cartes élèves ici sur le même modèle -->
+            =================================================================== 
+            -->
 
         </div>
 
-        <!-- Message si aucun élève trouvé lors de la recherche -->
+        <!-- Message d'alerte si la recherche ne trouve aucun élève -->
         <div id="noResult" class="hidden text-center py-12 text-slate-400">
             <p class="text-lg">Aucun élève trouvé avec ce prénom.</p>
         </div>
@@ -111,10 +120,10 @@
 
     <!-- Pied de page -->
     <footer class="bg-white border-t border-slate-200 py-4 text-center text-xs text-slate-400">
-        <p>Cours de Français Langue Étrangère • Exercices & Vocabulaire</p>
+        <p>Espace d'apprentissage du Français Langue Étrangère (FLE)</p>
     </footer>
 
-    <!-- Script pour la recherche rapide -->
+    <!-- Script de filtrage pour la barre de recherche -->
     <script>
         function filterStudents() {
             const input = document.getElementById('searchInput').value.toLowerCase();
