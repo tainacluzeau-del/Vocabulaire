@@ -393,6 +393,1065 @@
                 <button onclick="autoDeselectMasteredWords()" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
                     <i class="fa-solid fa-filter"></i> Décocher automatiquement les mots > 80% de réussite
                 </button>
+                 <!-- 📥 BOUTON DE TÉLÉCHARGEMENT PDF -->
+                  <button onclick="downloadProgress()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-file-export"></i> Télécharger mon Bilan (PDF)
+                </button>
+                <button onclick="resetPracticeStats()" class="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-trash-can"></i> Réinitialiser les statistiques
+                </button>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase text-xs">
+                                <th class="py-3 px-4">Mot (Français)</th>
+                                <th class="py-3 px-4">Traduction</th>
+                                <th class="py-3 px-4">Modalité Écrit</th>
+                                <th class="py-3 px-4">Modalité Dictée</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stats-table-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+      const STUDENT_ID = "aisha_n"; 
+
+const KEY_SELECTED = "vocab_a1_selected_" + STUDENT_ID;
+const KEY_STATS = "vocab_a1_stats_" + STUDENT_ID;
+const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
+      
+        // 192 Vocabulary dataset mapped with SVG/Emoji illustrations
+        const VOCAB_DATA = [
+            { id: 1, fr: "bonjour", tr: "hello / good morning", cat: "Salutations", icon: "👋" },
+            { id: 2, fr: "bonsoir", tr: "good evening", cat: "Salutations", icon: "🌆" },
+            { id: 3, fr: "salut", tr: "hi / bye", cat: "Salutations", icon: "🙋" },
+            { id: 4, fr: "coucou", tr: "hey / hello", cat: "Salutations", icon: "🐣" },
+            { id: 5, fr: "au revoir", tr: "goodbye", cat: "Salutations", icon: "👋" },
+            { id: 6, fr: "bonne journée", tr: "have a nice day", cat: "Salutations", icon: "☀️" },
+            { id: 7, fr: "ciao", tr: "ciao / bye", cat: "Salutations", icon: "🕶️" },
+            { id: 8, fr: "bye", tr: "bye", cat: "Salutations", icon: "✈️" },
+            { id: 9, fr: "s'il vous plaît", tr: "please", cat: "Politesse", icon: "🙏" },
+            { id: 10, fr: "merci", tr: "thank you", cat: "Politesse", icon: "💐" },
+            { id: 11, fr: "excusez-moi", tr: "excuse me", cat: "Politesse", icon: "🤝" },
+            { id: 12, fr: "de rien", tr: "you're welcome", cat: "Politesse", icon: "😊" },
+            { id: 13, fr: "nom", tr: "last name / name", cat: "Identité", icon: "🏷️" },
+            { id: 14, fr: "nom de famille", tr: "surname / last name", cat: "Identité", icon: "📋" },
+            { id: 15, fr: "prénom", tr: "first name", cat: "Identité", icon: "🪪" },
+            { id: 16, fr: "lieu de naissance", tr: "place of birth", cat: "Identité", icon: "📍" },
+            { id: 17, fr: "date de naissance", tr: "date of birth", cat: "Identité", icon: "🎂" },
+            { id: 18, fr: "marié", tr: "married (m)", cat: "Statut", icon: "💍" },
+            { id: 19, fr: "mariée", tr: "married (f)", cat: "Statut", icon: "👰" },
+            { id: 20, fr: "divorcé", tr: "divorced (m)", cat: "Statut", icon: "📑" },
+            { id: 21, fr: "divorcée", tr: "divorced (f)", cat: "Statut", icon: "📄" },
+            { id: 22, fr: "célibataire", tr: "single", cat: "Statut", icon: "🚶" },
+            { id: 23, fr: "exemples", tr: "examples", cat: "Général", icon: "💡" },
+            { id: 24, fr: "cactus", tr: "cactus", cat: "Nature", icon: "🌵" },
+            { id: 25, fr: "citron", tr: "lemon", cat: "Nourriture", icon: "🍋" },
+            { id: 26, fr: "garçon", tr: "boy", cat: "Personnes", icon: "👦" },
+            { id: 27, fr: "girafe", tr: "giraffe", cat: "Animaux", icon: "🦒" },
+            { id: 28, fr: "guitare", tr: "guitar", cat: "Musique", icon: "🎸" },
+            { id: 29, fr: "enfant", tr: "child", cat: "Personnes", icon: "🧒" },
+            { id: 30, fr: "pain", tr: "bread", cat: "Nourriture", icon: "🥖" },
+            { id: 31, fr: "maison", tr: "house", cat: "Objets", icon: "🏠" },
+            { id: 32, fr: "eau", tr: "water", cat: "Boisson", icon: "💧" },
+            { id: 33, fr: "lundi", tr: "Monday", cat: "Jours", icon: "📅" },
+            { id: 34, fr: "mardi", tr: "Tuesday", cat: "Jours", icon: "📅" },
+            { id: 35, fr: "mercredi", tr: "Wednesday", cat: "Jours", icon: "📅" },
+            { id: 36, fr: "jeudi", tr: "Thursday", cat: "Jours", icon: "📅" },
+            { id: 37, fr: "vendredi", tr: "Friday", cat: "Jours", icon: "📅" },
+            { id: 38, fr: "samedi", tr: "Saturday", cat: "Jours", icon: "🎉" },
+            { id: 39, fr: "dimanche", tr: "Sunday", cat: "Jours", icon: "☀️" },
+            { id: 40, fr: "rouge", tr: "red", cat: "Couleurs", icon: "🟥" },
+            { id: 41, fr: "bleu", tr: "blue", cat: "Couleurs", icon: "🟦" },
+            { id: 42, fr: "vert", tr: "green", cat: "Couleurs", icon: "🟩" },
+            { id: 43, fr: "jaune", tr: "yellow", cat: "Couleurs", icon: "🟨" },
+            { id: 44, fr: "noir", tr: "black", cat: "Couleurs", icon: "⬛" },
+            { id: 45, fr: "blanc", tr: "white", cat: "Couleurs", icon: "⬜" },
+            { id: 46, fr: "gris", tr: "grey", cat: "Couleurs", icon: "🔘" },
+            { id: 47, fr: "orange", tr: "orange", cat: "Couleurs", icon: "🟧" },
+            { id: 48, fr: "rose", tr: "pink", cat: "Couleurs", icon: "🟪" },
+            { id: 49, fr: "marron", tr: "brown", cat: "Couleurs", icon: "🟫" },
+            { id: 50, fr: "violet", tr: "purple", cat: "Couleurs", icon: "💜" },
+            { id: 51, fr: "une poignée de main", tr: "a handshake", cat: "Geste", icon: "🤝" },
+            { id: 52, fr: "faire la bise", tr: "to kiss on the cheek", cat: "Geste", icon: "😚" },
+            { id: 53, fr: "égyptien", tr: "Egyptian (m)", cat: "Nationalité", icon: "🇪🇬" },
+            { id: 54, fr: "égyptienne", tr: "Egyptian (f)", cat: "Nationalité", icon: "🇪🇬" },
+            { id: 55, fr: "français", tr: "French (m) / French language", cat: "Nationalité", icon: "🇫🇷" },
+            { id: 56, fr: "française", tr: "French (f)", cat: "Nationalité", icon: "🇫🇷" },
+            { id: 57, fr: "italien", tr: "Italian (m)", cat: "Nationalité", icon: "🇮🇹" },
+            { id: 58, fr: "italienne", tr: "Italian (f)", cat: "Nationalité", icon: "🇮🇹" },
+            { id: 59, fr: "allemand", tr: "German (m)", cat: "Nationalité", icon: "🇩🇪" },
+            { id: 60, fr: "allemande", tr: "German (f)", cat: "Nationalité", icon: "🇩🇪" },
+            { id: 61, fr: "américain", tr: "American (m)", cat: "Nationalité", icon: "🇺🇸" },
+            { id: 62, fr: "américaine", tr: "American (f)", cat: "Nationalité", icon: "🇺🇸" },
+            { id: 63, fr: "tunisien", tr: "Tunisian (m)", cat: "Nationalité", icon: "🇹🇳" },
+            { id: 64, fr: "tunisienne", tr: "Tunisian (f)", cat: "Nationalité", icon: "🇹🇳" },
+            { id: 65, fr: "belge", tr: "Belgian", cat: "Nationalité", icon: "🇧🇪" },
+            { id: 66, fr: "espagnol", tr: "Spanish (m) / Spanish language", cat: "Nationalité", icon: "🇪🇸" },
+            { id: 67, fr: "espagnole", tr: "Spanish (f)", cat: "Nationalité", icon: "🇪🇸" },
+            { id: 68, fr: "anglais", tr: "English (m) / English language", cat: "Nationalité", icon: "🇬🇧" },
+            { id: 69, fr: "anglaise", tr: "English (f)", cat: "Nationalité", icon: "🇬🇧" },
+            { id: 70, fr: "japonais", tr: "Japanese (m)", cat: "Nationalité", icon: "🇯🇵" },
+            { id: 71, fr: "japonaise", tr: "Japanese (f)", cat: "Nationalité", icon: "🇯🇵" },
+            { id: 72, fr: "canadien", tr: "Canadian (m)", cat: "Nationalité", icon: "🇨🇦" },
+            { id: 73, fr: "canadienne", tr: "Canadian (f)", cat: "Nationalité", icon: "🇨🇦" },
+            { id: 74, fr: "marocain", tr: "Moroccan (m)", cat: "Nationalité", icon: "🇲🇦" },
+            { id: 75, fr: "marocaine", tr: "Moroccan (f)", cat: "Nationalité", icon: "🇲🇦" },
+            { id: 76, fr: "brésilien", tr: "Brazilian (m)", cat: "Nationalité", icon: "🇧🇷" },
+            { id: 77, fr: "brésilienne", tr: "Brazilian (f)", cat: "Nationalité", icon: "🇧🇷" },
+            { id: 78, fr: "portugais", tr: "Portuguese (m)", cat: "Nationalité", icon: "🇵🇹" },
+            { id: 79, fr: "portugaise", tr: "Portuguese (f)", cat: "Nationalité", icon: "🇵🇹" },
+            { id: 80, fr: "iranien", tr: "Iranian (m)", cat: "Nationalité", icon: "🇮🇷" },
+            { id: 81, fr: "iranienne", tr: "Iranian (f)", cat: "Nationalité", icon: "🇮🇷" },
+            { id: 82, fr: "chinois", tr: "Chinese (m)", cat: "Nationalité", icon: "🇨🇳" },
+            { id: 83, fr: "chinoise", tr: "Chinese (f)", cat: "Nationalité", icon: "🇨🇳" },
+            { id: 84, fr: "camerounais", tr: "Cameroonian (m)", cat: "Nationalité", icon: "🇨🇲" },
+            { id: 85, fr: "camerounaise", tr: "Cameroonian (f)", cat: "Nationalité", icon: "🇨🇲" },
+            { id: 86, fr: "cantonais", tr: "Cantonese (m)", cat: "Langue", icon: "🗣️" },
+            { id: 87, fr: "cantonaise", tr: "Cantonese (f)", cat: "Langue", icon: "🗣️" },
+            { id: 88, fr: "péruvien", tr: "Peruvian (m)", cat: "Nationalité", icon: "🇵🇪" },
+            { id: 89, fr: "péruvienne", tr: "Peruvian (f)", cat: "Nationalité", icon: "🇵🇪" },
+            { id: 90, fr: "palestinien", tr: "Palestinian (m)", cat: "Nationalité", icon: "🇵🇸" },
+            { id: 91, fr: "palestinienne", tr: "Palestinian (f)", cat: "Nationalité", icon: "🇵🇸" },
+            { id: 92, fr: "soudanais", tr: "Sudanese (m)", cat: "Nationalité", icon: "🇸🇩" },
+            { id: 93, fr: "soudanaise", tr: "Sudanese (f)", cat: "Nationalité", icon: "🇸🇩" },
+            { id: 94, fr: "mère", tr: "mother", cat: "Famille", icon: "👩" },
+            { id: 95, fr: "père", tr: "father", cat: "Famille", icon: "👨" },
+            { id: 96, fr: "sœur", tr: "sister", cat: "Famille", icon: "👧" },
+            { id: 97, fr: "frère", tr: "brother", cat: "Famille", icon: "👦" },
+            { id: 98, fr: "grand-père", tr: "grandfather", cat: "Famille", icon: "👴" },
+            { id: 99, fr: "grand-mère", tr: "grandmother", cat: "Famille", icon: "👵" },
+            { id: 100, fr: "parents", tr: "parents", cat: "Famille", icon: "👨‍👩‍👧" },
+            { id: 101, fr: "enfants", tr: "children", cat: "Famille", icon: "👶" },
+            { id: 102, fr: "fils", tr: "son", cat: "Famille", icon: "👦" },
+            { id: 103, fr: "fille", tr: "daughter / girl", cat: "Famille", icon: "👧" },
+            { id: 104, fr: "tante", tr: "aunt", cat: "Famille", icon: "👩‍🦱" },
+            { id: 105, fr: "oncle", tr: "uncle", cat: "Famille", icon: "👨‍🦰" },
+            { id: 106, fr: "cousin", tr: "male cousin", cat: "Famille", icon: "👦" },
+            { id: 107, fr: "cousine", tr: "female cousin", cat: "Famille", icon: "👧" },
+            { id: 108, fr: "neveu", tr: "nephew", cat: "Famille", icon: "👦" },
+            { id: 109, fr: "nièce", tr: "niece", cat: "Famille", icon: "👧" },
+            { id: 110, fr: "petit-fils", tr: "grandson", cat: "Famille", icon: "👦" },
+            { id: 111, fr: "mari", tr: "husband", cat: "Famille", icon: "🤵" },
+            { id: 112, fr: "médecin", tr: "doctor", cat: "Métiers", icon: "🩺" },
+            { id: 113, fr: "professeur", tr: "teacher / professor (m)", cat: "Métiers", icon: "👨‍🏫" },
+            { id: 114, fr: "professeure", tr: "teacher / professor (f)", cat: "Métiers", icon: "👩‍🏫" },
+            { id: 115, fr: "infirmier", tr: "male nurse", cat: "Métiers", icon: "👨‍⚕️" },
+            { id: 116, fr: "infirmière", tr: "female nurse", cat: "Métiers", icon: "👩‍⚕️" },
+            { id: 117, fr: "avocat", tr: "male lawyer", cat: "Métiers", icon: "⚖️" },
+            { id: 118, fr: "avocate", tr: "female lawyer", cat: "Métiers", icon: "⚖️" },
+            { id: 119, fr: "étudiant", tr: "male student", cat: "Métiers", icon: "👨‍🎓" },
+            { id: 120, fr: "étudiante", tr: "female student", cat: "Métiers", icon: "👩‍🎓" },
+            { id: 121, fr: "journaliste", tr: "journalist", cat: "Métiers", icon: "🎙️" },
+            { id: 122, fr: "architecte", tr: "architect", cat: "Métiers", icon: "📐" },
+            { id: 123, fr: "boulanger", tr: "baker (m)", cat: "Métiers", icon: "🥖" },
+            { id: 124, fr: "boulangère", tr: "baker (f)", cat: "Métiers", icon: "🥖" },
+            { id: 125, fr: "designer", tr: "designer", cat: "Métiers", icon: "🎨" },
+            { id: 126, fr: "secrétaire", tr: "secretary", cat: "Métiers", icon: "💻" },
+            { id: 127, fr: "ingénieur", tr: "engineer", cat: "Métiers", icon: "⚙️" },
+            { id: 128, fr: "écolière", tr: "schoolgirl", cat: "Métiers", icon: "🎒" },
+            { id: 129, fr: "acteur", tr: "actor", cat: "Métiers", icon: "🎭" },
+            { id: 130, fr: "actrice", tr: "actress", cat: "Métiers", icon: "🎬" },
+            { id: 131, fr: "cuisinier", tr: "male cook / chef", cat: "Métiers", icon: "👨‍🍳" },
+            { id: 132, fr: "cuisinière", tr: "female cook / chef", cat: "Métiers", icon: "👩‍🍳" },
+            { id: 133, fr: "arabe", tr: "Arabic", cat: "Langue", icon: "🗣️" },
+            { id: 134, fr: "chat", tr: "cat", cat: "Animaux", icon: "🐱" },
+            { id: 135, fr: "chien", tr: "dog", cat: "Animaux", icon: "🐶" },
+            { id: 136, fr: "sac", tr: "bag", cat: "Objets", icon: "🎒" },
+            { id: 137, fr: "livre", tr: "book", cat: "Objets", icon: "📖" },
+            { id: 138, fr: "stylo", tr: "pen", cat: "Objets", icon: "🖊️" },
+            { id: 139, fr: "tasse", tr: "cup", cat: "Objets", icon: "☕" },
+            { id: 140, fr: "voiture", tr: "car", cat: "Objets", icon: "🚗" },
+            { id: 141, fr: "téléphone", tr: "phone", cat: "Objets", icon: "📱" },
+            { id: 142, fr: "gentil", tr: "kind (m)", cat: "Adjectifs", icon: "😊" },
+            { id: 143, fr: "gentille", tr: "kind (f)", cat: "Adjectifs", icon: "😇" },
+            { id: 144, fr: "drôle", tr: "funny", cat: "Adjectifs", icon: "😂" },
+            { id: 145, fr: "intelligent", tr: "intelligent (m)", cat: "Adjectifs", icon: "🧠" },
+            { id: 146, fr: "intelligente", tr: "intelligent (f)", cat: "Adjectifs", icon: "💡" },
+            { id: 147, fr: "poli", tr: "polite (m)", cat: "Adjectifs", icon: "🎩" },
+            { id: 148, fr: "polie", tr: "polite (f)", cat: "Adjectifs", icon: "🎀" },
+            { id: 149, fr: "bavard", tr: "talkative (m)", cat: "Adjectifs", icon: "💬" },
+            { id: 150, fr: "bavarde", tr: "talkative (f)", cat: "Adjectifs", icon: "🗣️" },
+            { id: 151, fr: "silencieux", tr: "silent (m)", cat: "Adjectifs", icon: "🤫" },
+            { id: 152, fr: "silencieuse", tr: "silent (f)", cat: "Adjectifs", icon: "🔕" },
+            { id: 153, fr: "grand", tr: "tall / big (m)", cat: "Adjectifs", icon: "📏" },
+            { id: 154, fr: "grande", tr: "tall / big (f)", cat: "Adjectifs", icon: "📈" },
+            { id: 155, fr: "petit", tr: "small / short (m)", cat: "Adjectifs", icon: "🔍" },
+            { id: 156, fr: "petite", tr: "small / short (f)", cat: "Adjectifs", icon: "🐥" },
+            { id: 157, fr: "jeune", tr: "young", cat: "Adjectifs", icon: "🌱" },
+            { id: 158, fr: "vieux", tr: "old (m)", cat: "Adjectifs", icon: "👴" },
+            { id: 159, fr: "vieille", tr: "old (f)", cat: "Adjectifs", icon: "👵" },
+            { id: 160, fr: "beau", tr: "handsome / beautiful (m)", cat: "Adjectifs", icon: "✨" },
+            { id: 161, fr: "belle", tr: "beautiful (f)", cat: "Adjectifs", icon: "🌸" },
+            { id: 162, fr: "nouveau", tr: "new (m)", cat: "Adjectifs", icon: "🆕" },
+            { id: 163, fr: "nouvelle", tr: "new (f)", cat: "Adjectifs", icon: "✨" },
+            { id: 164, fr: "heureux", tr: "happy (m)", cat: "Adjectifs", icon: "😄" },
+            { id: 165, fr: "heureuse", tr: "happy (f)", cat: "Adjectifs", icon: "🥰" },
+            { id: 166, fr: "triste", tr: "sad", cat: "Adjectifs", icon: "😢" },
+            { id: 167, fr: "fatigué", tr: "tired (m)", cat: "Adjectifs", icon: "🥱" },
+            { id: 168, fr: "fatiguée", tr: "tired (f)", cat: "Adjectifs", icon: "😴" },
+            { id: 169, fr: "bon", tr: "good (m)", cat: "Adjectifs", icon: "👍" },
+            { id: 170, fr: "bonne", tr: "good (f)", cat: "Adjectifs", icon: "⭐" },
+            { id: 171, fr: "mauvais", tr: "bad (m)", cat: "Adjectifs", icon: "👎" },
+            { id: 172, fr: "mauvaise", tr: "bad (f)", cat: "Adjectifs", icon: "❌" },
+            { id: 173, fr: "préféré", tr: "favorite (m)", cat: "Adjectifs", icon: "❤️" },
+            { id: 174, fr: "préférée", tr: "favorite (f)", cat: "Adjectifs", icon: "💖" },
+            { id: 175, fr: "Le Caire", tr: "Cairo", cat: "Villes", icon: "🕌" },
+            { id: 176, fr: "Rome", tr: "Rome", cat: "Villes", icon: "🏛️" },
+            { id: 177, fr: "Paris", tr: "Paris", cat: "Villes", icon: "🗼" },
+            { id: 178, fr: "Bruxelles", tr: "Brussels", cat: "Villes", icon: "🇧🇪" },
+            { id: 179, fr: "Madrid", tr: "Madrid", cat: "Villes", icon: "🇪🇸" },
+            { id: 180, fr: "Stockholm", tr: "Stockholm", cat: "Villes", icon: "🇸🇪" },
+            { id: 181, fr: "France", tr: "France", cat: "Pays", icon: "🇫🇷" },
+            { id: 182, fr: "Maroc", tr: "Morocco", cat: "Pays", icon: "🇲🇦" },
+            { id: 183, fr: "Canada", tr: "Canada", cat: "Pays", icon: "🇨🇦" },
+            { id: 184, fr: "Italie", tr: "Italy", cat: "Pays", icon: "🇮🇹" },
+            { id: 185, fr: "Égypte", tr: "Egypt", cat: "Pays", icon: "🇪🇬" },
+            { id: 186, fr: "Suède", tr: "Sweden", cat: "Pays", icon: "🇸🇪" },
+            { id: 187, fr: "loisirs", tr: "hobbies / leisure activities", cat: "Loisirs", icon: "🎨" },
+            { id: 188, fr: "vacances", tr: "vacation / holidays", cat: "Loisirs", icon: "🏖️" },
+            { id: 189, fr: "sympathique", tr: "nice / friendly", cat: "Adjectifs", icon: "🤝" },
+            { id: 190, fr: "en retard", tr: "late", cat: "Expression", icon: "⏰" },
+            { id: 191, fr: "content", tr: "glad / happy", cat: "Adjectifs", icon: "😊" },
+            { id: 192, fr: "multilingue", tr: "multilingual", cat: "Adjectifs", icon: "🌍" }
+        ];
+
+        let appState = {
+            selectedIds: JSON.parse(localStorage.getItem(KEY_SELECTED)) || VOCAB_DATA.map(v => v.id),
+            stats: JSON.parse(localStorage.getItem(KEY_STATS)) || {},
+            leaderboard: JSON.parse(localStorage.getItem(KEY_LEADERBOARD)) || [],
+            // Practice state
+            fcIndex: 0,
+            fcMode: 1, // 1: Img -> FR, 2: Trad -> FR
+            fcFlipped: false,
+            dicteeCurrent: null,
+            ecritureCurrent: null,
+            ecritureMode: 'trad',
+            tradCurrent: null,
+            matchMode: 'img',
+            matchPool: [],
+            matchActive: [],
+            matchSelectedCard: null,
+            // Eval State
+            evalPseudo: '',
+            evalQuestions: [],
+            evalIndex: 0,
+            evalScore: 0,
+            evalTimeSeconds: 0,
+            evalTimer: null
+        };
+
+        // Standard Nextcloud URL cleaner
+        function cleanNextcloudUrl(url) {
+            if (!url) return '';
+            let cleaned = url.trim();
+            if (cleaned.includes('nuage.apps.education.fr') && !cleaned.endsWith('/download')) {
+                cleaned += '/download';
+            }
+            return cleaned;
+        }
+
+        // Speech Synthesis Audio Pronunciation
+        function speakWord(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.9;
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function getActiveWords() {
+            return VOCAB_DATA.filter(v => appState.selectedIds.includes(v.id));
+        }
+
+        // Navigation
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-page').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active', 'text-[#0077B6]', 'border-[#0077B6]');
+                btn.classList.add('text-gray-500', 'border-transparent');
+            });
+
+            const targetPage = document.getElementById(`tab-${tabId}`);
+            const targetNav = document.getElementById(`nav-${tabId}`);
+            
+            if (targetPage && targetNav) {
+                targetPage.classList.remove('hidden');
+                targetNav.classList.add('active', 'text-[#0077B6]', 'border-[#0077B6]');
+                targetNav.classList.remove('text-gray-500', 'border-transparent');
+            }
+
+            const activeWords = getActiveWords();
+            if (activeWords.length === 0 && tabId !== 'accueil' && tabId !== 'stats') {
+                alert("Veuillez sélectionner au moins un mot sur la page d'accueil !");
+                switchTab('accueil');
+                return;
+            }
+
+            // Init tab specific workflows
+            if (tabId === 'flashcards') initFlashcards();
+            if (tabId === 'dictee') initDictee();
+            if (tabId === 'ecriture') initEcriture();
+            if (tabId === 'traduction') initTraduction();
+            if (tabId === 'appariement') initMatchGame();
+            if (tabId === 'stats') renderStatsTab();
+        }
+
+        function renderHome() {
+            const grid = document.getElementById('home-grid');
+            const query = document.getElementById('home-search').value.toLowerCase().trim();
+            grid.innerHTML = '';
+
+            const filtered = VOCAB_DATA.filter(v => v.fr.toLowerCase().includes(query) || v.tr.toLowerCase().includes(query));
+
+            filtered.forEach(item => {
+                const isSelected = appState.selectedIds.includes(item.id);
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-xl p-4 shadow-sm border-2 transition-all flex flex-col justify-between ${isSelected ? 'border-cyan-300' : 'border-gray-100 opacity-60 grayscale'}`;
+                
+                card.innerHTML = `
+                    <div>
+                        <div class="h-28 bg-cyan-50/50 rounded-lg flex items-center justify-center text-5xl mb-3 overflow-hidden p-2">
+                            <span class="transform hover:scale-110 transition">${item.icon}</span>
+                        </div>
+                        <div class="flex items-start justify-between gap-2">
+                            <div>
+                                <h3 class="font-extrabold text-lg text-gray-800 leading-snug">${item.fr}</h3>
+                                <p class="text-xs font-semibold text-gray-500 mt-0.5">${item.tr}</p>
+                            </div>
+                            <button onclick="speakWord('${item.fr.replace(/'/g, "\\'")}')" class="text-[#00B4D8] hover:text-[#0077B6] p-1">
+                                <i class="fa-solid fa-volume-high text-base"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between border-t border-gray-100 pt-3 mt-3">
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-[#0077B6] bg-cyan-50 px-2 py-0.5 rounded">${item.cat}</span>
+                        <label class="flex items-center gap-1.5 cursor-pointer text-xs font-semibold text-gray-600">
+                            <input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelectWord(${item.id})" class="w-4 h-4 rounded text-[#00B4D8] focus:ring-[#00B4D8]">
+                            Réviser
+                        </label>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            document.getElementById('active-count').textContent = `${appState.selectedIds.length} / ${VOCAB_DATA.length} mots sélectionnés`;
+        }
+
+        function toggleSelectWord(id) {
+            if (appState.selectedIds.includes(id)) {
+                appState.selectedIds = appState.selectedIds.filter(i => i !== id);
+            } else {
+                appState.selectedIds.push(id);
+            }
+            localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
+            renderHome();
+        }
+
+        function selectAllWords(status) {
+            appState.selectedIds = status ? VOCAB_DATA.map(v => v.id) : [];
+            localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
+            renderHome();
+        }
+
+        function setFlashcardMode(mode) {
+            appState.fcMode = mode;
+            document.getElementById('fc-btn-mode1').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 1 ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            document.getElementById('fc-btn-mode2').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 2 ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            initFlashcards();
+        }
+
+        function initFlashcards() {
+            appState.fcIndex = 0;
+            renderFlashcard();
+        }
+
+        function renderFlashcard() {
+            const active = getActiveWords();
+            if (active.length === 0) return;
+
+            const item = active[appState.fcIndex];
+            const inner = document.getElementById('flashcard-inner');
+            inner.classList.remove('rotate-y-180');
+            appState.fcFlipped = false;
+
+            const front = document.getElementById('fc-front');
+            const back = document.getElementById('fc-back');
+
+            if (appState.fcMode === 1) {
+                front.innerHTML = `
+                    <div class="text-7xl mb-4">${item.icon}</div>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Cliquez pour retourner</span>
+                `;
+            } else {
+                front.innerHTML = `
+                    <div class="text-2xl font-bold text-gray-800 mb-2">${item.tr}</div>
+                    <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Cliquez pour retourner</span>
+                `;
+            }
+
+            back.innerHTML = `
+                <div class="text-3xl font-extrabold text-[#0077B6] mb-2">${item.fr}</div>
+                <p class="text-sm font-medium text-gray-600 mb-4">${item.tr}</p>
+                <button onclick="event.stopPropagation(); speakWord('${item.fr.replace(/'/g, "\\'")}')" class="w-12 h-12 bg-[#00B4D8] text-white rounded-full flex items-center justify-center hover:bg-[#0077B6] transition shadow">
+                    <i class="fa-solid fa-volume-high text-lg"></i>
+                </button>
+            `;
+
+            document.getElementById('fc-counter').textContent = `${appState.fcIndex + 1} / ${active.length}`;
+        }
+
+        function flipFlashcard() {
+            const inner = document.getElementById('flashcard-inner');
+            appState.fcFlipped = !appState.fcFlipped;
+            if (appState.fcFlipped) {
+                inner.classList.add('rotate-y-180');
+            } else {
+                inner.classList.remove('rotate-y-180');
+            }
+        }
+
+        function nextFlashcard() {
+            const active = getActiveWords();
+            appState.fcIndex = (appState.fcIndex + 1) % active.length;
+            renderFlashcard();
+        }
+
+        function prevFlashcard() {
+            const active = getActiveWords();
+            appState.fcIndex = (appState.fcIndex - 1 + active.length) % active.length;
+            renderFlashcard();
+        }
+
+        function recordPracticeStat(wordId, mode, success) {
+            if (!appState.stats[wordId]) {
+                appState.stats[wordId] = { ecrit: { ok: 0, err: 0 }, dictee: { ok: 0, err: 0 } };
+            }
+            if (success) {
+                appState.stats[wordId][mode].ok++;
+            } else {
+                appState.stats[wordId][mode].err++;
+            }
+            localStorage.setItem(KEY_STATS, JSON.stringify(appState.stats));
+        }
+
+        function normalizeStr(str) {
+            return str.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+        }
+
+        function initDictee() {
+            const active = getActiveWords();
+            appState.dicteeCurrent = active[Math.floor(Math.random() * active.length)];
+            document.getElementById('dictee-input').value = '';
+            document.getElementById('dictee-feedback').classList.add('hidden');
+            playDicteeAudio();
+        }
+
+        function playDicteeAudio() {
+            if (appState.dicteeCurrent) speakWord(appState.dicteeCurrent.fr);
+        }
+
+        function handleDicteeSubmit(e) {
+            e.preventDefault();
+            const val = document.getElementById('dictee-input').value;
+            const fb = document.getElementById('dictee-feedback');
+            fb.classList.remove('hidden');
+
+            if (normalizeStr(val) === normalizeStr(appState.dicteeCurrent.fr)) {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
+                fb.textContent = "Bravo ! Orthographe exacte.";
+                recordPracticeStat(appState.dicteeCurrent.id, 'dictee', true);
+                setTimeout(initDictee, 1500);
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
+                fb.textContent = `Incorrect ! La réponse exacte était : "${appState.dicteeCurrent.fr}"`;
+                recordPracticeStat(appState.dicteeCurrent.id, 'dictee', false);
+            }
+        }
+
+        function setEcritureMode(mode) {
+            appState.ecritureMode = mode;
+            document.getElementById('ecriture-btn-mode1').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'trad' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            document.getElementById('ecriture-btn-mode2').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'img' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            initEcriture();
+        }
+
+        function initEcriture() {
+            const active = getActiveWords();
+            appState.ecritureCurrent = active[Math.floor(Math.random() * active.length)];
+            document.getElementById('ecriture-input').value = '';
+            document.getElementById('ecriture-feedback').classList.add('hidden');
+
+            const prompt = document.getElementById('ecriture-prompt');
+            if (appState.ecritureMode === 'trad') {
+                prompt.innerHTML = `<h3 class="text-2xl font-bold text-gray-800">${appState.ecritureCurrent.tr}</h3>`;
+            } else {
+                prompt.innerHTML = `<div class="text-7xl">${appState.ecritureCurrent.icon}</div>`;
+            }
+        }
+
+        function handleEcritureSubmit(e) {
+            e.preventDefault();
+            const val = document.getElementById('ecriture-input').value;
+            const fb = document.getElementById('ecriture-feedback');
+            fb.classList.remove('hidden');
+
+            if (normalizeStr(val) === normalizeStr(appState.ecritureCurrent.fr)) {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
+                fb.textContent = "Parfait ! Réponse correcte.";
+                recordPracticeStat(appState.ecritureCurrent.id, 'ecrit', true);
+                setTimeout(initEcriture, 1500);
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
+                fb.textContent = `Incorrect ! La réponse était : "${appState.ecritureCurrent.fr}"`;
+                recordPracticeStat(appState.ecritureCurrent.id, 'ecrit', false);
+            }
+        }
+
+        function initTraduction() {
+            const active = getActiveWords();
+            appState.tradCurrent = active[Math.floor(Math.random() * active.length)];
+            document.getElementById('trad-prompt-word').textContent = appState.tradCurrent.fr;
+            document.getElementById('trad-input').value = '';
+            document.getElementById('trad-feedback').classList.add('hidden');
+        }
+
+        function speakCurrentTradWord() {
+            if (appState.tradCurrent) speakWord(appState.tradCurrent.fr);
+        }
+
+        function handleTraductionSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById('trad-input').value.toLowerCase().trim();
+            const fb = document.getElementById('trad-feedback');
+            fb.classList.remove('hidden');
+
+            const allowed = appState.tradCurrent.tr.toLowerCase().split('/').map(s => s.trim());
+            const isCorrect = allowed.some(tr => input.includes(tr) || tr.includes(input)) && input.length > 0;
+
+            if (isCorrect) {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
+                fb.textContent = "Très bien ! Traduction validée.";
+                recordPracticeStat(appState.tradCurrent.id, 'ecrit', true);
+                setTimeout(initTraduction, 1500);
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
+                fb.textContent = `Traduction attendue : "${appState.tradCurrent.tr}"`;
+                recordPracticeStat(appState.tradCurrent.id, 'ecrit', false);
+            }
+        }
+
+        function setMatchMode(mode) {
+            appState.matchMode = mode;
+            document.getElementById('match-btn-mode1').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'img' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            document.getElementById('match-btn-mode2').className = `px-4 py-2 rounded-lg text-sm font-bold transition ${mode === 'trad' ? 'bg-[#00B4D8] text-white shadow' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+            initMatchGame();
+        }
+
+        function initMatchGame() {
+            appState.matchPool = [...getActiveWords()].sort(() => Math.random() - 0.5);
+            appState.matchActive = [];
+            appState.matchSelectedCard = null;
+            loadNextMatchSet();
+        }
+
+        function loadNextMatchSet() {
+            const grid = document.getElementById('match-grid');
+            grid.innerHTML = '';
+
+            while (appState.matchActive.length < 5 && appState.matchPool.length > 0) {
+                appState.matchActive.push(appState.matchPool.pop());
+            }
+
+            if (appState.matchActive.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-gray-100">
+                        <h2 class="text-2xl font-bold text-[#0077B6] mb-2">Bravo ! Tous les mots sont révisés !</h2>
+                        <button onclick="initMatchGame()" class="px-6 py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow hover:bg-[#0077B6] transition">Recommencer</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let cards = [];
+            appState.matchActive.forEach(item => {
+                cards.push({ id: item.id, type: 'fr', content: item.fr });
+                if (appState.matchMode === 'img') {
+                    cards.push({ id: item.id, type: 'target', content: `<div class="text-4xl">${item.icon}</div>` });
+                } else {
+                    cards.push({ id: item.id, type: 'target', content: `<span class="text-sm font-bold">${item.tr}</span>` });
+                }
+            });
+
+            cards.sort(() => Math.random() - 0.5);
+
+            cards.forEach(c => {
+                const card = document.createElement('div');
+                card.className = "match-card bg-white border-2 border-gray-200 rounded-xl p-4 min-h-[100px] flex items-center justify-center text-center font-bold cursor-pointer shadow-sm hover:border-cyan-300";
+                card.dataset.id = c.id;
+                card.dataset.type = c.type;
+                card.innerHTML = c.content;
+                card.onclick = () => handleMatchCardClick(card);
+                grid.appendChild(card);
+            });
+        }
+
+        function handleMatchCardClick(card) {
+            if (card.classList.contains('matched')) return;
+
+            if (!appState.matchSelectedCard) {
+                appState.matchSelectedCard = card;
+                card.classList.add('selected');
+            } else if (appState.matchSelectedCard === card) {
+                card.classList.remove('selected');
+                appState.matchSelectedCard = null;
+            } else {
+                const prev = appState.matchSelectedCard;
+                if (prev.dataset.id === card.dataset.id && prev.dataset.type !== card.dataset.type) {
+                    // Match Success
+                    prev.classList.remove('selected');
+                    prev.classList.add('matched');
+                    card.classList.add('matched');
+                    recordPracticeStat(parseInt(card.dataset.id), 'ecrit', true);
+
+                    appState.matchActive = appState.matchActive.filter(p => p.id !== parseInt(card.dataset.id));
+                    appState.matchSelectedCard = null;
+
+                    setTimeout(loadNextMatchSet, 400);
+                } else {
+                    // Match Failed
+                    prev.classList.remove('selected');
+                    recordPracticeStat(parseInt(card.dataset.id), 'ecrit', false);
+                    appState.matchSelectedCard = null;
+                }
+            }
+        }
+
+        function startEvaluation(e) {
+            e.preventDefault();
+            const pseudo = document.getElementById('eval-pseudo').value.trim();
+            if (!pseudo) return;
+
+            appState.evalPseudo = pseudo;
+            appState.evalScore = 0;
+            appState.evalIndex = 0;
+            appState.evalTimeSeconds = 0;
+
+            const active = [...getActiveWords()].sort(() => Math.random() - 0.5);
+            appState.evalQuestions = active.slice(0, 10);
+
+            document.getElementById('eval-start-card').classList.add('hidden');
+            document.getElementById('eval-quiz-card').classList.remove('hidden');
+
+            appState.evalTimer = setInterval(() => {
+                appState.evalTimeSeconds++;
+                const mins = String(Math.floor(appState.evalTimeSeconds / 60)).padStart(2, '0');
+                const secs = String(appState.evalTimeSeconds % 60).padStart(2, '0');
+                document.getElementById('eval-timer').textContent = `${mins}:${secs}`;
+            }, 1000);
+
+            renderEvalQuestion();
+        }
+
+        function renderEvalQuestion() {
+            const q = appState.evalQuestions[appState.evalIndex];
+            const body = document.getElementById('eval-question-body');
+            const fb = document.getElementById('eval-feedback');
+            const nextBtn = document.getElementById('eval-next-btn');
+
+            fb.classList.add('hidden');
+            nextBtn.classList.add('hidden');
+            document.getElementById('eval-[#0077B6]').textContent = `Question ${appState.evalIndex + 1} / 10`;
+
+            const type = appState.evalIndex % 3; // 0: QCM, 1: Dictation, 2: Free Writing
+
+            if (type === 0) {
+                const options = [q, ...VOCAB_DATA.filter(v => v.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
+                body.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-800">Traduisez : <span class="text-[#0077B6]">"${q.fr}"</span></h3>
+                    <div class="grid grid-cols-1 gap-2">
+                        ${options.map(o => `
+                            <button onclick="checkEvalAnswer(${o.id === q.id})" class="p-3 bg-gray-50 hover:bg-cyan-50 border border-gray-200 hover:border-cyan-300 rounded-xl font-semibold text-left transition">
+                                ${o.tr}
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (type === 1) {
+                body.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-800">Dictée audio : Écoutez et tapez le mot</h3>
+                    <button onclick="speakWord('${q.fr.replace(/'/g, "\\'")}')" class="w-16 h-16 bg-[#00B4D8] text-white rounded-full flex items-center justify-center mx-auto text-xl shadow">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                    <input type="text" id="eval-input-text" placeholder="Orthographe en français..." class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    <button onclick="checkEvalTextAnswer('${q.fr}')" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
+                `;
+                speakWord(q.fr);
+            } else {
+                body.innerHTML = `
+                    <h3 class="text-lg font-bold text-gray-800">Écrivez en Français : <span class="text-[#0077B6]">"${q.tr}"</span></h3>
+                    <input type="text" id="eval-input-text" placeholder="Votre réponse en français..." class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    <button onclick="checkEvalTextAnswer('${q.fr}')" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
+                `;
+            }
+        }
+
+        function checkEvalAnswer(isCorrect) {
+            const fb = document.getElementById('eval-feedback');
+            fb.classList.remove('hidden');
+
+            if (isCorrect) {
+                appState.evalScore++;
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center animate-success";
+                fb.textContent = "Correct !";
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200 text-center";
+                fb.textContent = "Incorrect !";
+            }
+
+            document.getElementById('eval-next-btn').classList.remove('hidden');
+        }
+
+        function checkEvalTextAnswer(targetFr) {
+            const val = document.getElementById('eval-input-text').value;
+            checkEvalAnswer(normalizeStr(val) === normalizeStr(targetFr));
+        }
+
+        function nextEvalQuestion() {
+            appState.evalIndex++;
+            if (appState.evalIndex < appState.evalQuestions.length) {
+                renderEvalQuestion();
+            } else {
+                finishEvaluation();
+            }
+        }
+
+        function finishEvaluation() {
+            clearInterval(appState.evalTimer);
+            document.getElementById('eval-quiz-card').classList.add('hidden');
+            document.getElementById('eval-start-card').classList.remove('hidden');
+
+            const mins = String(Math.floor(appState.evalTimeSeconds / 60)).padStart(2, '0');
+            const secs = String(appState.evalTimeSeconds % 60).padStart(2, '0');
+            const timeStr = `${mins}:${secs}`;
+            const pct = Math.round((appState.evalScore / 10) * 100);
+
+            appState.leaderboard.push({
+                pseudo: appState.evalPseudo,
+                scorePct: pct,
+                scoreRaw: `${appState.evalScore}/10`,
+                time: timeStr,
+                seconds: appState.evalTimeSeconds
+            });
+
+            appState.leaderboard.sort((a, b) => b.scorePct - a.scorePct || a.seconds - b.seconds);
+            localStorage.setItem(KEY_LEADERBOARD, JSON.stringify(appState.leaderboard));
+
+            alert(`Évaluation terminée !\nScore : ${pct}%\nTemps : ${timeStr}`);
+            renderLeaderboardTable();
+        }
+
+        function renderLeaderboardTable() {
+            const body = document.getElementById('eval-leaderboard-body');
+            body.innerHTML = '';
+
+            appState.leaderboard.slice(0, 10).forEach((entry, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-100 hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-bold ${idx === 0 ? 'text-amber-500' : 'text-gray-500'}">#${idx + 1}</td>
+                    <td class="py-3 px-4 font-semibold text-gray-800">${entry.pseudo}</td>
+                    <td class="py-3 px-4 font-bold text-emerald-600">${entry.scorePct}% (${entry.scoreRaw})</td>
+                    <td class="py-3 px-4 text-gray-500 font-mono text-xs">${entry.time}</td>
+                `;
+                body.appendChild(tr);
+            });
+        }
+
+        function renderStatsTab() {
+            let totalAttempts = 0;
+            let totalSuccess = 0;
+            let masteredCount = 0;
+
+            const tableBody = document.getElementById('stats-table-body');
+            tableBody.innerHTML = '';
+
+            VOCAB_DATA.forEach(v => {
+                const st = appState.stats[v.id] || { ecrit: { ok: 0, err: 0 }, dictee: { ok: 0, err: 0 } };
+                const wordAttempts = st.ecrit.ok + st.ecrit.err + st.dictee.ok + st.dictee.err;
+                const wordSuccess = st.ecrit.ok + st.dictee.ok;
+
+                totalAttempts += wordAttempts;
+                totalSuccess += wordSuccess;
+
+                if (wordAttempts >= 3 && (wordSuccess / wordAttempts) >= 0.8) {
+                    masteredCount++;
+                }
+
+                const renderBadge = (obj) => {
+                    const tot = obj.ok + obj.err;
+                    if (tot === 0) return `<span class="text-gray-400">-</span>`;
+                    const pct = Math.round((obj.ok / tot) * 100);
+                    return `<span class="px-2.5 py-1 rounded-full text-xs font-bold ${pct >= 80 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${pct}% (${obj.ok}/${tot})</span>`;
+                };
+
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-gray-100 hover:bg-gray-50";
+                tr.innerHTML = `
+                    <td class="py-3 px-4 font-bold text-gray-800">${v.fr}</td>
+                    <td class="py-3 px-4 text-gray-600">${v.tr}</td>
+                    <td class="py-3 px-4">${renderBadge(st.ecrit)}</td>
+                    <td class="py-3 px-4">${renderBadge(st.dictee)}</td>
+                `;
+                tableBody.appendChild(tr);
+            });
+
+            document.getElementById('stat-[#00B4D8]').textContent = masteredCount;
+            document.getElementById('stat-total-attempts').textContent = totalAttempts;
+            document.getElementById('stat-accuracy').textContent = totalAttempts > 0 ? `${Math.round((totalSuccess / totalAttempts) * 100)}%` : '0%';
+        }
+
+        function autoDeselectMasteredWords() {
+            VOCAB_DATA.forEach(v => {
+                const st = appState.stats[v.id];
+                if (st) {
+                    const tot = st.ecrit.ok + st.ecrit.err + st.dictee.ok + st.dictee.err;
+                    const ok = st.ecrit.ok + st.dictee.ok;
+                    if (tot >= 3 && (ok / tot) >= 0.8) {
+                        appState.selectedIds = appState.selectedIds.filter(id => id !== v.id);
+                    }
+                }
+            });
+            localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
+            alert("Les mots réussis à plus de 80% ont été décochés sur la page d'accueil !");
+            renderHome();
+        }
+
+        function resetPracticeStats() {
+            if (confirm("Réinitialiser toutes les statistiques d'entraînement ?")) {
+                appState.stats = {};
+                localStorage.removeItem(KEY_STATS);
+                renderStatsTab();
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderHome();
+            renderLeaderboardTable();
+        });
+         // -----------------------------------------------------------
+        // 📌 INSÉREZ LA FONCTION DE TÉLÉCHARGEMENT ICI (TOUT EN BAS) :
+        // -----------------------------------------------------------
+        function downloadProgress() {
+            const stats = JSON.parse(localStorage.getItem(KEY_STATS) || "{}");
+            
+            const masteredWords = Object.keys(stats).filter(word => {
+                const item = stats[word];
+                return item === "Acquis" || item.status === "Acquis" || item.score >= 3;
+            });
+
+            const totalAcquired = masteredWords.length;
+            const dateToday = new Date().toLocaleDateString('fr-FR');
+            const studentDisplayName = STUDENT_ID.split('_')[0].toUpperCase();
+
+            const categoriesMap = {};
+
+            masteredWords.forEach(word => {
+                const wordData = (typeof ALL_WORDS !== 'undefined') 
+                    ? ALL_WORDS.find(item => item.word === word || item.mot === word)
+                    : null;
+                
+                const category = (wordData && wordData.category) ? wordData.category : "Vocabulaire Général";
+
+                if (!categoriesMap[category]) {
+                    categoriesMap[category] = [];
+                }
+                categoriesMap[category].push(word);
+            });
+
+            const printWindow = window.open('', '_blank');
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html lang="fr">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Bilan par Catégorie - ${studentDisplayName}</title>
+                    <style>
+                        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 30px; color: #1E293B; line-height: 1.4; }
+                        .header { border-bottom: 2px solid #00B4D8; padding-bottom: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; }
+                        h1 { color: #0077B6; margin: 0; font-size: 20px; }
+                        .subtitle { font-size: 13px; color: #64748B; margin-top: 2px; }
+                        
+                        .stats-badge { background: #F0FDF4; border: 1px solid #BBF7D0; padding: 8px 16px; border-radius: 10px; text-align: right; }
+                        .stat-value { font-size: 22px; font-weight: bold; color: #16A34A; }
+                        .stat-label { font-size: 11px; color: #15803D; font-weight: 600; text-transform: uppercase; }
+
+                        .categories-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; }
+                        
+                        .category-card { background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; break-inside: avoid; }
+                        .category-title { font-size: 13px; font-weight: bold; color: #0077B6; border-bottom: 1px dashed #CBD5E1; padding-bottom: 4px; margin-bottom: 8px; display: flex; justify-content: space-between; }
+                        .category-count { background: #E0F2FE; color: #0369A1; font-size: 10px; padding: 2px 6px; border-radius: 4px; }
+                        
+                        .words-list { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+                        .word-item { background: #FFFFFF; border: 1px solid #CBD5E1; padding: 3px 8px; border-radius: 6px; font-size: 12px; font-weight: 500; color: #334155; }
+                        .word-item::before { content: "✓ "; color: #16A34A; font-weight: bold; }
+
+                        .empty-msg { text-align: center; color: #94A3B8; padding: 30px; font-size: 13px; grid-column: span 2; }
+                        .footer { margin-top: 30px; font-size: 10px; text-align: center; color: #94A3B8; border-top: 1px solid #E2E8F0; padding-top: 8px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header">
+                        <div>
+                            <h1>Bilan de Vocabulaire par Thématique</h1>
+                            <div class="subtitle">Élève : <strong>${studentDisplayName}</strong> • Date : ${dateToday}</div>
+                        </div>
+                        <div class="stats-badge">
+                            <div class="stat-value">🏆 ${totalAcquired}</div>
+                            <div class="stat-label">Mots Acquis</div>
+                        </div>
+                    </div>
+
+                    <div class="categories-grid">
+                        ${Object.keys(categoriesMap).length > 0 ? Object.keys(categoriesMap).map(cat => `
+                            <div class="category-card">
+                                <div class="category-title">
+                                    <span>📁 ${cat}</span>
+                                    <span class="category-count">${categoriesMap[cat].length} mot(s)</span>
+                                </div>
+                                <ul class="words-list">
+                                    ${categoriesMap[cat].map(word => `<li class="word-item">${word}</li>`).join('')}
+                                </ul>
+                            </div>
+                        `).join('') : `
+                            <div class="empty-msg">
+                                Aucun mot validé pour le moment. Continuez votre apprentissage !
+                            </div>
+                        `}
+                    </div>
+
+                    <div class="footer">
+                        Cahier de Vocabulaire FLE • Document de suivi pédagogique
+                    </div>
+
+                    <script>
+                        window.onload = function() {
+                            window.print();
+                            window.onafterprint = function() { window.close(); };
+                        };
+                    <\/script>
+                </body>
+                </html>
+            `);
+
+            printWindow.document.close();
+        }
+    </script>
+</body>
+</html>                </button>
+            </div>
+
+            <div id="match-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4"></div>
+        </section>
+
+        <!-- 7. ÉVALUATION -->
+        <section id="tab-evaluation" class="tab-page hidden max-w-2xl mx-auto space-y-6">
+            <!-- Start Screen -->
+            <div id="eval-start-card" class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center space-y-6">
+                <div class="w-16 h-16 bg-coral/10 text-[#FF6B6B] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2 class="text-2xl font-extrabold text-gray-800">Évaluation d'entraînement</h2>
+                <p class="text-gray-600 text-sm">Session de 10 questions aléatoires avec feedback immédiat. Aucun retour en arrière possible.</p>
+
+                <form onsubmit="startEvaluation(event)" class="space-y-4 max-w-md mx-auto text-left">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-600 mb-1">Identifiant élève (ex: 6BDURTOT) :</label>
+                        <input type="text" id="eval-pseudo" required placeholder="Exemple: 6BDURTOT" class="w-full py-2.5 px-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#00B4D8] focus:outline-none font-semibold">
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-[#FF6B6B] hover:bg-[#FF8E72] text-white font-bold rounded-xl shadow transition">
+                        Démarrer l'évaluation
+                    </button>
+                </form>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="eval-quiz-card" class="hidden bg-white p-8 rounded-2xl shadow-md border border-gray-100 space-y-6">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                    <span id="eval-[#0077B6]" class="text-xs font-bold uppercase tracking-wider text-[#0077B6]">Question 1 / 10</span>
+                    <span id="eval-timer" class="text-xs font-mono font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-md border border-amber-200">00:00</span>
+                </div>
+
+                <div id="eval-question-body" class="space-y-4">
+                    <!-- Injected dynamically -->
+                </div>
+
+                <div id="eval-feedback" class="hidden p-4 rounded-xl text-sm font-bold text-center"></div>
+
+                <button id="eval-next-btn" onclick="nextEvalQuestion()" class="hidden w-full py-3 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-xl shadow transition">
+                    Question suivante <i class="fa-solid fa-arrow-right ml-1"></i>
+                </button>
+            </div>
+
+            <!-- Leaderboard Table -->
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 space-y-4">
+                <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-amber-400"></i> Classement des élèves
+                </h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-200 bg-gray-50 text-gray-500 font-bold uppercase text-xs">
+                                <th class="py-3 px-4">Rang</th>
+                                <th class="py-3 px-4">Élève</th>
+                                <th class="py-3 px-4">Réussite</th>
+                                <th class="py-3 px-4">Temps</th>
+                            </tr>
+                        </thead>
+                        <tbody id="eval-leaderboard-body"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. STATISTIQUES -->
+        <section id="tab-stats" class="tab-page hidden space-y-6">
+            <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs md:text-sm flex items-center gap-3">
+                <i class="fa-solid fa-circle-info text-amber-500 text-xl"></i>
+                <span><strong>Information :</strong> Cet onglet enregistre uniquement les statistiques d'entraînement (Flashcards, Dictée, Écriture, Traduction, Appariement).</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Mots maîtrisés</span>
+                    <p id="stat-[#00B4D8]" class="text-3xl font-extrabold text-[#00B4D8] mt-1">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Total essais</span>
+                    <p id="stat-total-attempts" class="text-3xl font-extrabold text-gray-800 mt-1">0</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-100 text-center">
+                    <span class="text-xs font-bold text-gray-400 uppercase">Taux de réussite global</span>
+                    <p id="stat-accuracy" class="text-3xl font-extrabold text-[#FF6B6B] mt-1">0%</p>
+                </div>
+            </div>
+
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-wrap justify-between items-center gap-3">
+                <button onclick="autoDeselectMasteredWords()" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                    <i class="fa-solid fa-filter"></i> Décocher automatiquement les mots > 80% de réussite
+                </button>
                 <button onclick="resetPracticeStats()" class="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
                     <i class="fa-solid fa-trash-can"></i> Réinitialiser les statistiques
                 </button>
