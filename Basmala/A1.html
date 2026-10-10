@@ -44,13 +44,6 @@
             min-height: 100vh;
         }
 
-        /* Object Fit Contain Guarantee */
-        .img-contain {
-            object-fit: contain !important;
-            width: 100%;
-            height: 100%;
-        }
-
         /* Custom Scrollbar for navigation */
         .no-scrollbar::-webkit-scrollbar {
             display: none;
@@ -146,29 +139,42 @@
 
         <!-- 1. ACCUEIL (HOME) -->
         <section id="tab-accueil" class="tab-page block space-y-6">
-            <!-- Controls Bar -->
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-                <div class="relative w-full md:w-96">
-                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                    <input type="text" id="home-search" oninput="renderHome()" placeholder="Rechercher un mot..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00B4D8]">
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-col lg:flex-row justify-between items-center gap-4">
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto">
+                    <div class="relative w-full sm:w-64">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" id="home-search" oninput="renderHome()" placeholder="Rechercher un mot..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00B4D8]">
+                    </div>
+
+                    <div class="relative w-full sm:w-64">
+                        <select id="category-filter" onchange="renderHome()" class="w-full py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#00B4D8] bg-white font-medium text-gray-700">
+                            <option value="ALL">Toutes les catégories</option>
+                        </select>
+                    </div>
                 </div>
 
-                <div class="flex items-center gap-3 w-full md:w-auto justify-between md:justify-end">
-                    <span id="active-count" class="text-sm font-semibold text-[#0077B6] bg-cyan-50 px-3 py-1.5 rounded-full border border-cyan-200">
+                <div class="flex flex-col sm:flex-row items-center gap-3 w-full lg:w-auto justify-between lg:justify-end">
+                    <span id="active-count" class="text-sm font-semibold text-[#0077B6] bg-cyan-50 px-3 py-1.5 rounded-full border border-cyan-200 whitespace-nowrap">
                         0 / 0 mots sélectionnés
                     </span>
-                    <div class="flex gap-2">
-                        <button onclick="selectAllWords(true)" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-3 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition">
+                    
+                    <div class="flex flex-wrap gap-2 w-full sm:w-auto justify-end">
+                        <button onclick="selectCategoryWords(true)" class="bg-[#0077B6] hover:bg-[#00B4D8] text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-folder-check"></i> Cocher catégorie
+                        </button>
+                        <button onclick="selectCategoryWords(false)" class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-folder-minus"></i> Décocher catégorie
+                        </button>
+                        <button onclick="selectAllWords(true)" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-check-double"></i> Tout cocher
                         </button>
-                        <button onclick="selectAllWords(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-xs md:text-sm font-bold flex items-center gap-1.5 transition">
+                        <button onclick="selectAllWords(false)" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg text-xs font-bold flex items-center gap-1.5 transition">
                             <i class="fa-solid fa-square-minus"></i> Tout décocher
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Words Grid -->
             <div id="home-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
         </section>
 
@@ -186,14 +192,8 @@
             <div class="flex justify-center">
                 <div class="w-full max-w-md h-80 perspective-1000 cursor-pointer" onclick="flipFlashcard()">
                     <div id="flashcard-inner" class="relative w-full h-full transform-style-3d transition-transform duration-500 shadow-xl rounded-2xl border-2 border-cyan-100 bg-white">
-                        <!-- Front Face -->
-                        <div id="fc-front" class="absolute w-full h-full backface-hidden rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-white">
-                            <!-- Content injected via JS -->
-                        </div>
-                        <!-- Back Face -->
-                        <div id="fc-back" class="absolute w-full h-full backface-hidden rotate-y-180 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-gradient-to-br from-cyan-50 to-blue-50 border-2 border-[#00B4D8]">
-                            <!-- Content injected via JS -->
-                        </div>
+                        <div id="fc-front" class="absolute w-full h-full backface-hidden rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-white"></div>
+                        <div id="fc-back" class="absolute w-full h-full backface-hidden rotate-y-180 rounded-2xl p-6 flex flex-col items-center justify-center text-center bg-gradient-to-br from-cyan-50 to-blue-50 border-2 border-[#00B4D8]"></div>
                     </div>
                 </div>
             </div>
@@ -202,9 +202,7 @@
                 <button onclick="prevFlashcard()" class="px-4 py-2 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold rounded-lg shadow-sm transition flex items-center gap-2">
                     <i class="fa-solid fa-arrow-left"></i> Précédent
                 </button>
-
                 <span id="fc-counter" class="text-sm font-bold text-gray-500">1 / 10</span>
-
                 <button onclick="nextFlashcard()" class="px-4 py-2 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-lg shadow-sm transition flex items-center gap-2">
                     Suivant <i class="fa-solid fa-arrow-right"></i>
                 </button>
@@ -228,7 +226,6 @@
 
                 <form onsubmit="handleDicteeSubmit(event)" class="space-y-4">
                     <input type="text" id="dictee-input" placeholder="Écrivez le mot en français..." autocomplete="off" class="w-full text-center text-lg py-3 px-4 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
-                    
                     <button type="submit" class="w-full py-3 bg-[#FF6B6B] hover:bg-[#FF8E72] text-white font-bold rounded-xl shadow transition">
                         Valider la réponse
                     </button>
@@ -250,13 +247,10 @@
             </div>
 
             <div class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center space-y-6">
-                <div id="ecriture-prompt" class="min-h-[120px] flex items-center justify-center">
-                    <!-- Dynamic prompt injected here -->
-                </div>
+                <div id="ecriture-prompt" class="min-h-[120px] flex items-center justify-center"></div>
 
                 <form onsubmit="handleEcritureSubmit(event)" class="space-y-4">
                     <input type="text" id="ecriture-input" placeholder="Écrivez le mot en français..." autocomplete="off" class="w-full text-center text-lg py-3 px-4 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
-                    
                     <button type="submit" class="w-full py-3 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-xl shadow transition">
                         Valider la réponse
                     </button>
@@ -283,7 +277,6 @@
 
                 <form onsubmit="handleTraductionSubmit(event)" class="space-y-4">
                     <input type="text" id="trad-input" placeholder="Saisissez la traduction en français/anglais..." autocomplete="off" class="w-full text-center text-lg py-3 px-4 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
-                    
                     <button type="submit" class="w-full py-3 bg-[#00B4D8] hover:bg-[#0077B6] text-white font-bold rounded-xl shadow transition">
                         Valider
                     </button>
@@ -309,7 +302,6 @@
 
         <!-- 7. ÉVALUATION -->
         <section id="tab-evaluation" class="tab-page hidden max-w-2xl mx-auto space-y-6">
-            <!-- Start Screen -->
             <div id="eval-start-card" class="bg-white p-8 rounded-2xl shadow-md border border-gray-100 text-center space-y-6">
                 <div class="w-16 h-16 bg-coral/10 text-[#FF6B6B] rounded-full flex items-center justify-center mx-auto text-2xl font-bold">
                     <i class="fa-solid fa-graduation-cap"></i>
@@ -328,16 +320,13 @@
                 </form>
             </div>
 
-            <!-- Quiz Screen -->
             <div id="eval-quiz-card" class="hidden bg-white p-8 rounded-2xl shadow-md border border-gray-100 space-y-6">
                 <div class="flex justify-between items-center border-b border-gray-100 pb-4">
                     <span id="eval-[#0077B6]" class="text-xs font-bold uppercase tracking-wider text-[#0077B6]">Question 1 / 10</span>
                     <span id="eval-timer" class="text-xs font-mono font-bold bg-amber-50 text-amber-600 px-2.5 py-1 rounded-md border border-amber-200">00:00</span>
                 </div>
 
-                <div id="eval-question-body" class="space-y-4">
-                    <!-- Injected dynamically -->
-                </div>
+                <div id="eval-question-body" class="space-y-4"></div>
 
                 <div id="eval-feedback" class="hidden p-4 rounded-xl text-sm font-bold text-center"></div>
 
@@ -346,7 +335,6 @@
                 </button>
             </div>
 
-            <!-- Leaderboard Table -->
             <div class="bg-white p-6 rounded-2xl shadow-md border border-gray-100 space-y-4">
                 <h3 class="text-lg font-bold text-gray-800 flex items-center gap-2">
                     <i class="fa-solid fa-trophy text-amber-400"></i> Classement des élèves
@@ -371,7 +359,7 @@
         <section id="tab-stats" class="tab-page hidden space-y-6">
             <div class="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-xl text-xs md:text-sm flex items-center gap-3">
                 <i class="fa-solid fa-circle-info text-amber-500 text-xl"></i>
-                <span><strong>Information :</strong> Cet onglet enregistre uniquement les statistiques d'entraînement (Flashcards, Dictée, Écriture, Traduction, Appariement).</span>
+                <span><strong>Information :</strong> Un mot est considéré comme <strong>maîtrisé</strong> s'il a été pratiqué dans au moins 2 types d'exercices différents avec un taux de réussite global (tous exercices confondus) supérieur ou égal à 80 %.</span>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -391,10 +379,9 @@
 
             <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 flex flex-wrap justify-between items-center gap-3">
                 <button onclick="autoDeselectMasteredWords()" class="bg-[#00B4D8] hover:bg-[#0077B6] text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
-                    <i class="fa-solid fa-filter"></i> Décocher automatiquement les mots > 80% de réussite
+                    <i class="fa-solid fa-filter"></i> Décocher automatiquement les mots maîtrisés
                 </button>
-                 <!-- 📥 BOUTON DE TÉLÉCHARGEMENT PDF -->
-                  <button onclick="downloadProgress()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
+                <button onclick="downloadProgress()" class="bg-slate-600 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
                     <i class="fa-solid fa-file-export"></i> Télécharger mon Bilan (PDF)
                 </button>
                 <button onclick="resetPracticeStats()" class="bg-red-50 text-red-600 hover:bg-red-100 border border-red-200 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
@@ -409,8 +396,10 @@
                             <tr class="bg-gray-50 border-b border-gray-200 text-gray-500 font-bold uppercase text-xs">
                                 <th class="py-3 px-4">Mot (Français)</th>
                                 <th class="py-3 px-4">Traduction</th>
-                                <th class="py-3 px-4">Modalité Écrit</th>
-                                <th class="py-3 px-4">Modalité Dictée</th>
+                                <th class="py-3 px-4">Écriture</th>
+                                <th class="py-3 px-4">Dictée</th>
+                                <th class="py-3 px-4">Traduction FR</th>
+                                <th class="py-3 px-4">Appariement</th>
                             </tr>
                         </thead>
                         <tbody id="stats-table-body"></tbody>
@@ -422,11 +411,11 @@
     </main>
 
     <script>
-      const STUDENT_ID = "basmala_n"; 
+        const STUDENT_ID = "basmala_n"; 
 
-const KEY_SELECTED = "vocab_a1_selected_" + STUDENT_ID;
-const KEY_STATS = "vocab_a1_stats_" + STUDENT_ID;
-const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
+        const KEY_SELECTED = "vocab_a1_selected_" + STUDENT_ID;
+        const KEY_STATS = "vocab_a1_stats_" + STUDENT_ID;
+        const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
       
         // 192 Vocabulary dataset mapped with SVG/Emoji illustrations
         const VOCAB_DATA = [
@@ -628,9 +617,8 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             selectedIds: JSON.parse(localStorage.getItem(KEY_SELECTED)) || VOCAB_DATA.map(v => v.id),
             stats: JSON.parse(localStorage.getItem(KEY_STATS)) || {},
             leaderboard: JSON.parse(localStorage.getItem(KEY_LEADERBOARD)) || [],
-            // Practice state
             fcIndex: 0,
-            fcMode: 1, // 1: Img -> FR, 2: Trad -> FR
+            fcMode: 1, 
             fcFlipped: false,
             dicteeCurrent: null,
             ecritureCurrent: null,
@@ -640,7 +628,6 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             matchPool: [],
             matchActive: [],
             matchSelectedCard: null,
-            // Eval State
             evalPseudo: '',
             evalQuestions: [],
             evalIndex: 0,
@@ -649,17 +636,6 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             evalTimer: null
         };
 
-        // Standard Nextcloud URL cleaner
-        function cleanNextcloudUrl(url) {
-            if (!url) return '';
-            let cleaned = url.trim();
-            if (cleaned.includes('nuage.apps.education.fr') && !cleaned.endsWith('/download')) {
-                cleaned += '/download';
-            }
-            return cleaned;
-        }
-
-        // Speech Synthesis Audio Pronunciation
         function speakWord(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -674,7 +650,18 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             return VOCAB_DATA.filter(v => appState.selectedIds.includes(v.id));
         }
 
-        // Navigation
+        function initCategoriesDropdown() {
+            const select = document.getElementById('category-filter');
+            const categories = [...new Set(VOCAB_DATA.map(item => item.cat))].sort();
+            
+            categories.forEach(cat => {
+                const opt = document.createElement('option');
+                opt.value = cat;
+                opt.textContent = cat;
+                select.appendChild(opt);
+            });
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-page').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -698,7 +685,6 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
                 return;
             }
 
-            // Init tab specific workflows
             if (tabId === 'flashcards') initFlashcards();
             if (tabId === 'dictee') initDictee();
             if (tabId === 'ecriture') initEcriture();
@@ -710,9 +696,15 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
         function renderHome() {
             const grid = document.getElementById('home-grid');
             const query = document.getElementById('home-search').value.toLowerCase().trim();
+            const selectedCat = document.getElementById('category-filter').value;
+
             grid.innerHTML = '';
 
-            const filtered = VOCAB_DATA.filter(v => v.fr.toLowerCase().includes(query) || v.tr.toLowerCase().includes(query));
+            const filtered = VOCAB_DATA.filter(v => {
+                const matchesSearch = v.fr.toLowerCase().includes(query) || v.tr.toLowerCase().includes(query);
+                const matchesCategory = (selectedCat === 'ALL' || v.cat === selectedCat);
+                return matchesSearch && matchesCategory;
+            });
 
             filtered.forEach(item => {
                 const isSelected = appState.selectedIds.includes(item.id);
@@ -761,6 +753,26 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
 
         function selectAllWords(status) {
             appState.selectedIds = status ? VOCAB_DATA.map(v => v.id) : [];
+            localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
+            renderHome();
+        }
+
+        function selectCategoryWords(status) {
+            const selectedCat = document.getElementById('category-filter').value;
+            
+            if (selectedCat === 'ALL') {
+                selectAllWords(status);
+                return;
+            }
+
+            const categoryIds = VOCAB_DATA.filter(v => v.cat === selectedCat).map(v => v.id);
+
+            if (status) {
+                appState.selectedIds = [...new Set([...appState.selectedIds, ...categoryIds])];
+            } else {
+                appState.selectedIds = appState.selectedIds.filter(id => !categoryIds.includes(id));
+            }
+
             localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
             renderHome();
         }
@@ -836,7 +848,15 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
 
         function recordPracticeStat(wordId, mode, success) {
             if (!appState.stats[wordId]) {
-                appState.stats[wordId] = { ecrit: { ok: 0, err: 0 }, dictee: { ok: 0, err: 0 } };
+                appState.stats[wordId] = {
+                    ecrit: { ok: 0, err: 0 },
+                    dictee: { ok: 0, err: 0 },
+                    trad: { ok: 0, err: 0 },
+                    match: { ok: 0, err: 0 }
+                };
+            }
+            if (!appState.stats[wordId][mode]) {
+                appState.stats[wordId][mode] = { ok: 0, err: 0 };
             }
             if (success) {
                 appState.stats[wordId][mode].ok++;
@@ -943,12 +963,12 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             if (isCorrect) {
                 fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
                 fb.textContent = "Très bien ! Traduction validée.";
-                recordPracticeStat(appState.tradCurrent.id, 'ecrit', true);
+                recordPracticeStat(appState.tradCurrent.id, 'trad', true);
                 setTimeout(initTraduction, 1500);
             } else {
                 fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
                 fb.textContent = `Traduction attendue : "${appState.tradCurrent.tr}"`;
-                recordPracticeStat(appState.tradCurrent.id, 'ecrit', false);
+                recordPracticeStat(appState.tradCurrent.id, 'trad', false);
             }
         }
 
@@ -1019,20 +1039,18 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             } else {
                 const prev = appState.matchSelectedCard;
                 if (prev.dataset.id === card.dataset.id && prev.dataset.type !== card.dataset.type) {
-                    // Match Success
                     prev.classList.remove('selected');
                     prev.classList.add('matched');
                     card.classList.add('matched');
-                    recordPracticeStat(parseInt(card.dataset.id), 'ecrit', true);
+                    recordPracticeStat(parseInt(card.dataset.id), 'match', true);
 
                     appState.matchActive = appState.matchActive.filter(p => p.id !== parseInt(card.dataset.id));
                     appState.matchSelectedCard = null;
 
                     setTimeout(loadNextMatchSet, 400);
                 } else {
-                    // Match Failed
                     prev.classList.remove('selected');
-                    recordPracticeStat(parseInt(card.dataset.id), 'ecrit', false);
+                    recordPracticeStat(parseInt(card.dataset.id), 'match', false);
                     appState.matchSelectedCard = null;
                 }
             }
@@ -1074,7 +1092,7 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             nextBtn.classList.add('hidden');
             document.getElementById('eval-[#0077B6]').textContent = `Question ${appState.evalIndex + 1} / 10`;
 
-            const type = appState.evalIndex % 3; // 0: QCM, 1: Dictation, 2: Free Writing
+            const type = appState.evalIndex % 3;
 
             if (type === 0) {
                 const options = [q, ...VOCAB_DATA.filter(v => v.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
@@ -1179,6 +1197,33 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             });
         }
 
+        // Nouvelle règle : moyenne globale de tous les exercices confondus
+        function checkWordMastered(st) {
+            if (!st) return false;
+            const types = ['ecrit', 'dictee', 'trad', 'match'];
+            let typesDone = 0;
+            let totalOk = 0;
+            let totalErr = 0;
+
+            types.forEach(t => {
+                const obj = st[t] || { ok: 0, err: 0 };
+                const tot = obj.ok + obj.err;
+                if (tot > 0) {
+                    typesDone++;
+                    totalOk += obj.ok;
+                    totalErr += obj.err;
+                }
+            });
+
+            const totalAttempts = totalOk + totalErr;
+            // Au moins 2 types d'exercices faits, et taux de réussite global >= 80%
+            if (typesDone >= 2 && totalAttempts > 0) {
+                const globalRate = totalOk / totalAttempts;
+                return globalRate >= 0.8;
+            }
+            return false;
+        }
+
         function renderStatsTab() {
             let totalAttempts = 0;
             let totalSuccess = 0;
@@ -1188,19 +1233,32 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             tableBody.innerHTML = '';
 
             VOCAB_DATA.forEach(v => {
-                const st = appState.stats[v.id] || { ecrit: { ok: 0, err: 0 }, dictee: { ok: 0, err: 0 } };
-                const wordAttempts = st.ecrit.ok + st.ecrit.err + st.dictee.ok + st.dictee.err;
-                const wordSuccess = st.ecrit.ok + st.dictee.ok;
+                const st = appState.stats[v.id] || { 
+                    ecrit: { ok: 0, err: 0 }, 
+                    dictee: { ok: 0, err: 0 }, 
+                    trad: { ok: 0, err: 0 }, 
+                    match: { ok: 0, err: 0 } 
+                };
+
+                let wordAttempts = 0;
+                let wordSuccess = 0;
+
+                ['ecrit', 'dictee', 'trad', 'match'].forEach(t => {
+                    if (st[t]) {
+                        wordAttempts += (st[t].ok + st[t].err);
+                        wordSuccess += st[t].ok;
+                    }
+                });
 
                 totalAttempts += wordAttempts;
                 totalSuccess += wordSuccess;
 
-                if (wordAttempts >= 3 && (wordSuccess / wordAttempts) >= 0.8) {
+                if (checkWordMastered(st)) {
                     masteredCount++;
                 }
 
                 const renderBadge = (obj) => {
-                    const tot = obj.ok + obj.err;
+                    const tot = (obj ? (obj.ok + obj.err) : 0);
                     if (tot === 0) return `<span class="text-gray-400">-</span>`;
                     const pct = Math.round((obj.ok / tot) * 100);
                     return `<span class="px-2.5 py-1 rounded-full text-xs font-bold ${pct >= 80 ? 'bg-emerald-100 text-emerald-800' : 'bg-rose-100 text-rose-800'}">${pct}% (${obj.ok}/${tot})</span>`;
@@ -1213,6 +1271,8 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
                     <td class="py-3 px-4 text-gray-600">${v.tr}</td>
                     <td class="py-3 px-4">${renderBadge(st.ecrit)}</td>
                     <td class="py-3 px-4">${renderBadge(st.dictee)}</td>
+                    <td class="py-3 px-4">${renderBadge(st.trad)}</td>
+                    <td class="py-3 px-4">${renderBadge(st.match)}</td>
                 `;
                 tableBody.appendChild(tr);
             });
@@ -1225,16 +1285,12 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
         function autoDeselectMasteredWords() {
             VOCAB_DATA.forEach(v => {
                 const st = appState.stats[v.id];
-                if (st) {
-                    const tot = st.ecrit.ok + st.ecrit.err + st.dictee.ok + st.dictee.err;
-                    const ok = st.ecrit.ok + st.dictee.ok;
-                    if (tot >= 3 && (ok / tot) >= 0.8) {
-                        appState.selectedIds = appState.selectedIds.filter(id => id !== v.id);
-                    }
+                if (checkWordMastered(st)) {
+                    appState.selectedIds = appState.selectedIds.filter(id => id !== v.id);
                 }
             });
             localStorage.setItem(KEY_SELECTED, JSON.stringify(appState.selectedIds));
-            alert("Les mots réussis à plus de 80% ont été décochés sur la page d'accueil !");
+            alert("Les mots maîtrisés ont été décochés sur la page d'accueil !");
             renderHome();
         }
 
@@ -1246,20 +1302,10 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
             }
         }
 
-        window.addEventListener('DOMContentLoaded', () => {
-            renderHome();
-            renderLeaderboardTable();
-        });
-         // -----------------------------------------------------------
-        // 📌 INSÉREZ LA FONCTION DE TÉLÉCHARGEMENT ICI (TOUT EN BAS) :
-        // -----------------------------------------------------------
         function downloadProgress() {
-            const stats = JSON.parse(localStorage.getItem(KEY_STATS) || "{}");
+            const stats = appState.stats || {};
             
-            const masteredWords = Object.keys(stats).filter(word => {
-                const item = stats[word];
-                return item === "Acquis" || item.status === "Acquis" || item.score >= 3;
-            });
+            const masteredWords = VOCAB_DATA.filter(v => checkWordMastered(stats[v.id]));
 
             const totalAcquired = masteredWords.length;
             const dateToday = new Date().toLocaleDateString('fr-FR');
@@ -1267,17 +1313,12 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
 
             const categoriesMap = {};
 
-            masteredWords.forEach(word => {
-                const wordData = (typeof ALL_WORDS !== 'undefined') 
-                    ? ALL_WORDS.find(item => item.word === word || item.mot === word)
-                    : null;
-                
-                const category = (wordData && wordData.category) ? wordData.category : "Vocabulaire Général";
-
+            masteredWords.forEach(v => {
+                const category = v.cat || "Vocabulaire Général";
                 if (!categoriesMap[category]) {
                     categoriesMap[category] = [];
                 }
-                categoriesMap[category].push(word);
+                categoriesMap[category].push(v.fr);
             });
 
             const printWindow = window.open('', '_blank');
@@ -1320,7 +1361,7 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
                         </div>
                         <div class="stats-badge">
                             <div class="stat-value">🏆 ${totalAcquired}</div>
-                            <div class="stat-label">Mots Acquis</div>
+                            <div class="stat-label">Mots Maîtrisés</div>
                         </div>
                     </div>
 
@@ -1337,7 +1378,7 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
                             </div>
                         `).join('') : `
                             <div class="empty-msg">
-                                Aucun mot validé pour le moment. Continuez votre apprentissage !
+                                Aucun mot maîtrisé pour le moment. Continuez votre apprentissage !
                             </div>
                         `}
                     </div>
@@ -1358,6 +1399,12 @@ const KEY_LEADERBOARD = "vocab_a1_leaderboard_" + STUDENT_ID;
 
             printWindow.document.close();
         }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initCategoriesDropdown();
+            renderHome();
+            renderLeaderboardTable();
+        });
     </script>
 </body>
 </html>
