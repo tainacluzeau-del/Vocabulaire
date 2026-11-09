@@ -419,201 +419,182 @@
       
         // 192 Vocabulary dataset mapped with SVG/Emoji illustrations
         const VOCAB_DATA = [
-            { id: 1, fr: "bonjour", tr: "hello / good morning", cat: "Salutations", icon: "👋" },
-            { id: 2, fr: "bonsoir", tr: "good evening", cat: "Salutations", icon: "🌆" },
-            { id: 3, fr: "salut", tr: "hi / bye", cat: "Salutations", icon: "🙋" },
-            { id: 4, fr: "coucou", tr: "hey / hello", cat: "Salutations", icon: "🐣" },
-            { id: 5, fr: "au revoir", tr: "goodbye", cat: "Salutations", icon: "👋" },
-            { id: 6, fr: "bonne journée", tr: "have a nice day", cat: "Salutations", icon: "☀️" },
-            { id: 7, fr: "ciao", tr: "ciao / bye", cat: "Salutations", icon: "🕶️" },
-            { id: 8, fr: "bye", tr: "bye", cat: "Salutations", icon: "✈️" },
-            { id: 9, fr: "s'il vous plaît", tr: "please", cat: "Politesse", icon: "🙏" },
-            { id: 10, fr: "merci", tr: "thank you", cat: "Politesse", icon: "💐" },
-            { id: 11, fr: "excusez-moi", tr: "excuse me", cat: "Politesse", icon: "🤝" },
-            { id: 12, fr: "de rien", tr: "you're welcome", cat: "Politesse", icon: "😊" },
-            { id: 13, fr: "nom", tr: "last name / name", cat: "Identité", icon: "🏷️" },
-            { id: 14, fr: "nom de famille", tr: "surname / last name", cat: "Identité", icon: "📋" },
-            { id: 15, fr: "prénom", tr: "first name", cat: "Identité", icon: "🪪" },
-            { id: 16, fr: "lieu de naissance", tr: "place of birth", cat: "Identité", icon: "📍" },
-            { id: 17, fr: "date de naissance", tr: "date of birth", cat: "Identité", icon: "🎂" },
-            { id: 18, fr: "marié", tr: "married (m)", cat: "Statut", icon: "💍" },
-            { id: 19, fr: "mariée", tr: "married (f)", cat: "Statut", icon: "👰" },
-            { id: 20, fr: "divorcé", tr: "divorced (m)", cat: "Statut", icon: "📑" },
-            { id: 21, fr: "divorcée", tr: "divorced (f)", cat: "Statut", icon: "📄" },
-            { id: 22, fr: "célibataire", tr: "single", cat: "Statut", icon: "🚶" },
-            { id: 23, fr: "exemples", tr: "examples", cat: "Général", icon: "💡" },
-            { id: 24, fr: "cactus", tr: "cactus", cat: "Nature", icon: "🌵" },
-            { id: 25, fr: "citron", tr: "lemon", cat: "Nourriture", icon: "🍋" },
-            { id: 26, fr: "garçon", tr: "boy", cat: "Personnes", icon: "👦" },
-            { id: 27, fr: "girafe", tr: "giraffe", cat: "Animaux", icon: "🦒" },
-            { id: 28, fr: "guitare", tr: "guitar", cat: "Musique", icon: "🎸" },
-            { id: 29, fr: "enfant", tr: "child", cat: "Personnes", icon: "🧒" },
-            { id: 30, fr: "pain", tr: "bread", cat: "Nourriture", icon: "🥖" },
-            { id: 31, fr: "maison", tr: "house", cat: "Objets", icon: "🏠" },
-            { id: 32, fr: "eau", tr: "water", cat: "Boisson", icon: "💧" },
-            { id: 33, fr: "lundi", tr: "Monday", cat: "Jours", icon: "📅" },
-            { id: 34, fr: "mardi", tr: "Tuesday", cat: "Jours", icon: "📅" },
-            { id: 35, fr: "mercredi", tr: "Wednesday", cat: "Jours", icon: "📅" },
-            { id: 36, fr: "jeudi", tr: "Thursday", cat: "Jours", icon: "📅" },
-            { id: 37, fr: "vendredi", tr: "Friday", cat: "Jours", icon: "📅" },
-            { id: 38, fr: "samedi", tr: "Saturday", cat: "Jours", icon: "🎉" },
-            { id: 39, fr: "dimanche", tr: "Sunday", cat: "Jours", icon: "☀️" },
-            { id: 40, fr: "rouge", tr: "red", cat: "Couleurs", icon: "🟥" },
-            { id: 41, fr: "bleu", tr: "blue", cat: "Couleurs", icon: "🟦" },
-            { id: 42, fr: "vert", tr: "green", cat: "Couleurs", icon: "🟩" },
-            { id: 43, fr: "jaune", tr: "yellow", cat: "Couleurs", icon: "🟨" },
-            { id: 44, fr: "noir", tr: "black", cat: "Couleurs", icon: "⬛" },
-            { id: 45, fr: "blanc", tr: "white", cat: "Couleurs", icon: "⬜" },
-            { id: 46, fr: "gris", tr: "grey", cat: "Couleurs", icon: "🔘" },
-            { id: 47, fr: "orange", tr: "orange", cat: "Couleurs", icon: "🟧" },
-            { id: 48, fr: "rose", tr: "pink", cat: "Couleurs", icon: "🟪" },
-            { id: 49, fr: "marron", tr: "brown", cat: "Couleurs", icon: "🟫" },
-            { id: 50, fr: "violet", tr: "purple", cat: "Couleurs", icon: "💜" },
-            { id: 51, fr: "une poignée de main", tr: "a handshake", cat: "Geste", icon: "🤝" },
-            { id: 52, fr: "faire la bise", tr: "to kiss on the cheek", cat: "Geste", icon: "😚" },
-            { id: 53, fr: "égyptien", tr: "Egyptian (m)", cat: "Nationalité", icon: "🇪🇬" },
-            { id: 54, fr: "égyptienne", tr: "Egyptian (f)", cat: "Nationalité", icon: "🇪🇬" },
-            { id: 55, fr: "français", tr: "French (m) / French language", cat: "Nationalité", icon: "🇫🇷" },
-            { id: 56, fr: "française", tr: "French (f)", cat: "Nationalité", icon: "🇫🇷" },
-            { id: 57, fr: "italien", tr: "Italian (m)", cat: "Nationalité", icon: "🇮🇹" },
-            { id: 58, fr: "italienne", tr: "Italian (f)", cat: "Nationalité", icon: "🇮🇹" },
-            { id: 59, fr: "allemand", tr: "German (m)", cat: "Nationalité", icon: "🇩🇪" },
-            { id: 60, fr: "allemande", tr: "German (f)", cat: "Nationalité", icon: "🇩🇪" },
-            { id: 61, fr: "américain", tr: "American (m)", cat: "Nationalité", icon: "🇺🇸" },
-            { id: 62, fr: "américaine", tr: "American (f)", cat: "Nationalité", icon: "🇺🇸" },
-            { id: 63, fr: "tunisien", tr: "Tunisian (m)", cat: "Nationalité", icon: "🇹🇳" },
-            { id: 64, fr: "tunisienne", tr: "Tunisian (f)", cat: "Nationalité", icon: "🇹🇳" },
-            { id: 65, fr: "belge", tr: "Belgian", cat: "Nationalité", icon: "🇧🇪" },
-            { id: 66, fr: "espagnol", tr: "Spanish (m) / Spanish language", cat: "Nationalité", icon: "🇪🇸" },
-            { id: 67, fr: "espagnole", tr: "Spanish (f)", cat: "Nationalité", icon: "🇪🇸" },
-            { id: 68, fr: "anglais", tr: "English (m) / English language", cat: "Nationalité", icon: "🇬🇧" },
-            { id: 69, fr: "anglaise", tr: "English (f)", cat: "Nationalité", icon: "🇬🇧" },
-            { id: 70, fr: "japonais", tr: "Japanese (m)", cat: "Nationalité", icon: "🇯🇵" },
-            { id: 71, fr: "japonaise", tr: "Japanese (f)", cat: "Nationalité", icon: "🇯🇵" },
-            { id: 72, fr: "canadien", tr: "Canadian (m)", cat: "Nationalité", icon: "🇨🇦" },
-            { id: 73, fr: "canadienne", tr: "Canadian (f)", cat: "Nationalité", icon: "🇨🇦" },
-            { id: 74, fr: "marocain", tr: "Moroccan (m)", cat: "Nationalité", icon: "🇲🇦" },
-            { id: 75, fr: "marocaine", tr: "Moroccan (f)", cat: "Nationalité", icon: "🇲🇦" },
-            { id: 76, fr: "brésilien", tr: "Brazilian (m)", cat: "Nationalité", icon: "🇧🇷" },
-            { id: 77, fr: "brésilienne", tr: "Brazilian (f)", cat: "Nationalité", icon: "🇧🇷" },
-            { id: 78, fr: "portugais", tr: "Portuguese (m)", cat: "Nationalité", icon: "🇵🇹" },
-            { id: 79, fr: "portugaise", tr: "Portuguese (f)", cat: "Nationalité", icon: "🇵🇹" },
-            { id: 80, fr: "iranien", tr: "Iranian (m)", cat: "Nationalité", icon: "🇮🇷" },
-            { id: 81, fr: "iranienne", tr: "Iranian (f)", cat: "Nationalité", icon: "🇮🇷" },
-            { id: 82, fr: "chinois", tr: "Chinese (m)", cat: "Nationalité", icon: "🇨🇳" },
-            { id: 83, fr: "chinoise", tr: "Chinese (f)", cat: "Nationalité", icon: "🇨🇳" },
-            { id: 84, fr: "camerounais", tr: "Cameroonian (m)", cat: "Nationalité", icon: "🇨🇲" },
-            { id: 85, fr: "camerounaise", tr: "Cameroonian (f)", cat: "Nationalité", icon: "🇨🇲" },
-            { id: 86, fr: "cantonais", tr: "Cantonese (m)", cat: "Langue", icon: "🗣️" },
-            { id: 87, fr: "cantonaise", tr: "Cantonese (f)", cat: "Langue", icon: "🗣️" },
-            { id: 88, fr: "péruvien", tr: "Peruvian (m)", cat: "Nationalité", icon: "🇵🇪" },
-            { id: 89, fr: "péruvienne", tr: "Peruvian (f)", cat: "Nationalité", icon: "🇵🇪" },
-            { id: 90, fr: "palestinien", tr: "Palestinian (m)", cat: "Nationalité", icon: "🇵🇸" },
-            { id: 91, fr: "palestinienne", tr: "Palestinian (f)", cat: "Nationalité", icon: "🇵🇸" },
-            { id: 92, fr: "soudanais", tr: "Sudanese (m)", cat: "Nationalité", icon: "🇸🇩" },
-            { id: 93, fr: "soudanaise", tr: "Sudanese (f)", cat: "Nationalité", icon: "🇸🇩" },
-            { id: 94, fr: "mère", tr: "mother", cat: "Famille", icon: "👩" },
-            { id: 95, fr: "père", tr: "father", cat: "Famille", icon: "👨" },
-            { id: 96, fr: "sœur", tr: "sister", cat: "Famille", icon: "👧" },
-            { id: 97, fr: "frère", tr: "brother", cat: "Famille", icon: "👦" },
-            { id: 98, fr: "grand-père", tr: "grandfather", cat: "Famille", icon: "👴" },
-            { id: 99, fr: "grand-mère", tr: "grandmother", cat: "Famille", icon: "👵" },
-            { id: 100, fr: "parents", tr: "parents", cat: "Famille", icon: "👨‍👩‍👧" },
-            { id: 101, fr: "enfants", tr: "children", cat: "Famille", icon: "👶" },
-            { id: 102, fr: "fils", tr: "son", cat: "Famille", icon: "👦" },
-            { id: 103, fr: "fille", tr: "daughter / girl", cat: "Famille", icon: "👧" },
-            { id: 104, fr: "tante", tr: "aunt", cat: "Famille", icon: "👩‍🦱" },
-            { id: 105, fr: "oncle", tr: "uncle", cat: "Famille", icon: "👨‍🦰" },
-            { id: 106, fr: "cousin", tr: "male cousin", cat: "Famille", icon: "👦" },
-            { id: 107, fr: "cousine", tr: "female cousin", cat: "Famille", icon: "👧" },
-            { id: 108, fr: "neveu", tr: "nephew", cat: "Famille", icon: "👦" },
-            { id: 109, fr: "nièce", tr: "niece", cat: "Famille", icon: "👧" },
-            { id: 110, fr: "petit-fils", tr: "grandson", cat: "Famille", icon: "👦" },
-            { id: 111, fr: "mari", tr: "husband", cat: "Famille", icon: "🤵" },
-            { id: 112, fr: "médecin", tr: "doctor", cat: "Métiers", icon: "🩺" },
-            { id: 113, fr: "professeur", tr: "teacher / professor (m)", cat: "Métiers", icon: "👨‍🏫" },
-            { id: 114, fr: "professeure", tr: "teacher / professor (f)", cat: "Métiers", icon: "👩‍🏫" },
-            { id: 115, fr: "infirmier", tr: "male nurse", cat: "Métiers", icon: "👨‍⚕️" },
-            { id: 116, fr: "infirmière", tr: "female nurse", cat: "Métiers", icon: "👩‍⚕️" },
-            { id: 117, fr: "avocat", tr: "male lawyer", cat: "Métiers", icon: "⚖️" },
-            { id: 118, fr: "avocate", tr: "female lawyer", cat: "Métiers", icon: "⚖️" },
-            { id: 119, fr: "étudiant", tr: "male student", cat: "Métiers", icon: "👨‍🎓" },
-            { id: 120, fr: "étudiante", tr: "female student", cat: "Métiers", icon: "👩‍🎓" },
-            { id: 121, fr: "journaliste", tr: "journalist", cat: "Métiers", icon: "🎙️" },
-            { id: 122, fr: "architecte", tr: "architect", cat: "Métiers", icon: "📐" },
-            { id: 123, fr: "boulanger", tr: "baker (m)", cat: "Métiers", icon: "🥖" },
-            { id: 124, fr: "boulangère", tr: "baker (f)", cat: "Métiers", icon: "🥖" },
-            { id: 125, fr: "designer", tr: "designer", cat: "Métiers", icon: "🎨" },
-            { id: 126, fr: "secrétaire", tr: "secretary", cat: "Métiers", icon: "💻" },
-            { id: 127, fr: "ingénieur", tr: "engineer", cat: "Métiers", icon: "⚙️" },
-            { id: 128, fr: "écolière", tr: "schoolgirl", cat: "Métiers", icon: "🎒" },
-            { id: 129, fr: "acteur", tr: "actor", cat: "Métiers", icon: "🎭" },
-            { id: 130, fr: "actrice", tr: "actress", cat: "Métiers", icon: "🎬" },
-            { id: 131, fr: "cuisinier", tr: "male cook / chef", cat: "Métiers", icon: "👨‍🍳" },
-            { id: 132, fr: "cuisinière", tr: "female cook / chef", cat: "Métiers", icon: "👩‍🍳" },
-            { id: 133, fr: "arabe", tr: "Arabic", cat: "Langue", icon: "🗣️" },
-            { id: 134, fr: "chat", tr: "cat", cat: "Animaux", icon: "🐱" },
-            { id: 135, fr: "chien", tr: "dog", cat: "Animaux", icon: "🐶" },
-            { id: 136, fr: "sac", tr: "bag", cat: "Objets", icon: "🎒" },
-            { id: 137, fr: "livre", tr: "book", cat: "Objets", icon: "📖" },
-            { id: 138, fr: "stylo", tr: "pen", cat: "Objets", icon: "🖊️" },
-            { id: 139, fr: "tasse", tr: "cup", cat: "Objets", icon: "☕" },
-            { id: 140, fr: "voiture", tr: "car", cat: "Objets", icon: "🚗" },
-            { id: 141, fr: "téléphone", tr: "phone", cat: "Objets", icon: "📱" },
-            { id: 142, fr: "gentil", tr: "kind (m)", cat: "Adjectifs", icon: "😊" },
-            { id: 143, fr: "gentille", tr: "kind (f)", cat: "Adjectifs", icon: "😇" },
-            { id: 144, fr: "drôle", tr: "funny", cat: "Adjectifs", icon: "😂" },
-            { id: 145, fr: "intelligent", tr: "intelligent (m)", cat: "Adjectifs", icon: "🧠" },
-            { id: 146, fr: "intelligente", tr: "intelligent (f)", cat: "Adjectifs", icon: "💡" },
-            { id: 147, fr: "poli", tr: "polite (m)", cat: "Adjectifs", icon: "🎩" },
-            { id: 148, fr: "polie", tr: "polite (f)", cat: "Adjectifs", icon: "🎀" },
-            { id: 149, fr: "bavard", tr: "talkative (m)", cat: "Adjectifs", icon: "💬" },
-            { id: 150, fr: "bavarde", tr: "talkative (f)", cat: "Adjectifs", icon: "🗣️" },
-            { id: 151, fr: "silencieux", tr: "silent (m)", cat: "Adjectifs", icon: "🤫" },
-            { id: 152, fr: "silencieuse", tr: "silent (f)", cat: "Adjectifs", icon: "🔕" },
-            { id: 153, fr: "grand", tr: "tall / big (m)", cat: "Adjectifs", icon: "📏" },
-            { id: 154, fr: "grande", tr: "tall / big (f)", cat: "Adjectifs", icon: "📈" },
-            { id: 155, fr: "petit", tr: "small / short (m)", cat: "Adjectifs", icon: "🔍" },
-            { id: 156, fr: "petite", tr: "small / short (f)", cat: "Adjectifs", icon: "🐥" },
-            { id: 157, fr: "jeune", tr: "young", cat: "Adjectifs", icon: "🌱" },
-            { id: 158, fr: "vieux", tr: "old (m)", cat: "Adjectifs", icon: "👴" },
-            { id: 159, fr: "vieille", tr: "old (f)", cat: "Adjectifs", icon: "👵" },
-            { id: 160, fr: "beau", tr: "handsome / beautiful (m)", cat: "Adjectifs", icon: "✨" },
-            { id: 161, fr: "belle", tr: "beautiful (f)", cat: "Adjectifs", icon: "🌸" },
-            { id: 162, fr: "nouveau", tr: "new (m)", cat: "Adjectifs", icon: "🆕" },
-            { id: 163, fr: "nouvelle", tr: "new (f)", cat: "Adjectifs", icon: "✨" },
-            { id: 164, fr: "heureux", tr: "happy (m)", cat: "Adjectifs", icon: "😄" },
-            { id: 165, fr: "heureuse", tr: "happy (f)", cat: "Adjectifs", icon: "🥰" },
-            { id: 166, fr: "triste", tr: "sad", cat: "Adjectifs", icon: "😢" },
-            { id: 167, fr: "fatigué", tr: "tired (m)", cat: "Adjectifs", icon: "🥱" },
-            { id: 168, fr: "fatiguée", tr: "tired (f)", cat: "Adjectifs", icon: "😴" },
-            { id: 169, fr: "bon", tr: "good (m)", cat: "Adjectifs", icon: "👍" },
-            { id: 170, fr: "bonne", tr: "good (f)", cat: "Adjectifs", icon: "⭐" },
-            { id: 171, fr: "mauvais", tr: "bad (m)", cat: "Adjectifs", icon: "👎" },
-            { id: 172, fr: "mauvaise", tr: "bad (f)", cat: "Adjectifs", icon: "❌" },
-            { id: 173, fr: "préféré", tr: "favorite (m)", cat: "Adjectifs", icon: "❤️" },
-            { id: 174, fr: "préférée", tr: "favorite (f)", cat: "Adjectifs", icon: "💖" },
-            { id: 175, fr: "Le Caire", tr: "Cairo", cat: "Villes", icon: "🕌" },
-            { id: 176, fr: "Rome", tr: "Rome", cat: "Villes", icon: "🏛️" },
-            { id: 177, fr: "Paris", tr: "Paris", cat: "Villes", icon: "🗼" },
-            { id: 178, fr: "Bruxelles", tr: "Brussels", cat: "Villes", icon: "🇧🇪" },
-            { id: 179, fr: "Madrid", tr: "Madrid", cat: "Villes", icon: "🇪🇸" },
-            { id: 180, fr: "Stockholm", tr: "Stockholm", cat: "Villes", icon: "🇸🇪" },
-            { id: 181, fr: "France", tr: "France", cat: "Pays", icon: "🇫🇷" },
-            { id: 182, fr: "Maroc", tr: "Morocco", cat: "Pays", icon: "🇲🇦" },
-            { id: 183, fr: "Canada", tr: "Canada", cat: "Pays", icon: "🇨🇦" },
-            { id: 184, fr: "Italie", tr: "Italy", cat: "Pays", icon: "🇮🇹" },
-            { id: 185, fr: "Égypte", tr: "Egypt", cat: "Pays", icon: "🇪🇬" },
-            { id: 186, fr: "Suède", tr: "Sweden", cat: "Pays", icon: "🇸🇪" },
-            { id: 187, fr: "loisirs", tr: "hobbies / leisure activities", cat: "Loisirs", icon: "🎨" },
-            { id: 188, fr: "vacances", tr: "vacation / holidays", cat: "Loisirs", icon: "🏖️" },
-            { id: 189, fr: "sympathique", tr: "nice / friendly", cat: "Adjectifs", icon: "🤝" },
-            { id: 190, fr: "en retard", tr: "late", cat: "Expression", icon: "⏰" },
-            { id: 191, fr: "content", tr: "glad / happy", cat: "Adjectifs", icon: "😊" },
-            { id: 192, fr: "multilingue", tr: "multilingual", cat: "Adjectifs", icon: "🌍" }
+        // IDs 193+ — Unité 2 « On fait quoi ce week-end ? » (A1)
+        // Noms : article en français (un/une par défaut ; le/la/les pour les mots surtout utilisés avec l'article défini). g = genre des mots en l'.
+        { id: 193, fr: "aimer", tr: "to like / to love", cat: "Goûts", icon: "❤️" },
+        { id: 194, fr: "adorer", tr: "to love / to adore", cat: "Goûts", icon: "😍" },
+        { id: 195, fr: "détester", tr: "to hate", cat: "Goûts", icon: "😠" },
+        { id: 196, fr: "habiter", tr: "to live (somewhere)", cat: "Vie quotidienne", icon: "🏠" },
+        { id: 197, fr: "travailler", tr: "to work", cat: "Vie quotidienne", icon: "💼" },
+        { id: 198, fr: "parler", tr: "to speak / to talk", cat: "Vie quotidienne", icon: "🗣️" },
+        { id: 199, fr: "chanter", tr: "to sing", cat: "Loisirs", icon: "🎤" },
+        { id: 200, fr: "danser", tr: "to dance", cat: "Loisirs", icon: "💃" },
+        { id: 201, fr: "nager", tr: "to swim", cat: "Loisirs", icon: "🏊" },
+        { id: 202, fr: "cuisiner", tr: "to cook", cat: "Vie quotidienne", icon: "👩‍🍳" },
+        { id: 203, fr: "dessiner", tr: "to draw", cat: "Loisirs", icon: "✏️" },
+        { id: 204, fr: "voyager", tr: "to travel", cat: "Loisirs", icon: "🧳" },
+        { id: 205, fr: "marcher", tr: "to walk", cat: "Loisirs", icon: "🚶" },
+        { id: 206, fr: "regarder", tr: "to watch / to look at", cat: "Loisirs", icon: "👀" },
+        { id: 207, fr: "étudier", tr: "to study", cat: "Vie quotidienne", icon: "📚" },
+        { id: 208, fr: "visiter", tr: "to visit", cat: "Loisirs", icon: "🏛️" },
+        { id: 209, fr: "faire", tr: "to do / to make", cat: "Vie quotidienne", icon: "🛠️" },
+        { id: 210, fr: "vouloir", tr: "to want", cat: "Vie quotidienne", icon: "🙏" },
+        { id: 211, fr: "mettre", tr: "to put / to put on", cat: "Vie quotidienne", icon: "👕" },
+        { id: 212, fr: "prendre", tr: "to take", cat: "Vie quotidienne", icon: "🤲" },
+        { id: 213, fr: "lire", tr: "to read", cat: "Loisirs", icon: "📖" },
+        { id: 214, fr: "jouer", tr: "to play", cat: "Loisirs", icon: "🎮" },
+        { id: 215, fr: "préférer", tr: "to prefer", cat: "Goûts", icon: "⭐" },
+        { id: 216, fr: "le cinéma", tr: "cinema / movies", cat: "Loisirs", icon: "🎬" },
+        { id: 217, fr: "la musique", tr: "music", cat: "Loisirs", icon: "🎵" },
+        { id: 218, fr: "le sport", tr: "sport", cat: "Loisirs", icon: "⚽" },
+        { id: 219, fr: "la lecture", tr: "reading", cat: "Loisirs", icon: "📖" },
+        { id: 220, fr: "la danse", tr: "dance", cat: "Loisirs", icon: "💃" },
+        { id: 221, fr: "le théâtre", tr: "theatre", cat: "Loisirs", icon: "🎭" },
+        { id: 222, fr: "les jeux vidéo", tr: "video games", cat: "Loisirs", icon: "🎮" },
+        { id: 223, fr: "la randonnée", tr: "hiking", cat: "Loisirs", icon: "🥾" },
+        { id: 224, fr: "la photographie", tr: "photography", cat: "Loisirs", icon: "📷" },
+        { id: 225, fr: "l'art", tr: "art", cat: "Loisirs", icon: "🎨", g: "m" },
+        { id: 226, fr: "le foot", tr: "football / soccer", cat: "Loisirs", icon: "⚽" },
+        { id: 227, fr: "le basket", tr: "basketball", cat: "Loisirs", icon: "🏀" },
+        { id: 228, fr: "l'escalade", tr: "climbing", cat: "Loisirs", icon: "🧗", g: "f" },
+        { id: 229, fr: "le vélo", tr: "cycling / bike", cat: "Loisirs", icon: "🚴" },
+        { id: 230, fr: "les jeux de société", tr: "board games", cat: "Loisirs", icon: "🎲" },
+        { id: 231, fr: "une BD", tr: "a comic book", cat: "Loisirs", icon: "📚" },
+        { id: 232, fr: "la télé", tr: "TV", cat: "Loisirs", icon: "📺" },
+        { id: 233, fr: "le shopping", tr: "shopping", cat: "Loisirs", icon: "🛍️" },
+        { id: 234, fr: "une exposition", tr: "an exhibition", cat: "Loisirs", icon: "🖼️" },
+        { id: 235, fr: "faire le ménage", tr: "to do the housework", cat: "Activités", icon: "🧹" },
+        { id: 236, fr: "faire la cuisine", tr: "to cook", cat: "Activités", icon: "🍳" },
+        { id: 237, fr: "faire les courses", tr: "to do the shopping (groceries)", cat: "Activités", icon: "🛒" },
+        { id: 238, fr: "faire la sieste", tr: "to take a nap", cat: "Activités", icon: "😴" },
+        { id: 239, fr: "faire la grasse matinée", tr: "to sleep in", cat: "Activités", icon: "🛌" },
+        { id: 240, fr: "faire la vaisselle", tr: "to do the dishes", cat: "Activités", icon: "🍽️" },
+        { id: 241, fr: "faire les devoirs", tr: "to do homework", cat: "Activités", icon: "📝" },
+        { id: 242, fr: "faire un tour", tr: "to go for a stroll / a short trip", cat: "Activités", icon: "🚶" },
+        { id: 243, fr: "faire une promenade", tr: "to go for a walk", cat: "Activités", icon: "🌳" },
+        { id: 244, fr: "faire un voyage", tr: "to take a trip", cat: "Activités", icon: "✈️" },
+        { id: 245, fr: "faire un gâteau", tr: "to bake a cake", cat: "Activités", icon: "🎂" },
+        { id: 246, fr: "faire des photos", tr: "to take pictures", cat: "Activités", icon: "📸" },
+        { id: 247, fr: "faire du sport", tr: "to do sport", cat: "Activités", icon: "🏃" },
+        { id: 248, fr: "faire du vélo", tr: "to cycle", cat: "Activités", icon: "🚲" },
+        { id: 249, fr: "faire de la randonnée", tr: "to go hiking", cat: "Activités", icon: "🥾" },
+        { id: 250, fr: "faire du théâtre", tr: "to do theatre", cat: "Activités", icon: "🎭" },
+        { id: 251, fr: "un pull", tr: "a sweater / a jumper", cat: "Vêtements", icon: "🧶" },
+        { id: 252, fr: "une veste", tr: "a jacket", cat: "Vêtements", icon: "🧥" },
+        { id: 253, fr: "un pantalon", tr: "trousers / pants", cat: "Vêtements", icon: "👖" },
+        { id: 254, fr: "une robe", tr: "a dress", cat: "Vêtements", icon: "👗" },
+        { id: 255, fr: "une chemise", tr: "a shirt", cat: "Vêtements", icon: "👔" },
+        { id: 256, fr: "un tee-shirt", tr: "a T-shirt", cat: "Vêtements", icon: "👕" },
+        { id: 257, fr: "des chaussures", tr: "shoes", cat: "Vêtements", icon: "👟" },
+        { id: 258, fr: "des chaussettes", tr: "socks", cat: "Vêtements", icon: "🧦" },
+        { id: 259, fr: "un chapeau", tr: "a hat", cat: "Vêtements", icon: "👒" },
+        { id: 260, fr: "un maillot de bain", tr: "a swimsuit", cat: "Vêtements", icon: "🩱" },
+        { id: 261, fr: "des lunettes de soleil", tr: "sunglasses", cat: "Vêtements", icon: "🕶️" },
+        { id: 262, fr: "des vêtements", tr: "clothes", cat: "Vêtements", icon: "👚" },
+        { id: 263, fr: "un appareil photo", tr: "a camera", cat: "Objets", icon: "📷" },
+        { id: 264, fr: "un chargeur", tr: "a charger", cat: "Objets", icon: "🔌" },
+        { id: 265, fr: "un passeport", tr: "a passport", cat: "Objets", icon: "🛂" },
+        { id: 266, fr: "un ballon", tr: "a ball", cat: "Objets", icon: "⚽" },
+        { id: 267, fr: "l'argent", tr: "money", cat: "Objets", icon: "💶", g: "m" },
+        { id: 268, fr: "une valise", tr: "a suitcase", cat: "Objets", icon: "🧳" },
+        { id: 269, fr: "un voyage", tr: "a trip / a journey", cat: "Voyage", icon: "✈️" },
+        { id: 270, fr: "le départ", tr: "the departure", cat: "Voyage", icon: "🛫" },
+        { id: 271, fr: "une place", tr: "a seat / a space", cat: "Voyage", icon: "💺" },
+        { id: 272, fr: "un train", tr: "a train", cat: "Voyage", icon: "🚆" },
+        { id: 273, fr: "un marché", tr: "a market", cat: "Lieux", icon: "🛒" },
+        { id: 274, fr: "un parc", tr: "a park", cat: "Lieux", icon: "🌳" },
+        { id: 275, fr: "un restaurant", tr: "a restaurant", cat: "Lieux", icon: "🍴" },
+        { id: 276, fr: "une classe", tr: "a class / a classroom", cat: "Lieux", icon: "🏫" },
+        { id: 277, fr: "la mer", tr: "the sea", cat: "Lieux", icon: "🌊" },
+        { id: 278, fr: "le bord de la mer", tr: "the seaside", cat: "Lieux", icon: "🏖️" },
+        { id: 279, fr: "le Nil", tr: "the Nile", cat: "Lieux", icon: "🏞️" },
+        { id: 280, fr: "aujourd'hui", tr: "today", cat: "Temps", icon: "📅" },
+        { id: 281, fr: "maintenant", tr: "now", cat: "Temps", icon: "⏱️" },
+        { id: 282, fr: "demain", tr: "tomorrow", cat: "Temps", icon: "➡️" },
+        { id: 283, fr: "ce soir", tr: "tonight / this evening", cat: "Temps", icon: "🌙" },
+        { id: 284, fr: "le week-end", tr: "the weekend", cat: "Temps", icon: "🎉" },
+        { id: 285, fr: "le matin", tr: "morning / in the morning", cat: "Temps", icon: "🌅" },
+        { id: 286, fr: "l'après-midi", tr: "afternoon", cat: "Temps", icon: "🌤️", g: "m" },
+        { id: 287, fr: "le soir", tr: "evening / in the evening", cat: "Temps", icon: "🌆" },
+        { id: 288, fr: "à demain", tr: "see you tomorrow", cat: "Temps", icon: "👋" },
+        { id: 289, fr: "à ce soir", tr: "see you tonight", cat: "Temps", icon: "🌙" },
+        { id: 290, fr: "l'heure", tr: "hour / time", cat: "Heure", icon: "🕐", g: "f" },
+        { id: 291, fr: "midi", tr: "noon", cat: "Heure", icon: "🕛" },
+        { id: 292, fr: "minuit", tr: "midnight", cat: "Heure", icon: "🌃" },
+        { id: 293, fr: "et quart", tr: "quarter past", cat: "Heure", icon: "🕒" },
+        { id: 294, fr: "et demie", tr: "half past", cat: "Heure", icon: "🕞" },
+        { id: 295, fr: "moins le quart", tr: "quarter to", cat: "Heure", icon: "🕓" },
+        { id: 296, fr: "du matin", tr: "in the morning (a.m.)", cat: "Heure", icon: "☀️" },
+        { id: 297, fr: "de l'après-midi", tr: "in the afternoon (p.m.)", cat: "Heure", icon: "🌤️" },
+        { id: 298, fr: "du soir", tr: "in the evening (p.m.)", cat: "Heure", icon: "🌙" },
+        { id: 299, fr: "Quelle heure est-il ?", tr: "What time is it?", cat: "Heure", icon: "❓" },
+        { id: 300, fr: "Il est…", tr: "It is… (time)", cat: "Heure", icon: "🕰️" },
+        { id: 301, fr: "À quelle heure… ?", tr: "At what time…?", cat: "Heure", icon: "⏰" },
+        { id: 302, fr: "un café", tr: "a coffee", cat: "Boisson", icon: "☕" },
+        { id: 303, fr: "un croissant", tr: "a croissant", cat: "Nourriture", icon: "🥐" },
+        { id: 304, fr: "des pommes", tr: "apples", cat: "Nourriture", icon: "🍎" },
+        { id: 305, fr: "le sucre", tr: "sugar", cat: "Nourriture", icon: "🍬" },
+        { id: 306, fr: "le lait", tr: "milk", cat: "Boisson", icon: "🥛" },
+        { id: 307, fr: "le fromage", tr: "cheese", cat: "Nourriture", icon: "🧀" },
+        { id: 308, fr: "le poisson", tr: "fish", cat: "Nourriture", icon: "🐟" },
+        { id: 309, fr: "un gâteau", tr: "a cake", cat: "Nourriture", icon: "🎂" },
+        { id: 310, fr: "une recette", tr: "a recipe", cat: "Nourriture", icon: "📜" },
+        { id: 311, fr: "le petit-déjeuner", tr: "breakfast", cat: "Nourriture", icon: "🥞" },
+        { id: 312, fr: "un soda", tr: "a soda / a soft drink", cat: "Boisson", icon: "🥤" },
+        { id: 313, fr: "un verre", tr: "a glass", cat: "Boisson", icon: "🥃" },
+        { id: 314, fr: "un réfrigérateur", tr: "a fridge", cat: "Nourriture", icon: "🧊" },
+        { id: 315, fr: "une femme", tr: "a wife / a woman", cat: "Famille", icon: "👰" },
+        { id: 316, fr: "un ami", tr: "a friend (m)", cat: "Personnes", icon: "🧑‍🤝‍🧑" },
+        { id: 317, fr: "une amie", tr: "a friend (f)", cat: "Personnes", icon: "🧑‍🤝‍🧑" },
+        { id: 318, fr: "un voisin", tr: "a neighbour (m)", cat: "Personnes", icon: "🏘️" },
+        { id: 319, fr: "une voisine", tr: "a neighbour (f)", cat: "Personnes", icon: "🏘️" },
+        { id: 320, fr: "un collègue", tr: "a colleague", cat: "Personnes", icon: "🧑‍💼" },
+        { id: 321, fr: "fermé", tr: "closed (m)", cat: "Adjectifs", icon: "🔒" },
+        { id: 322, fr: "fermée", tr: "closed (f)", cat: "Adjectifs", icon: "🔒" },
+        { id: 323, fr: "super", tr: "great / super", cat: "Adjectifs", icon: "👍" },
+        { id: 324, fr: "parfait", tr: "perfect (m)", cat: "Adjectifs", icon: "✅" },
+        { id: 325, fr: "parfaite", tr: "perfect (f)", cat: "Adjectifs", icon: "✅" },
+        { id: 326, fr: "j'adore", tr: "I love it", cat: "Expression", icon: "😍" },
+        { id: 327, fr: "j'aime", tr: "I like", cat: "Expression", icon: "🙂" },
+        { id: 328, fr: "j'aime beaucoup", tr: "I like it a lot", cat: "Expression", icon: "😊" },
+        { id: 329, fr: "je déteste", tr: "I hate", cat: "Expression", icon: "😠" },
+        { id: 330, fr: "je n'aime pas", tr: "I don't like", cat: "Expression", icon: "🙁" },
+        { id: 331, fr: "je n'aime pas du tout", tr: "I don't like it at all", cat: "Expression", icon: "🤢" },
+        { id: 332, fr: "je préfère", tr: "I prefer", cat: "Expression", icon: "⭐" },
+        { id: 333, fr: "d'accord", tr: "OK / agreed", cat: "Expression", icon: "🆗" },
+        { id: 334, fr: "il y a", tr: "there is / there are", cat: "Expression", icon: "👉" },
+        { id: 335, fr: "il n'y a pas de", tr: "there isn't / there aren't any", cat: "Expression", icon: "🚫" },
+        { id: 336, fr: "je veux", tr: "I want", cat: "Expression", icon: "🙏" },
+        { id: 337, fr: "je mets", tr: "I put / I wear", cat: "Expression", icon: "👕" },
+        { id: 338, fr: "et", tr: "and", cat: "Mots-outils", icon: "➕" },
+        { id: 339, fr: "ou", tr: "or", cat: "Mots-outils", icon: "🔀" },
+        { id: 340, fr: "alors", tr: "so / then", cat: "Mots-outils", icon: "➡️" },
+        { id: 341, fr: "mais", tr: "but", cat: "Mots-outils", icon: "↔️" },
+        { id: 342, fr: "aussi", tr: "also / too", cat: "Mots-outils", icon: "➕" },
+        { id: 343, fr: "avec", tr: "with", cat: "Mots-outils", icon: "🤝" },
+        { id: 344, fr: "pour", tr: "for", cat: "Mots-outils", icon: "🎁" },
+        { id: 345, fr: "dans", tr: "in / inside", cat: "Mots-outils", icon: "📥" },
+        { id: 346, fr: "ensemble", tr: "together", cat: "Mots-outils", icon: "👫" },
+        { id: 347, fr: "beaucoup", tr: "a lot", cat: "Mots-outils", icon: "📈" },
+        { id: 348, fr: "pas du tout", tr: "not at all", cat: "Mots-outils", icon: "🚫" },
+        { id: 349, fr: "on", tr: "we / one / people", cat: "Mots-outils", icon: "👥" },
+        { id: 350, fr: "est-ce que", tr: "question marker (yes/no)", cat: "Questions", icon: "❔" },
+        { id: 351, fr: "qu'est-ce que", tr: "what (+ subject + verb)", cat: "Questions", icon: "❓" },
+        { id: 352, fr: "qu'est-ce que c'est ?", tr: "what is it?", cat: "Questions", icon: "🤔" },
+        { id: 353, fr: "il y a quoi ?", tr: "what is there? (informal)", cat: "Questions", icon: "🧐" },
+        { id: 354, fr: "quel / quelle", tr: "which / what (m. / f.)", cat: "Questions", icon: "🔎" },
+        { id: 355, fr: "quels / quelles", tr: "which / what (m. pl. / f. pl.)", cat: "Questions", icon: "🔎" },
+        { id: 356, fr: "quoi", tr: "what (informal)", cat: "Questions", icon: "❓" },
+        { id: 357, fr: "mon / ma / mes", tr: "my", cat: "Possessifs", icon: "🙋" },
+        { id: 358, fr: "ton / ta / tes", tr: "your (informal)", cat: "Possessifs", icon: "👉" },
+        { id: 359, fr: "son / sa / ses", tr: "his / her", cat: "Possessifs", icon: "👤" },
+        { id: 360, fr: "notre / nos", tr: "our", cat: "Possessifs", icon: "👥" },
+        { id: 361, fr: "votre / vos", tr: "your (formal / plural)", cat: "Possessifs", icon: "🧑‍🤝‍🧑" },
+        { id: 362, fr: "leur / leurs", tr: "their", cat: "Possessifs", icon: "👥" }
         ];
 
         let appState = {
+            evalAnswered: false,
             selectedIds: JSON.parse(localStorage.getItem(KEY_SELECTED)) || VOCAB_DATA.map(v => v.id),
             stats: JSON.parse(localStorage.getItem(KEY_STATS)) || {},
             leaderboard: JSON.parse(localStorage.getItem(KEY_LEADERBOARD)) || [],
@@ -639,7 +620,7 @@
         function speakWord(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
-                const utterance = new SpeechSynthesisUtterance(text);
+                const utterance = new SpeechSynthesisUtterance(text.replace(/\s*\/\s*/g, ', ').replace(/…/g, ''));
                 utterance.lang = 'fr-FR';
                 utterance.rate = 0.9;
                 window.speechSynthesis.speak(utterance);
@@ -870,6 +851,128 @@
             return str.toLowerCase().trim().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
         }
 
+        // ===== Moteur de correction (articles, alternatives, accents, fautes de frappe) =====
+        const NON_NOUN_CATS = ['Expression', 'Questions', 'Mots-outils'];
+        const NOUN_START = /^(?:l['’]|(?:le|la|les|un|une|des)\s)/i;
+        const ART_SPLIT = /^(?:(l['’]|d['’])|(de la|du|des|les|le|la|une|un)\s+)/i;
+
+        function looseStr(s) {
+            return s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, "");
+        }
+        function strictStr(s) {
+            return s.toLowerCase().normalize("NFC").replace(/[^a-z0-9àâäçéèêëîïôöùûüÿœæ]/g, "");
+        }
+        function isNounEntry(e) {
+            return NOUN_START.test(e.fr.trim()) && !NON_NOUN_CATS.includes(e.cat);
+        }
+        function splitArticle(s) {
+            const m = s.trim().match(ART_SPLIT);
+            if (!m) return { art: '', core: s.trim() };
+            return { art: (m[1] || m[2]).toLowerCase().replace('’', "'"), core: s.trim().slice(m[0].length) };
+        }
+        function articleClass(art) {
+            if (['le', 'un'].includes(art)) return 'm';
+            if (['la', 'une'].includes(art)) return 'f';
+            if (['les', 'des'].includes(art)) return 'p';
+            return 'e'; // l' : genre inconnu
+        }
+        function genderHint(e) {
+            if (!isNounEntry(e)) return '';
+            const art = splitArticle(e.fr).art;
+            let c = articleClass(art);
+            if (c === 'e') c = e.g || 'e';
+            return { m: 'nom masculin', f: 'nom féminin', p: 'nom pluriel', e: '' }[c];
+        }
+        function promptTrHtml(e) {
+            const h = genderHint(e);
+            return `<h3 class="text-2xl font-bold text-gray-800">${e.tr}</h3>` +
+                (h ? `<p class="text-xs text-gray-400 mt-2">${h} · écris le mot avec son article</p>` : '');
+        }
+
+        function matchFrEntry(input, c) {
+            const inp = input.trim();
+            if (!inp) return { status: 'ko' };
+            const variants = c.fr.split('/').map(s => s.trim()).filter(Boolean);
+            const forms = variants.length > 1 ? [...variants, c.fr] : variants;
+            const noun = isNounEntry(c);
+            let ko = { status: 'ko' };
+            for (const f of forms) {
+                if (strictStr(inp) === strictStr(f)) return { status: 'ok' };
+                const i = noun ? splitArticle(inp) : { art: '', core: inp };
+                const x = noun ? splitArticle(f) : { art: '', core: f };
+                if (looseStr(i.core) !== looseStr(x.core) || !looseStr(i.core)) continue;
+                const warns = [];
+                if (strictStr(i.core) !== strictStr(x.core)) warns.push('attention aux accents');
+                if (noun && x.art) {
+                    if (!i.art) warns.push("n'oublie pas l'article");
+                    else if (i.art !== x.art) {
+                        const ci = articleClass(i.art), cx = articleClass(x.art);
+                        if (ci !== 'e' && cx !== 'e' && ci !== cx) {
+                            ko = { status: 'ko', msg: 'mauvais genre ou nombre' };
+                            continue;
+                        }
+                        warns.push('article attendu');
+                    }
+                }
+                return { status: 'warn', msg: warns.join(', ') + ' : ' + f };
+            }
+            return ko;
+        }
+        function checkFrAnswer(input, entry) {
+            const cands = [entry, ...VOCAB_DATA.filter(v => v.id !== entry.id && v.tr === entry.tr)];
+            let warn = null, first = null;
+            cands.forEach(c => {
+                const r = matchFrEntry(input, c);
+                if (!first) first = r;
+                if (r.status === 'ok') warn = warn && warn.status === 'ok' ? warn : r;
+                else if (r.status === 'warn' && !warn) warn = r;
+            });
+            return warn || first;
+        }
+
+        function enForms(tr) {
+            return tr.replace(/\([^)]*\)/g, ' ').split('/').map(s => {
+                let t = s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[’]/g, "'");
+                t = t.replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim();
+                t = t.replace(/^(to|a|an|the)\s+/, '');
+                return t.replace(/[^a-z0-9]/g, '');
+            }).filter(Boolean);
+        }
+        function editDistance1(a, b) {
+            if (Math.abs(a.length - b.length) > 1) return false;
+            let i = 0;
+            while (i < a.length && i < b.length && a[i] === b[i]) i++;
+            if (a.length === b.length) return a.slice(i + 1) === b.slice(i + 1);
+            return a.length > b.length ? a.slice(i + 1) === b.slice(i) : b.slice(i + 1) === a.slice(i);
+        }
+        function checkEnAnswer(input, entry) {
+            let t = input.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[’]/g, "'")
+                .replace(/[^a-z0-9' ]/g, ' ').replace(/\s+/g, ' ').trim().replace(/^(to|a|an|the)\s+/, '').replace(/[^a-z0-9]/g, '');
+            if (!t) return { status: 'ko' };
+            const forms = enForms(entry.tr);
+            if (forms.includes(t)) return { status: 'ok' };
+            const close = forms.find(f => f.length >= 5 && editDistance1(f, t));
+            if (close) return { status: 'warn', msg: "attention à l'orthographe : " + entry.tr.replace(/\([^)]*\)/g, '').split('/')[0].trim() };
+            return { status: 'ko' };
+        }
+        function sharesEnForm(a, b) {
+            const fa = enForms(a.tr), fb = enForms(b.tr);
+            return fa.some(x => fb.includes(x));
+        }
+        function showFeedback(fb, res, okText, koText) {
+            fb.classList.remove('hidden');
+            if (res.status === 'ok') {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
+                fb.textContent = okText;
+            } else if (res.status === 'warn') {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-amber-800 bg-amber-50 border border-amber-200";
+                fb.textContent = okText + ' (' + res.msg + ')';
+            } else {
+                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
+                fb.textContent = koText + (res.msg ? ' (' + res.msg + ')' : '');
+            }
+        }
+
         function initDictee() {
             const active = getActiveWords();
             appState.dicteeCurrent = active[Math.floor(Math.random() * active.length)];
@@ -886,18 +989,11 @@
             e.preventDefault();
             const val = document.getElementById('dictee-input').value;
             const fb = document.getElementById('dictee-feedback');
-            fb.classList.remove('hidden');
-
-            if (normalizeStr(val) === normalizeStr(appState.dicteeCurrent.fr)) {
-                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
-                fb.textContent = "Bravo ! Orthographe exacte.";
-                recordPracticeStat(appState.dicteeCurrent.id, 'dictee', true);
-                setTimeout(initDictee, 1500);
-            } else {
-                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
-                fb.textContent = `Incorrect ! La réponse exacte était : "${appState.dicteeCurrent.fr}"`;
-                recordPracticeStat(appState.dicteeCurrent.id, 'dictee', false);
-            }
+            const cur = appState.dicteeCurrent;
+            const res = checkFrAnswer(val, cur);
+            showFeedback(fb, res, "Bravo ! Orthographe correcte.", `Incorrect ! La réponse exacte était : "${cur.fr}"`);
+            recordPracticeStat(cur.id, 'dictee', res.status !== 'ko');
+            if (res.status !== 'ko') setTimeout(initDictee, res.status === 'warn' ? 3000 : 1500);
         }
 
         function setEcritureMode(mode) {
@@ -915,9 +1011,11 @@
 
             const prompt = document.getElementById('ecriture-prompt');
             if (appState.ecritureMode === 'trad') {
-                prompt.innerHTML = `<h3 class="text-2xl font-bold text-gray-800">${appState.ecritureCurrent.tr}</h3>`;
+                prompt.innerHTML = `<div class="text-center">${promptTrHtml(appState.ecritureCurrent)}</div>`;
             } else {
-                prompt.innerHTML = `<div class="text-7xl">${appState.ecritureCurrent.icon}</div>`;
+                const h = genderHint(appState.ecritureCurrent);
+                prompt.innerHTML = `<div class="text-center"><div class="text-7xl">${appState.ecritureCurrent.icon}</div>` +
+                    (h ? `<p class="text-xs text-gray-400 mt-2">${h} · écris le mot avec son article</p>` : '') + `</div>`;
             }
         }
 
@@ -925,18 +1023,11 @@
             e.preventDefault();
             const val = document.getElementById('ecriture-input').value;
             const fb = document.getElementById('ecriture-feedback');
-            fb.classList.remove('hidden');
-
-            if (normalizeStr(val) === normalizeStr(appState.ecritureCurrent.fr)) {
-                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
-                fb.textContent = "Parfait ! Réponse correcte.";
-                recordPracticeStat(appState.ecritureCurrent.id, 'ecrit', true);
-                setTimeout(initEcriture, 1500);
-            } else {
-                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
-                fb.textContent = `Incorrect ! La réponse était : "${appState.ecritureCurrent.fr}"`;
-                recordPracticeStat(appState.ecritureCurrent.id, 'ecrit', false);
-            }
+            const cur = appState.ecritureCurrent;
+            const res = checkFrAnswer(val, cur);
+            showFeedback(fb, res, "Parfait ! Réponse correcte.", `Incorrect ! La réponse était : "${cur.fr}"`);
+            recordPracticeStat(cur.id, 'ecrit', res.status !== 'ko');
+            if (res.status !== 'ko') setTimeout(initEcriture, res.status === 'warn' ? 3000 : 1500);
         }
 
         function initTraduction() {
@@ -953,23 +1044,13 @@
 
         function handleTraductionSubmit(e) {
             e.preventDefault();
-            const input = document.getElementById('trad-input').value.toLowerCase().trim();
+            const input = document.getElementById('trad-input').value;
             const fb = document.getElementById('trad-feedback');
-            fb.classList.remove('hidden');
-
-            const allowed = appState.tradCurrent.tr.toLowerCase().split('/').map(s => s.trim());
-            const isCorrect = allowed.some(tr => input.includes(tr) || tr.includes(input)) && input.length > 0;
-
-            if (isCorrect) {
-                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 animate-success";
-                fb.textContent = "Très bien ! Traduction validée.";
-                recordPracticeStat(appState.tradCurrent.id, 'trad', true);
-                setTimeout(initTraduction, 1500);
-            } else {
-                fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200";
-                fb.textContent = `Traduction attendue : "${appState.tradCurrent.tr}"`;
-                recordPracticeStat(appState.tradCurrent.id, 'trad', false);
-            }
+            const cur = appState.tradCurrent;
+            const res = checkEnAnswer(input, cur);
+            showFeedback(fb, res, "Très bien ! Traduction validée.", `Traduction attendue : "${cur.tr}"`);
+            recordPracticeStat(cur.id, 'trad', res.status !== 'ko');
+            if (res.status !== 'ko') setTimeout(initTraduction, res.status === 'warn' ? 3000 : 1500);
         }
 
         function setMatchMode(mode) {
@@ -1090,12 +1171,19 @@
 
             fb.classList.add('hidden');
             nextBtn.classList.add('hidden');
+            appState.evalAnswered = false;
             document.getElementById('eval-[#0077B6]').textContent = `Question ${appState.evalIndex + 1} / 10`;
 
             const type = appState.evalIndex % 3;
 
             if (type === 0) {
-                const options = [q, ...VOCAB_DATA.filter(v => v.id !== q.id).sort(() => Math.random() - 0.5).slice(0, 3)].sort(() => Math.random() - 0.5);
+                let pool = getActiveWords().filter(v => v.id !== q.id && !sharesEnForm(v, q));
+                if (pool.length < 3) pool = VOCAB_DATA.filter(v => v.id !== q.id && !sharesEnForm(v, q));
+                const distractors = [];
+                pool.sort(() => Math.random() - 0.5).forEach(v => {
+                    if (distractors.length < 3 && !distractors.some(d => sharesEnForm(d, v))) distractors.push(v);
+                });
+                const options = [q, ...distractors].sort(() => Math.random() - 0.5);
                 body.innerHTML = `
                     <h3 class="text-lg font-bold text-gray-800">Traduisez : <span class="text-[#0077B6]">"${q.fr}"</span></h3>
                     <div class="grid grid-cols-1 gap-2">
@@ -1109,41 +1197,50 @@
             } else if (type === 1) {
                 body.innerHTML = `
                     <h3 class="text-lg font-bold text-gray-800">Dictée audio : Écoutez et tapez le mot</h3>
-                    <button onclick="speakWord('${q.fr.replace(/'/g, "\\'")}')" class="w-16 h-16 bg-[#00B4D8] text-white rounded-full flex items-center justify-center mx-auto text-xl shadow">
+                    <button onclick="speakWord(appState.evalQuestions[appState.evalIndex].fr)" class="w-16 h-16 bg-[#00B4D8] text-white rounded-full flex items-center justify-center mx-auto text-xl shadow">
                         <i class="fa-solid fa-volume-high"></i>
                     </button>
-                    <input type="text" id="eval-input-text" placeholder="Orthographe en français..." class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
-                    <button onclick="checkEvalTextAnswer('${q.fr}')" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
+                    <input type="text" id="eval-input-text" placeholder="Orthographe en français (avec l'article)..." autocomplete="off" class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    <button onclick="checkEvalTextAnswer()" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
                 `;
                 speakWord(q.fr);
             } else {
+                const h = genderHint(q);
                 body.innerHTML = `
                     <h3 class="text-lg font-bold text-gray-800">Écrivez en Français : <span class="text-[#0077B6]">"${q.tr}"</span></h3>
-                    <input type="text" id="eval-input-text" placeholder="Votre réponse en français..." class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
-                    <button onclick="checkEvalTextAnswer('${q.fr}')" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
+                    ${h ? `<p class="text-xs text-gray-400 text-center">${h} · écris le mot avec son article</p>` : ''}
+                    <input type="text" id="eval-input-text" placeholder="Votre réponse en français..." autocomplete="off" class="w-full text-center p-3 border-2 border-gray-200 rounded-xl focus:border-[#00B4D8] focus:outline-none">
+                    <button onclick="checkEvalTextAnswer()" class="w-full py-2.5 bg-[#00B4D8] text-white font-bold rounded-xl shadow">Valider</button>
                 `;
             }
         }
 
-        function checkEvalAnswer(isCorrect) {
+        function checkEvalAnswer(isCorrect, note, expected) {
+            if (appState.evalAnswered) return;
+            appState.evalAnswered = true;
             const fb = document.getElementById('eval-feedback');
             fb.classList.remove('hidden');
 
             if (isCorrect) {
                 appState.evalScore++;
-                fb.className = "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center animate-success";
-                fb.textContent = "Correct !";
+                const warn = !!note;
+                fb.className = warn
+                    ? "p-4 rounded-xl text-sm font-bold text-amber-800 bg-amber-50 border border-amber-200 text-center"
+                    : "p-4 rounded-xl text-sm font-bold text-emerald-800 bg-emerald-50 border border-emerald-200 text-center animate-success";
+                fb.textContent = warn ? `Correct ! (${note})` : "Correct !";
             } else {
                 fb.className = "p-4 rounded-xl text-sm font-bold text-rose-800 bg-rose-50 border border-rose-200 text-center";
-                fb.textContent = "Incorrect !";
+                fb.textContent = expected ? `Incorrect ! Réponse attendue : "${expected}"` : "Incorrect !";
             }
 
             document.getElementById('eval-next-btn').classList.remove('hidden');
         }
 
-        function checkEvalTextAnswer(targetFr) {
+        function checkEvalTextAnswer() {
+            const q = appState.evalQuestions[appState.evalIndex];
             const val = document.getElementById('eval-input-text').value;
-            checkEvalAnswer(normalizeStr(val) === normalizeStr(targetFr));
+            const res = checkFrAnswer(val, q);
+            checkEvalAnswer(res.status !== 'ko', res.status === 'warn' ? res.msg : '', q.fr);
         }
 
         function nextEvalQuestion() {
